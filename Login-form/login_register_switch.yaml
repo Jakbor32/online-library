@@ -1,0 +1,90 @@
+- login_register_switch:
+    Control: Component
+    Properties:
+      Btn_color_login: =RGBA(0, 0, 0, 1)
+      Btn_color_register: =RGBA(30, 155, 200, 1)
+      Login_page: =App.ActiveScreen
+      Register_page: =App.ActiveScreen
+      Height: =80
+      Width: =300
+    Children:
+    - Container1:
+        Control: GroupContainer
+        Variant: horizontalAutoLayoutContainer
+        Properties:
+          Height: =60
+          LayoutAlignItems: =LayoutAlignItems.Center
+          LayoutGap: =10
+          LayoutJustifyContent: =LayoutJustifyContent.Center
+          LayoutMode: =LayoutMode.Auto
+          RadiusBottomLeft: =50
+          RadiusBottomRight: =50
+          RadiusTopLeft: =50
+          RadiusTopRight: =50
+          Width: =278
+          X: =12
+          Y: =12
+        Children:
+        - Button1:
+            Control: Classic/Button
+            Properties:
+              OnSelect: =Navigate(login_register_switch.Register_page)
+              Text: ="Sign Up"
+              BorderThickness: =0
+              Fill: =login_register_switch.Btn_color_register
+              Height: =200
+              HoverColor: =RGBA(255,255,255,1)
+              HoverFill: =Self.Fill
+              PressedColor: =RGBA(255,255,255,1)
+              PressedFill: =Self.Fill
+              RadiusBottomLeft: =50
+              RadiusBottomRight: =50
+              RadiusTopLeft: =50
+              RadiusTopRight: =50
+              Width: =150
+        - Button1_1:
+            Control: Classic/Button
+            Properties:
+              OnSelect: =Navigate(login_register_switch.Login_page)
+              Text: ="Sign In"
+              BorderThickness: =0
+              Fill: =login_register_switch.Btn_color_login
+              Height: =200
+              HoverColor: =RGBA(255,255,255,1)
+              HoverFill: =Self.Fill
+              PressedColor: =RGBA(255,255,255,1)
+              PressedFill: =Self.Fill
+              RadiusBottomLeft: =50
+              RadiusBottomRight: =50
+              RadiusTopLeft: =50
+              RadiusTopRight: =50
+              Width: =150
+    CustomProperties:
+    - Register_page:
+        Direction: Input
+        PropertyType: Data
+        DataType: Screen
+        IsResettable: false
+        DisplayName: Register_page
+        Description: A custom property
+    - Login_page:
+        Direction: Input
+        PropertyType: Data
+        DataType: Screen
+        IsResettable: false
+        DisplayName: Login_page
+        Description: A custom property
+    - Btn_color_register:
+        Direction: Input
+        PropertyType: Data
+        DataType: Color
+        IsResettable: false
+        DisplayName: Btn_color_register
+        Description: A custom property
+    - Btn_color_login:
+        Direction: Input
+        PropertyType: Data
+        DataType: Color
+        IsResettable: false
+        DisplayName: Btn_color_login
+        Description: A custom property
