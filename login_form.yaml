@@ -1,0 +1,153 @@
+- login_form:
+    Control: Component
+    Properties:
+      data: =login_data
+      dynamic_text: ="Text"
+      go_to_main_page: =App.ActiveScreen
+      Fill: =RGBA(214, 223, 238, 1)
+      Width: =900
+    Children:
+    - password_icon:
+        Control: Classic/Icon
+        Variant: Lock
+        Properties:
+          Height: =30
+          Icon: =Icon.Lock
+          Width: =30
+          X: =210
+          Y: =370
+    - username_icon:
+        Control: Classic/Icon
+        Variant: Person
+        Properties:
+          Height: =30
+          Icon: =Icon.Person
+          Width: =30
+          X: =210
+          Y: =269
+    - Header:
+        Control: GroupContainer
+        Variant: manualLayoutContainer
+        Properties:
+          Height: =122
+          Width: =900
+        Children:
+        - title:
+            Control: HtmlViewer
+            Properties:
+              HtmlText: |-
+                ="<body style='height: 100%; margin: 0; overflow: hidden; background: radial-gradient(circle, crimson, rgba(220, 20, 60, 1) 0%, rgba(139, 0, 0, 1) 100%);'>
+
+                  <div class='slashed' style='position: absolute; top: 0; left: 0; right: 0; bottom: 0; text-shadow: 3px 3px 3px rgba(0, 0, 0, 1);'>
+                    <div class='top' style='position: absolute; top: 0; left: 5px; right: 0; bottom: 50%; text-align: center; font: 62px/100px Arial, sans-serif; text-transform: uppercase; overflow: hidden; color: white;'>
+                      <span style='display: block; position: absolute; bottom: -50px; left: 0; right: 0;'>Online Library</span>
+                    </div>
+
+                    <div class='bot' style='position: absolute; top: 50%; left: 0; right: 5px; bottom: 0; text-align: center; font: 62px/100px Arial, sans-serif; text-transform: uppercase; overflow: hidden; color: white;'>
+                      <span style='display: block; position: absolute; top: -50px; left: 0; right: 0;'>Online Library</span>
+                    </div>
+                  </div>
+
+                </body>"
+              Height: =118
+              Width: =897
+              X: =3
+              Y: =4
+    - Body:
+        Control: GroupContainer
+        Variant: manualLayoutContainer
+        Properties:
+          Height: =361
+          Width: =777
+          X: =60
+          Y: =156
+        Children:
+        - form:
+            Control: GroupContainer
+            Variant: verticalAutoLayoutContainer
+            Properties:
+              Height: =361
+              LayoutAlignItems: =LayoutAlignItems.Center
+              LayoutDirection: =LayoutDirection.Vertical
+              LayoutGap: =50
+              LayoutJustifyContent: =LayoutJustifyContent.Center
+              LayoutMode: =LayoutMode.Auto
+              Width: =777
+            Children:
+            - username_input:
+                Control: Classic/TextInput
+                Properties:
+                  Default: =
+                  HintText: ="username"
+                  Height: =50
+                  PaddingLeft: =30
+                  RadiusBottomLeft: =50
+                  RadiusBottomRight: =50
+                  RadiusTopLeft: =50
+                  RadiusTopRight: =50
+                  Size: =12
+                  Width: =400
+            - password_input:
+                Control: Classic/TextInput
+                Properties:
+                  Default: =
+                  HintText: ="password"
+                  Height: =50
+                  Mode: =TextMode.Password
+                  PaddingLeft: =30
+                  PaddingRight: =30
+                  RadiusBottomLeft: =50
+                  RadiusBottomRight: =50
+                  RadiusTopLeft: =50
+                  RadiusTopRight: =50
+                  Width: =400
+    CustomProperties:
+    - dynamic_text:
+        Direction: Input
+        PropertyType: Data
+        DataType: String
+        IsResettable: false
+        DisplayName: dynamic_text
+        Description: A custom property
+    - go_to_main_page:
+        Direction: Input
+        PropertyType: Data
+        DataType: Screen
+        IsResettable: false
+        DisplayName: go_to_main_page
+        Description: A custom property
+    - data:
+        Direction: Input
+        PropertyType: Data
+        DataType: Table
+        IsResettable: false
+        DisplayName: data
+        Description: A custom property
+    - data_output:
+        Direction: Output
+        PropertyType: Data
+        DataType: Table
+        IsResettable: false
+        DisplayName: data_output
+        Description: A custom property
+    - username_value:
+        Direction: Input
+        PropertyType: Data
+        DataType: String
+        IsResettable: false
+        DisplayName: Custom property 1
+        Description: A custom property
+    - password_value:
+        Direction: Output
+        PropertyType: Data
+        DataType: String
+        IsResettable: false
+        DisplayName: password_value
+        Description: A custom property
+    - username__value:
+        Direction: Output
+        PropertyType: Data
+        DataType: String
+        IsResettable: false
+        DisplayName: Custom property 2
+        Description: A custom property
