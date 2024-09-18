@@ -1,8 +1,10 @@
 - MenuLeftNav:
     Control: Component
     Properties:
+      AdminAccess: =varAdminAccess
       ExpandMenu: =false
       HamburgerMenuColor: =Color.Blue
+      LoggedUser: =varLoggedUser
       MenuBkgColor: =RGBA(220,220,220,1)
       MenuColor: =Color.Purple
       MenuItems: |
@@ -73,7 +75,7 @@
             {
                 MenuLabel: "Admin Panel",
                 MenuIcon: Icon.Manufacture,
-                MenuScreenNavigate: 'Admin Panel',
+                //MenuScreenNavigate: 'Admin Panel',
                 MenuID: 10,
                 VisibleSubMenu: true,
                 SubMenu: Table(
@@ -174,7 +176,9 @@
             - btnClickSubMenu_1:
                 Control: Classic/Button
                 Properties:
-                  OnSelect: =Navigate(ThisItem.MenuScreenNavigate,ScreenTransition.Cover )
+                  OnSelect: |-
+                    =Navigate(ThisItem.MenuScreenNavigate,ScreenTransition.Cover );
+                    Set(showMenu,false);
                   Text: =""
                   Fill: =Color.Transparent
                   Height: =lblSubMenu_1.Height+lblSubMenu_1.Y
@@ -222,7 +226,12 @@
               OnSelect: |+
                 =If(
                     ThisItem.VisibleSubMenu = true,
-                    Set(showSubMenu,!showSubMenu)
+                    If(
+                    MenuLeftNav.AdminAccess = "Yes",
+                    Set(showSubMenu,!showSubMenu),
+                    Notify("Insufficient permissions to access the admin panel.", NotificationType.Error)
+
+                )
                 );
                 Navigate(ThisItem.MenuScreenNavigate, ScreenTransition.Cover); 
                 Set(showMenu,false);
@@ -338,4 +347,18 @@
         DataType: Number
         IsResettable: false
         DisplayName: SetMenuWidth
+        Description: A custom property
+    - LoggedUser:
+        Direction: Input
+        PropertyType: Data
+        DataType: String
+        IsResettable: false
+        DisplayName: LoggedUser
+        Description: A custom property
+    - AdminAccess:
+        Direction: Input
+        PropertyType: Data
+        DataType: String
+        IsResettable: false
+        DisplayName: AdminAccess
         Description: A custom property
