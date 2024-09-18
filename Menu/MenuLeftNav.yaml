@@ -5,22 +5,157 @@
       HamburgerMenuColor: =Color.Blue
       MenuBkgColor: =RGBA(220,220,220,1)
       MenuColor: =Color.Purple
-      MenuItems: "=Table(\n    {\n        MenuLabel: \"Dashboard\",\n        MenuIcon: Icon.Currency,\n        MenuScreenNavigate: App.ActiveScreen,\n        MenuID: 1,\n        SubMenu: Table()\n    },\n     {\n        MenuLabel: \"Book Catalog\",\n        MenuIcon: Icon.Currency,\n        MenuScreenNavigate: App.ActiveScreen,\n        MenuID: 2,\n        SubMenu: Table()\n    },\n     {\n        MenuLabel: \"Book Details\",\n        MenuIcon: Icon.Currency,\n        MenuScreenNavigate: App.ActiveScreen,\n        MenuID: 3,\n        SubMenu: Table()\n    },\n     {\n        MenuLabel: \"Your Books\",\n        MenuIcon: Icon.Currency,\n        MenuScreenNavigate: App.ActiveScreen,\n        MenuID: 4,\n        SubMenu: Table()\n    },\n     {\n        MenuLabel: \"Wishlist / Favorites\",\n        MenuIcon: Icon.Currency,\n        MenuScreenNavigate: App.ActiveScreen,\n        MenuID: 5,\n        SubMenu: Table()\n    },\n     {\n        MenuLabel: \"Book Reservations\",\n        MenuIcon: Icon.Currency,\n        MenuScreenNavigate: App.ActiveScreen,\n        MenuID: 6,\n        SubMenu: Table()\n    },\n     {\n        MenuLabel: \"Borrowing History\",\n        MenuIcon: Icon.Currency,\n        MenuScreenNavigate: App.ActiveScreen,\n        MenuID: 7,\n        SubMenu: Table()\n    },\n    {\n        MenuLabel: \"Library Ranking\",\n        MenuIcon: Icon.Currency,\n        MenuScreenNavigate: App.ActiveScreen,\n        MenuID: 8,\n        SubMenu: Table()\n    },\n     {\n        MenuLabel: \"User Profile\",\n        MenuIcon: Icon.Currency,\n        MenuScreenNavigate: App.ActiveScreen,\n        MenuID: 9,\n        SubMenu: Table()\n    },\n\n    {\n        MenuLabel: \"Admin Panel\",\n        MenuIcon: Icon.DocumentPDF,\n        MenuScreenNavigate: App.ActiveScreen,\n        MenuID: 10,\n        VisibleSubMenu:true,\n        SubMenu: Table(\n            {\n                MenuLabel: \"Add Book\",\n                MenuIcon: Icon.Currency,\n                MenuScreenNavigate: App.ActiveScreen,\n                MenuID: 1\n            },\n            {\n                MenuLabel: \"Edit Book\",\n                MenuIcon: Icon.Currency,\n                MenuScreenNavigate: App.ActiveScreen,\n                MenuID: 2\n            },\n            {\n                MenuLabel: \"Delete Book\",\n                MenuIcon: Icon.Currency,\n                MenuScreenNavigate: App.ActiveScreen,\n                MenuID: 3\n            },\n            {\n                MenuLabel: \"Manage Users\",\n                MenuIcon: Icon.Currency,\n                MenuScreenNavigate: App.ActiveScreen,\n                MenuID: 4\n            },\n              {\n                MenuLabel: \"Manage Loans\",\n                MenuIcon: Icon.Currency,\n                MenuScreenNavigate: App.ActiveScreen,\n                MenuID: 5\n            },\n              {\n                MenuLabel: \"Manage Reservations\",\n                MenuIcon: Icon.Currency,\n                MenuScreenNavigate: App.ActiveScreen,\n                MenuID: 6\n            },\n             {\n                MenuLabel: \"Library Settings\",\n                MenuIcon: Icon.Currency,\n                MenuScreenNavigate: App.ActiveScreen,\n                MenuID: 7\n            },\n            {\n                MenuLabel: \"Check Log\",\n                MenuIcon: Icon.Currency,\n                MenuScreenNavigate: App.ActiveScreen,\n                MenuID: 8\n            }\n        \n        )\n    }\n)"
+      MenuItems: |
+        =Table(
+            {
+                MenuLabel: "Dashboard",
+                MenuIcon: Icon.Home,
+                MenuScreenNavigate: Dashboard,
+                MenuID: 1,
+                SubMenu: Table()
+            },
+            {
+                MenuLabel: "Book Catalog",
+                MenuIcon: Icon.Database,
+                MenuScreenNavigate: 'Book Catalog',
+                MenuID: 2,
+                SubMenu: Table()
+            },
+            {
+                MenuLabel: "Book Details",
+                MenuIcon: Icon.ListScrollWatchlist,
+                MenuScreenNavigate: 'Book Details',
+                MenuID: 3,
+                SubMenu: Table()
+            },
+            {
+                MenuLabel: "Your Books",
+                MenuIcon: Icon.Notebook,
+                MenuScreenNavigate: 'Your Books',
+                MenuID: 4,
+                SubMenu: Table()
+            },
+            {
+                MenuLabel: "Wishlist / Favorites",
+                MenuIcon: Icon.Heart,
+                MenuScreenNavigate: 'Wishlist / Favorites',
+                MenuID: 5,
+                SubMenu: Table()
+            },
+            {
+                MenuLabel: "Book Reservations",
+                MenuIcon: Icon.CalendarBlank,
+                MenuScreenNavigate: 'Book Reservations',
+                MenuID: 6,
+                SubMenu: Table()
+            },
+            {
+                MenuLabel: "Borrowing History",
+                MenuIcon: Icon.History,
+                MenuScreenNavigate: 'Borrowing History',
+                MenuID: 7,
+                SubMenu: Table()
+            },
+            {
+                MenuLabel: "Library Ranking",
+                MenuIcon: Icon.Globe,
+                MenuScreenNavigate: 'Library Ranking',
+                MenuID: 8,
+                SubMenu: Table()
+            },
+            {
+                MenuLabel: "User Profile",
+                MenuIcon: Icon.Person,
+                MenuScreenNavigate: 'User Profile',
+                MenuID: 9,
+                SubMenu: Table()
+            },
+            {
+                MenuLabel: "Admin Panel",
+                MenuIcon: Icon.Manufacture,
+                MenuScreenNavigate: 'Admin Panel',
+                MenuID: 10,
+                VisibleSubMenu: true,
+                SubMenu: Table(
+                    {
+                        MenuLabel: "Add Book",
+                        MenuIcon: Icon.AddDocument,
+                        MenuScreenNavigate: 'Add Book',
+                        MenuID: 1
+                    },
+                    {
+                        MenuLabel: "Edit Book",
+                        MenuIcon: Icon.ColorPicker,
+                        MenuScreenNavigate: 'Edit Book',
+                        MenuID: 2
+                    },
+                    {
+                        MenuLabel: "Delete Book",
+                        MenuIcon: Icon.ClearDrawing,
+                        MenuScreenNavigate: 'Delete Book',
+                        MenuID: 3
+                    },
+                    {
+                        MenuLabel: "Manage Users",
+                        MenuIcon: Icon.People,
+                        MenuScreenNavigate: 'Manage Users',
+                        MenuID: 4
+                    },
+                    {
+                        MenuLabel: "Manage Loans",
+                        MenuIcon: Icon.Currency,
+                        MenuScreenNavigate: 'Manage Loans',
+                        MenuID: 5
+                    },
+                    {
+                        MenuLabel: "Manage Reservations",
+                        MenuIcon: Icon.PhotosPictures,
+                        MenuScreenNavigate: 'Manage Reservations',
+                        MenuID: 6
+                    },
+                    {
+                        MenuLabel: "Library Settings",
+                        MenuIcon: Icon.Settings,
+                        MenuScreenNavigate: 'Library Settings',
+                        MenuID: 7
+                    },
+                    {
+                        MenuLabel: "Check Log",
+                        MenuIcon: Icon.Warning,
+                        MenuScreenNavigate: 'Check Log',
+                        MenuID: 8
+                    }
+                )
+            }
+        )
       SetMenuWidth: =300
       Width: =MenuLeftNav.MenuWidth
     Children:
+    - Icon1:
+        Control: Classic/Icon
+        Variant: Hamburger
+        Properties:
+          OnSelect: =Set(showMenu,!showMenu)
+          BorderColor: =RGBA(0, 0, 0, 1)
+          Height: =46
+          HoverColor: =ColorFade(Self.Color, 0%)
+          Icon: =Icon.Hamburger
+          PressedColor: =ColorFade(Self.Color, 0%)
+          Visible: =showMenu
+          Width: =54
+          X: =220
+          Y: =13
     - galMenu_1:
         Control: Gallery
         Variant: variableTemplateHeightGallery
         Properties:
           Items: =Sort(MenuLeftNav.MenuItems,MenuID,SortOrder.Ascending)
           Fill: =MenuLeftNav.MenuBkgColor
-          Height: =Parent.Height-icoHamburger_1.Height
+          Height: =App.Height
           Layout: =Layout.Vertical
           TemplateSize: =280
           Visible: =showMenu
           Width: =Parent.Width
-          Y: =icoHamburger_1.Height
         Children:
         - galSubMenu_1:
             Control: Gallery
@@ -90,6 +225,7 @@
                     Set(showSubMenu,!showSubMenu)
                 );
                 Navigate(ThisItem.MenuScreenNavigate, ScreenTransition.Cover); 
+                Set(showMenu,false);
               Text: =""
               Fill: =Color.Transparent
               Height: =lblMenu_1.Height+lblMenu_1.Y
@@ -131,12 +267,19 @@
               Fill: =MenuLeftNav.MenuColor
               Height: =48
               Visible: =ThisItem.MenuScreenNavigate = App.ActiveScreen
-              Width: =6
+              Width: |+
+                =If(
+                    !IsBlank(LookUp(MenuLeftNav.MenuItems, MenuLabel = App.ActiveScreen.Name, MenuID)),
+                    12,
+                    6 
+                )
     - icoHamburger_1:
         Control: Classic/Icon
         Variant: Hamburger
         Properties:
-          OnSelect: =Set(showMenu,!showMenu)
+          OnSelect: |-
+            =Set(showMenu,!showMenu);
+            Set(showSubMenu,false);
           Color: =MenuLeftNav.HamburgerMenuColor
           Height: =49
           Icon: =Icon.Hamburger
@@ -144,6 +287,7 @@
           PaddingLeft: =5
           PaddingRight: =5
           PaddingTop: =5
+          Visible: =!showMenu
           Width: =59
     CustomProperties:
     - MenuItems:
