@@ -2,7 +2,6 @@
     Control: Component
     Properties:
       AdminAccess: =varAdminAccess
-      ExpandMenu: =false
       HamburgerMenuColor: =Color.Blue
       LoggedUser: =varLoggedUser
       MenuBkgColor: =RGBA(220,220,220,1)
@@ -131,6 +130,7 @@
             }
         )
       SetMenuWidth: =300
+      Height: =If(!MenuLeftNav.showMenuProp, 50, App.Height)
       Width: =MenuLeftNav.MenuWidth
     Children:
     - Icon1:
@@ -153,7 +153,7 @@
         Properties:
           Items: =Sort(MenuLeftNav.MenuItems,MenuID,SortOrder.Ascending)
           Fill: =MenuLeftNav.MenuBkgColor
-          Height: =App.Height
+          Height: =If(showMenu, App.Height, 50)
           Layout: =Layout.Vertical
           TemplateSize: =280
           Visible: =showMenu
@@ -361,4 +361,11 @@
         DataType: String
         IsResettable: false
         DisplayName: AdminAccess
+        Description: A custom property
+    - showMenuProp:
+        Direction: Output
+        PropertyType: Data
+        DataType: String
+        IsResettable: false
+        DisplayName: showMenuProp
         Description: A custom property
