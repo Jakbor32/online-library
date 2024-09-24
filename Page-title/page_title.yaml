@@ -1,0 +1,24 @@
+- PageTitle:
+    Control: Component
+    Properties:
+      screenInfo: =App.ActiveScreen
+      Fill: =RGBA(0, 0, 0, 1)
+      Height: =50
+      Width: =200
+    Children:
+    - page_title_field:
+        Control: Label
+        Properties:
+          Text: =PageTitle.screenInfo.Name
+          Align: =Align.Center
+          Color: =RGBA(255, 255, 255, 1)
+          Height: =50
+          Width: =200
+    CustomProperties:
+    - screenInfo:
+        Direction: Input
+        PropertyType: Data
+        DataType: Screen
+        IsResettable: false
+        DisplayName: screenInfo
+        Description: A custom property
