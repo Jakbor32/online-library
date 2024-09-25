@@ -1,0 +1,344 @@
+- Book Details:
+    Control: Screen
+    Properties:
+      Fill: =RGBA(237, 237, 237, 1)
+    Children:
+    - Search_book_name:
+        Control: Classic/TextInput
+        Properties:
+          OnChange: |-
+            =UpdateContext({ SelectedItem: Blank() })
+          Default: =
+          HintText: ="Enter Book Name"
+          X: =468
+          Y: =10
+    - MenuLeftNav_3:
+        Control: Component
+        ComponentName: MenuLeftNav
+        Properties:
+          AdminAccess: =varAdminAccess
+          HamburgerMenuColor: =Color.Blue
+          LoggedUser: =varLoggedUser
+          MenuBkgColor: =RGBA(220,220,220,1)
+          MenuColor: =Color.Purple
+          MenuItems: |
+            =Table(
+                {
+                    MenuLabel: "Dashboard",
+                    MenuIcon: Icon.Home,
+                    MenuScreenNavigate: Dashboard,
+                    MenuID: 1,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Book Catalog",
+                    MenuIcon: Icon.Database,
+                    MenuScreenNavigate: 'Book Catalog',
+                    MenuID: 2,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Book Details",
+                    MenuIcon: Icon.ListScrollWatchlist,
+                    MenuScreenNavigate: 'Book Details',
+                    MenuID: 3,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Your Books",
+                    MenuIcon: Icon.Notebook,
+                    MenuScreenNavigate: 'Your Books',
+                    MenuID: 4,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Wishlist / Favorites",
+                    MenuIcon: Icon.Heart,
+                    MenuScreenNavigate: 'Wishlist / Favorites',
+                    MenuID: 5,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Book Reservations",
+                    MenuIcon: Icon.CalendarBlank,
+                    MenuScreenNavigate: 'Book Reservations',
+                    MenuID: 6,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Borrowing History",
+                    MenuIcon: Icon.History,
+                    MenuScreenNavigate: 'Borrowing History',
+                    MenuID: 7,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Library Ranking",
+                    MenuIcon: Icon.Globe,
+                    MenuScreenNavigate: 'Library Ranking',
+                    MenuID: 8,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "User Profile",
+                    MenuIcon: Icon.Person,
+                    MenuScreenNavigate: 'User Profile',
+                    MenuID: 9,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Admin Panel",
+                    MenuIcon: Icon.Manufacture,
+                    //MenuScreenNavigate: 'Admin Panel',
+                    MenuID: 10,
+                    VisibleSubMenu: true,
+                    SubMenu: Table(
+                        {
+                            MenuLabel: "Add Book",
+                            MenuIcon: Icon.AddDocument,
+                            MenuScreenNavigate: 'Add Book',
+                            MenuID: 1
+                        },
+                        {
+                            MenuLabel: "Edit Book",
+                            MenuIcon: Icon.ColorPicker,
+                            MenuScreenNavigate: 'Edit Book',
+                            MenuID: 2
+                        },
+                        {
+                            MenuLabel: "Delete Book",
+                            MenuIcon: Icon.ClearDrawing,
+                            MenuScreenNavigate: 'Delete Book',
+                            MenuID: 3
+                        },
+                        {
+                            MenuLabel: "Manage Users",
+                            MenuIcon: Icon.People,
+                            MenuScreenNavigate: 'Manage Users',
+                            MenuID: 4
+                        },
+                        {
+                            MenuLabel: "Manage Loans",
+                            MenuIcon: Icon.Currency,
+                            MenuScreenNavigate: 'Manage Loans',
+                            MenuID: 5
+                        },
+                        {
+                            MenuLabel: "Manage Reservations",
+                            MenuIcon: Icon.PhotosPictures,
+                            MenuScreenNavigate: 'Manage Reservations',
+                            MenuID: 6
+                        },
+                        {
+                            MenuLabel: "Library Settings",
+                            MenuIcon: Icon.Settings,
+                            MenuScreenNavigate: 'Library Settings',
+                            MenuID: 7
+                        },
+                        {
+                            MenuLabel: "Check Log",
+                            MenuIcon: Icon.Warning,
+                            MenuScreenNavigate: 'Check Log',
+                            MenuID: 8
+                        }
+                    )
+                }
+            )
+          SetMenuWidth: =300
+          Height: =If(!MenuLeftNav_3.showMenuProp, 50, App.Height)
+          Width: =MenuLeftNav_3.MenuWidth
+    - Button2:
+        Control: Classic/Button
+        Properties:
+          OnSelect: =Navigate(Dashboard,ScreenTransition.Cover)
+          Text: ="Back to dashboard"
+          Height: =68
+          RadiusBottomLeft: =100
+          RadiusBottomRight: =100
+          RadiusTopLeft: =100
+          RadiusTopRight: =100
+          Width: =283
+          X: =1028
+          Y: =148
+    - Gallery1:
+        Control: Gallery
+        Variant: galleryVertical
+        Properties:
+          Items: |+
+            =Filter(Sheet1s, 
+                   (IsBlank(SelectedItem) || Index = SelectedItem.Index) && 
+                   (IsBlank(Search_book_name.Text) || Search_book_name.Text in Title))
+          DelayItemLoading: =true
+          Fill: =RGBA(237, 237, 237, 1)
+          Height: =692
+          Layout: =Layout.Vertical
+          LoadingSpinner: =LoadingSpinner.Data
+          TemplateSize: =643
+          Width: =1366
+          Y: =74
+        Children:
+        - Book_data:
+            Control: Group
+            Children:
+            - summary_data:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Summary
+                  FontWeight: =FontWeight.Bold
+                  Height: =113
+                  Width: =673
+                  X: =613
+                  Y: =474
+            - lang_data:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Language
+                  FontWeight: =FontWeight.Bold
+                  X: =613
+                  Y: =317
+            - name_data:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Title
+                  FontWeight: =FontWeight.Bold
+                  Height: =31
+                  Width: =264
+                  X: =613
+                  Y: =36
+            - isbn_data:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.ISBN
+                  FontWeight: =FontWeight.Bold
+                  X: =613
+                  Y: =431
+            - genre_data:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Genre
+                  FontWeight: =FontWeight.Bold
+                  X: =613
+                  Y: =265
+            - id_data:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Index
+                  FontWeight: =FontWeight.Bold
+                  X: =613
+                  Y: =373
+            - year_data:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Publication_Year
+                  FontWeight: =FontWeight.Bold
+                  X: =613
+                  Y: =205
+            - pages_data:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Number_of_Pages
+                  FontWeight: =FontWeight.Bold
+                  X: =613
+                  Y: =147
+            - author_data:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Author
+                  FontWeight: =FontWeight.Bold
+                  Width: =264
+                  X: =613
+                  Y: =82
+        - Book_Fields:
+            Control: Group
+            Children:
+            - Book sumary_field:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: ="Book Summary:"
+                  X: =449
+                  Y: =511
+            - ISBN_field:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: ="ISBN:"
+                  X: =449
+                  Y: =431
+            - ID_field:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: ="Book ID:"
+                  X: =449
+                  Y: =374
+            - Lang_field:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: ="Language:"
+                  X: =449
+                  Y: =316
+            - Genre_field:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: ="Genre:"
+                  X: =449
+                  Y: =260
+            - Year_field:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: ="Publication Year:"
+                  Height: =59
+                  X: =449
+                  Y: =198
+            - Pages_field:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: ="Pages:"
+                  X: =449
+                  Y: =140
+            - Author_field:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: ="Author:"
+                  X: =449
+                  Y: =82
+            - Book Name_field:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: ="Book Name:"
+                  X: =449
+                  Y: =31
+        - IMG_Book:
+            Control: Image
+            Properties:
+              OnSelect: =Select(Parent)
+              Image: =ThisItem.Cover_URL
+              Height: =566
+              Width: =392
+              X: =28
+              Y: =21
+    - PageTitle_2:
+        Control: Component
+        ComponentName: PageTitle
+        Properties:
+          screenInfo: =App.ActiveScreen
+          Fill: =RGBA(0, 0, 0, 1)
+          Height: =50
+          Width: =200
+          X: =1166
