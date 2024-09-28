@@ -1,0 +1,655 @@
+- Manage Users:
+    Control: Screen
+    Properties:
+      OnVisible: |-
+        =UpdateContext({ IsHidden: true });
+        UpdateContext({ SelectedRecordID: Blank() })
+    Children:
+    - EditBox:
+        Control: GroupContainer
+        Variant: manualLayoutContainer
+        Properties:
+          Height: =768
+          Visible: =makeEditBoxVisible
+          Width: =1366
+        Children:
+        - popup_bg_box_1:
+            Control: Rectangle
+            Properties:
+              Fill: =RGBA(0, 0, 0, 0.4)
+              Height: =768
+              Visible: =makeEditBoxVisible
+              Width: =1366
+        - popup_box_1:
+            Control: Rectangle
+            Properties:
+              BorderColor: =RGBA(0, 134, 208, 1)
+              BorderThickness: =5
+              Fill: =RGBA(241, 244, 249, 1)
+              Height: =451
+              Visible: =makeEditBoxVisible
+              Width: =749
+              X: =320
+              Y: =173
+        - btn_no_1:
+            Control: Classic/Button
+            Properties:
+              OnSelect: =Set(makeEditBoxVisible,false);
+              Text: ="Exit"
+              Visible: =makeEditBoxVisible
+              X: =876
+              Y: =557
+        - btn_yes_1:
+            Control: Classic/Button
+            Properties:
+              OnSelect: "=    Patch(\r\n        login_data,\r\n        First(Filter(login_data, username = Gallery3.Selected.username)),\r\n        { admin_access: If(checkbox_admin_access.Value, \"Yes\", \"No\"),\r\n          username: If(currentValueLabel = \"username\", TextInput1.Text, Gallery3.Selected.username),\r\n          password: If(currentValueLabel = \"password\", TextInput1.Text, Gallery3.Selected.password)\r\n         }\r\n    );\r\n    \r\n  If(\r\n    currentValueLabel = \"username\" && TextInput1.Text <> Gallery3.Selected.username,\r\n    Notify(\"Username updated successfully\", NotificationType.Success),\r\n    \r\n    currentValueLabel = \"password\" && TextInput1.Text <> Gallery3.Selected.password,\r\n    Notify(\"Password updated successfully\", NotificationType.Success),\r\n    \r\n    checkbox_admin_access.Value && Gallery3.Selected.admin_access <> \"Yes\",\r\n    Notify(\"Admin access granted\", NotificationType.Success),\r\n    \r\n    !checkbox_admin_access.Value && Gallery3.Selected.admin_access = \"Yes\",\r\n    Notify(\"Admin access revoked\", NotificationType.Success),\r\n    \r\n    Notify(\"No changes made\", NotificationType.Information)\r\n);"
+              Text: ="Save"
+              Fill: =RGBA(168, 0, 0, 1)
+              HoverFill: =Self.Fill
+              Visible: =makeEditBoxVisible
+              X: =876
+              Y: =480
+        - Change_username_btn:
+            Control: Classic/Button
+            Properties:
+              OnSelect: |-
+                =UpdateContext({currentValue: Gallery3.Selected.username, currentValueLabel: "username"});
+                Set(editDataUsernamePassword, true);
+              Text: ="Change Username"
+              Height: =49
+              Width: =308
+              X: =365
+              Y: =282
+        - Change_password_btn:
+            Control: Classic/Button
+            Properties:
+              OnSelect: |-
+                =UpdateContext({currentValue: Gallery3.Selected.password, currentValueLabel: "password"});
+                Set(editDataUsernamePassword, true);
+              Text: ="Change Password"
+              Height: =49
+              Width: =308
+              X: =707
+              Y: =282
+        - Label6:
+            Control: Label
+            Properties:
+              Text: |-
+                ="Username: "& Gallery3.Selected.username
+              Align: =Align.Center
+              Height: =81
+              Size: =16
+              Width: =302
+              X: =320
+              Y: =536
+        - checkbox_admin_access:
+            Control: Classic/CheckBox
+            Properties:
+              Default: |+
+                =    If(
+                        First(Filter(login_data, username = Gallery3.Selected.username)).admin_access = "Yes",
+                        true,
+                        false
+                    )
+              Text: ="Admin Access - "& checkbox_admin_access.Value
+              Width: =222
+              X: =372
+              Y: =486
+        - edit_username_password:
+            Control: Group
+            Children:
+            - currentValue_Label:
+                Control: Label
+                Properties:
+                  Text: ="Type new "& currentValueLabel
+                  Align: =Align.Center
+                  Visible: =editDataUsernamePassword
+                  Width: =213
+                  X: =381
+                  Y: =378
+            - TextInput1:
+                Control: Classic/TextInput
+                Properties:
+                  Default: =currentValue
+                  Visible: =editDataUsernamePassword
+                  Width: =343
+                  X: =594
+                  Y: =378
+    - Login_data_bar:
+        Control: Group
+        Children:
+        - separator_1:
+            Control: Classic/Icon
+            Variant: VerticalLine
+            Properties:
+              Icon: =Icon.VerticalLine
+              X: =947
+              Y: =163
+        - separator_2:
+            Control: Classic/Icon
+            Variant: VerticalLine
+            Properties:
+              Icon: =Icon.VerticalLine
+              X: =764
+              Y: =163
+        - separator_3:
+            Control: Classic/Icon
+            Variant: VerticalLine
+            Properties:
+              Icon: =Icon.VerticalLine
+              X: =552
+              Y: =163
+        - separator_4:
+            Control: Classic/Icon
+            Variant: VerticalLine
+            Properties:
+              Icon: =Icon.VerticalLine
+              X: =370
+              Y: =162
+        - separator_5:
+            Control: Classic/Icon
+            Variant: VerticalLine
+            Properties:
+              Icon: =Icon.VerticalLine
+              X: =203
+              Y: =163
+        - Label2_6:
+            Control: Label
+            Properties:
+              Text: ="Account status"
+              Align: =Align.Center
+              Color: =RGBA(255, 255, 255, 1)
+              Height: =63
+              Size: =16
+              Width: =202
+              X: =787
+              Y: =163
+        - Label2_5:
+            Control: Label
+            Properties:
+              Text: ="Account created"
+              Align: =Align.Center
+              Color: =RGBA(255, 255, 255, 1)
+              Height: =63
+              Size: =16
+              Width: =226
+              X: =581
+              Y: =163
+        - Label2_4:
+            Control: Label
+            Properties:
+              Text: ="Block / Edit / Delete User"
+              Align: =Align.Center
+              Color: =RGBA(255, 255, 255, 1)
+              Height: =63
+              Size: =16
+              Width: =307
+              X: =1024
+              Y: =163
+        - Label2_3:
+            Control: Label
+            Properties:
+              Text: ="Admin access"
+              Align: =Align.Center
+              Color: =RGBA(255, 255, 255, 1)
+              Height: =63
+              Size: =16
+              Width: =174
+              X: =407
+              Y: =163
+        - Label2_2:
+            Control: Label
+            Properties:
+              Text: |-
+                ="Username
+                "
+              Align: =Align.Center
+              Color: =RGBA(255, 255, 255, 1)
+              Height: =63
+              Size: =16
+              Width: =186
+              X: =23
+              Y: =163
+        - Label2_1:
+            Control: Label
+            Properties:
+              Text: |-
+                ="Password
+                "
+              Align: =Align.Center
+              Color: =RGBA(255, 255, 255, 1)
+              Height: =63
+              Size: =16
+              Width: =156
+              X: =237
+              Y: =163
+        - Rectangle3:
+            Control: Rectangle
+            Properties:
+              BorderThickness: =4
+              Height: =63
+              Width: =App.Width
+              Y: =163
+    - Popup:
+        Control: GroupContainer
+        Variant: manualLayoutContainer
+        Properties:
+          Height: =768
+          Visible: =makePopupVisible
+          Width: =1366
+        Children:
+        - popup_bg_box:
+            Control: Rectangle
+            Properties:
+              Fill: =RGBA(0, 0, 0, 0.4)
+              Height: =768
+              Visible: =makePopupVisible
+              Width: =1366
+        - popup_box:
+            Control: Rectangle
+            Properties:
+              BorderColor: =RGBA(0, 134, 208, 1)
+              BorderThickness: =5
+              Fill: =RGBA(241, 244, 249, 1)
+              Height: =324
+              Visible: =makePopupVisible
+              Width: =672
+              X: =347
+              Y: =222
+        - btn_no:
+            Control: Classic/Button
+            Properties:
+              OnSelect: =Set(makePopupVisible,false);
+              Text: ="No"
+              Visible: =makePopupVisible
+              X: =480
+              Y: =425
+        - btn_yes:
+            Control: Classic/Button
+            Properties:
+              OnSelect: |+
+                =Remove(
+                    login_data, 
+                    LookUp(login_data, username = Gallery3.Selected.username)
+                );
+
+                Notify("User successfully deleted!", NotificationType.Success);
+                Set(makePopupVisible,false);
+              Text: ="Yes"
+              Fill: =RGBA(168, 0, 0, 1)
+              HoverFill: =Self.Fill
+              Visible: =makePopupVisible
+              X: =695
+              Y: =425
+        - person_icon:
+            Control: Classic/Icon
+            Variant: Person
+            Properties:
+              Icon: =Icon.Person
+              Visible: =makePopupVisible
+              X: =559
+              Y: =307
+        - trash_icon:
+            Control: Classic/Icon
+            Variant: Trash
+            Properties:
+              Icon: =Icon.Trash
+              Visible: =makePopupVisible
+              X: =742
+              Y: =307
+        - arrow_right_icon:
+            Control: Classic/Icon
+            Variant: ArrowRight
+            Properties:
+              Icon: =Icon.ArrowRight
+              Visible: =makePopupVisible
+              X: =650
+              Y: =307
+        - HtmlText1:
+            Control: HtmlViewer
+            Properties:
+              HtmlText: |+
+                ="<div style='text-align:center;'>Are you sure you want to remove the user <span style='color:red;'>" & Gallery3.Selected.username & "</span>?</div>"
+              Height: =45
+              Size: =16
+              Width: =672
+              X: =347
+              Y: =240
+    - MenuLeftNav_14:
+        Control: Component
+        ComponentName: MenuLeftNav
+        Properties:
+          AdminAccess: =varAdminAccess
+          HamburgerMenuColor: =Color.Blue
+          LoggedUser: =varLoggedUser
+          MenuBkgColor: =RGBA(220,220,220,1)
+          MenuColor: =Color.Purple
+          MenuItems: |
+            =Table(
+                {
+                    MenuLabel: "Dashboard",
+                    MenuIcon: Icon.Home,
+                    MenuScreenNavigate: Dashboard,
+                    MenuID: 1,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Book Catalog",
+                    MenuIcon: Icon.Database,
+                    MenuScreenNavigate: 'Book Catalog',
+                    MenuID: 2,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Book Details",
+                    MenuIcon: Icon.ListScrollWatchlist,
+                    MenuScreenNavigate: 'Book Details',
+                    MenuID: 3,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Your Books",
+                    MenuIcon: Icon.Notebook,
+                    MenuScreenNavigate: 'Your Books',
+                    MenuID: 4,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Wishlist / Favorites",
+                    MenuIcon: Icon.Heart,
+                    MenuScreenNavigate: 'Wishlist / Favorites',
+                    MenuID: 5,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Book Reservations",
+                    MenuIcon: Icon.CalendarBlank,
+                    MenuScreenNavigate: 'Book Reservations',
+                    MenuID: 6,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Borrowing History",
+                    MenuIcon: Icon.History,
+                    MenuScreenNavigate: 'Borrowing History',
+                    MenuID: 7,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Library Ranking",
+                    MenuIcon: Icon.Globe,
+                    MenuScreenNavigate: 'Library Ranking',
+                    MenuID: 8,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "User Profile",
+                    MenuIcon: Icon.Person,
+                    MenuScreenNavigate: 'User Profile',
+                    MenuID: 9,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Admin Panel",
+                    MenuIcon: Icon.Manufacture,
+                    //MenuScreenNavigate: 'Admin Panel',
+                    MenuID: 10,
+                    VisibleSubMenu: true,
+                    SubMenu: Table(
+                        {
+                            MenuLabel: "Add Book",
+                            MenuIcon: Icon.AddDocument,
+                            MenuScreenNavigate: 'Add Book',
+                            MenuID: 1
+                        },
+                        {
+                            MenuLabel: "Edit Book",
+                            MenuIcon: Icon.ColorPicker,
+                            MenuScreenNavigate: 'Edit Book',
+                            MenuID: 2
+                        },
+                        {
+                            MenuLabel: "Delete Book",
+                            MenuIcon: Icon.ClearDrawing,
+                            MenuScreenNavigate: 'Delete Book',
+                            MenuID: 3
+                        },
+                        {
+                            MenuLabel: "Manage Users",
+                            MenuIcon: Icon.People,
+                            MenuScreenNavigate: 'Manage Users',
+                            MenuID: 4
+                        },
+                        {
+                            MenuLabel: "Manage Loans",
+                            MenuIcon: Icon.Currency,
+                            MenuScreenNavigate: 'Manage Loans',
+                            MenuID: 5
+                        },
+                        {
+                            MenuLabel: "Manage Reservations",
+                            MenuIcon: Icon.PhotosPictures,
+                            MenuScreenNavigate: 'Manage Reservations',
+                            MenuID: 6
+                        },
+                        {
+                            MenuLabel: "Library Settings",
+                            MenuIcon: Icon.Settings,
+                            MenuScreenNavigate: 'Library Settings',
+                            MenuID: 7
+                        },
+                        {
+                            MenuLabel: "Check Log",
+                            MenuIcon: Icon.Warning,
+                            MenuScreenNavigate: 'Check Log',
+                            MenuID: 8
+                        }
+                    )
+                }
+            )
+          SetMenuWidth: =300
+          Fill: =RGBA(255, 255, 255, 1)
+          Height: =If(!MenuLeftNav_14.showMenuProp, 50, App.Height)
+          Width: =MenuLeftNav_14.MenuWidth
+    - Icon6:
+        Control: Classic/Icon
+        Variant: AddUser
+        Properties:
+          Height: =51
+          Icon: =Icon.AddUser
+          Width: =51
+          X: =1273
+          Y: =80
+    - Button6:
+        Control: Classic/Button
+        Properties:
+          Text: ="Add User"
+          Height: =64
+          RadiusBottomLeft: =100
+          RadiusBottomRight: =100
+          RadiusTopLeft: =100
+          RadiusTopRight: =100
+          Width: =251
+          X: =1094
+          Y: =74
+    - Gallery3:
+        Control: Gallery
+        Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+        Properties:
+          Items: =login_data
+          DelayItemLoading: =true
+          Height: =542
+          Layout: =Layout.Vertical
+          LoadingSpinner: =LoadingSpinner.Data
+          TemplatePadding: =0
+          TemplateSize: =104
+          Width: =1366
+          Y: =226
+        Children:
+        - horizontal_separator:
+            Control: Rectangle
+            Properties:
+              OnSelect: =Select(Parent)
+              Height: =5
+              Width: =App.Width
+              Y: =99
+        - view_icon:
+            Control: Classic/Icon
+            Variant: View
+            Properties:
+              OnSelect: |+
+                =If(SelectedRecordID = ThisItem.username, 
+                   UpdateContext({ SelectedRecordID: Blank() }), 
+                   UpdateContext({ SelectedRecordID: ThisItem.username }))
+              Height: =21
+              Icon: =Icon.View
+              Width: =38
+              X: =385
+              Y: =37
+        - account_status_label:
+            Control: Label
+            Properties:
+              OnSelect: =Select(Parent)
+              Text: |+
+                =If(ThisItem.Account_status, "Blocked", "Active")
+              Align: =Align.Center
+              Width: =88
+              X: =839
+              Y: =33
+        - account_created:
+            Control: Label
+            Properties:
+              OnSelect: =Select(Parent)
+              Text: =ThisItem.'Created On'
+              Align: =Align.Center
+              Width: =189
+              X: =595
+              Y: =33
+        - admin_access:
+            Control: Label
+            Properties:
+              OnSelect: =Select(Parent)
+              Text: |+
+                =If(IsBlank(ThisItem.admin_access), "No", ThisItem.admin_access)
+              Align: =Align.Center
+              FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+              Height: =29
+              PaddingBottom: =0
+              PaddingLeft: =0
+              PaddingRight: =0
+              PaddingTop: =0
+              VerticalAlign: =VerticalAlign.Top
+              Width: =203
+              X: =394
+              Y: =33
+        - Block_user_btn:
+            Control: Classic/Button
+            Properties:
+              OnSelect: |+
+                =Patch(
+                    login_data,                          
+                    LookUp(login_data, username = ThisItem.username),  
+                    {
+                        Account_status: If(
+                            ThisItem.Account_status = 'Account_status (login_data)'.Active,  
+                            'Account_status (login_data)'.Blocked,                                
+                            'Account_status (login_data)'.Active                                  
+                        )
+                    }
+                );
+                Notify("Account status changed!", NotificationType.Success);
+              Text: |-
+                =If(
+                    account_status_label.Text = "Active", 
+                    "Block",      
+                    "Unblock"    
+                )
+              Fill: |+
+                =If(
+                    account_status_label.Text = "Active", 
+                    RGBA(0, 0, 0, 1),  
+                    RGBA(0, 255, 0, 1)     
+                )
+
+              Height: =31
+              HoverFill: =Self.Fill
+              Size: =12
+              Width: =83
+              X: =1004
+              Y: =37
+        - Edit_user_btn:
+            Control: Classic/Button
+            Properties:
+              OnSelect: |-
+                =Set(makeEditBoxVisible,true);
+                Set(editDataUsernamePassword, false);
+              Text: ="Edit"
+              Height: =31
+              Size: =12
+              Width: =83
+              X: =1127
+              Y: =37
+        - Delete_user_btn:
+            Control: Classic/Button
+            Properties:
+              OnSelect: =Set(makePopupVisible,true);
+              Text: ="Delete"
+              Fill: =RGBA(168, 0, 0, 1)
+              Height: =31
+              HoverFill: =Self.Fill
+              Size: =12
+              Width: =83
+              X: =1247
+              Y: =37
+        - password_label:
+            Control: Label
+            Properties:
+              OnSelect: =Select(Parent)
+              Text: |+
+                =If(username_label.Text = SelectedRecordID, ThisItem.password, "**********")
+              Align: =Align.Center
+              X: =240
+              Y: =28
+        - person_icon_2:
+            Control: Classic/Icon
+            Variant: Person
+            Properties:
+              OnSelect: =Select(Parent)
+              Height: =55
+              Icon: =Icon.Person
+              Width: =53
+              X: =20
+              Y: =18
+        - Separator1:
+            Control: Rectangle
+            Properties:
+              OnSelect: =Select(Parent)
+              Fill: =RGBA(255, 255, 255, 1)
+              Height: =8
+              Width: =Parent.TemplateWidth
+              Y: =Parent.TemplateHeight - Self.Height
+        - username_label:
+            Control: Label
+            Properties:
+              OnSelect: =Select(Parent)
+              Text: =ThisItem.username
+              Align: =Align.Center
+              FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+              Height: =29
+              PaddingBottom: =0
+              PaddingLeft: =0
+              PaddingRight: =0
+              PaddingTop: =0
+              VerticalAlign: =VerticalAlign.Top
+              Width: =203
+              X: =45
+              Y: =30
+    - PageTitle_3:
+        Control: Component
+        ComponentName: PageTitle
+        Properties:
+          screenInfo: =App.ActiveScreen
+          Fill: =RGBA(0, 0, 0, 1)
+          Height: =50
+          Width: =200
+          X: =1166
