@@ -4,7 +4,153 @@
       OnVisible: |-
         =UpdateContext({ IsHidden: true });
         UpdateContext({ SelectedRecordID: Blank() })
+      Fill: =RGBA(241, 244, 249, 1)
     Children:
+    - Create_new_user:
+        Control: Group
+        Children:
+        - Icon6:
+            Control: Classic/Icon
+            Variant: AddUser
+            Properties:
+              OnSelect: =Set(createUserBox,true)
+              Height: =51
+              Icon: =Icon.AddUser
+              Width: =51
+              X: =1273
+              Y: =80
+        - create_new_user_btn:
+            Control: Classic/Button
+            Properties:
+              OnSelect: =Set(createUserBox,true)
+              Text: ="Add User"
+              Height: =64
+              RadiusBottomLeft: =100
+              RadiusBottomRight: =100
+              RadiusTopLeft: =100
+              RadiusTopRight: =100
+              Width: =251
+              X: =1094
+              Y: =74
+    - CreateUserBox:
+        Control: GroupContainer
+        Variant: manualLayoutContainer
+        Properties:
+          Height: =768
+          Visible: =createUserBox
+          Width: =1366
+        Children:
+        - popup_bg_box_3:
+            Control: Rectangle
+            Properties:
+              Fill: =RGBA(0, 0, 0, 0.4)
+              Height: =768
+              Visible: =createUserBox
+              Width: =1366
+        - popup_box_3:
+            Control: Rectangle
+            Properties:
+              BorderColor: =RGBA(0, 134, 208, 1)
+              BorderThickness: =5
+              Fill: =RGBA(241, 244, 249, 1)
+              Height: =490
+              Visible: =createUserBox
+              Width: =689
+              X: =274
+              Y: =139
+        - CreateUserForm:
+            Control: Group
+            Children:
+            - Title_label:
+                Control: Label
+                Properties:
+                  Text: ="Create New User"
+                  Align: =Align.Center
+                  FontWeight: =FontWeight.Bold
+                  Height: =76
+                  Size: =20
+                  Width: =689
+                  X: =274
+                  Y: =139
+            - admin_access_box:
+                Control: Classic/CheckBox
+                Properties:
+                  Text: =admin_access_box.Value
+                  X: =515
+                  Y: =387
+            - password_input_2:
+                Control: Classic/TextInput
+                Properties:
+                  Mode: =TextMode.Password
+                  PaddingLeft: =20
+                  PaddingRight: =20
+                  RadiusBottomLeft: =100
+                  RadiusBottomRight: =100
+                  RadiusTopLeft: =100
+                  RadiusTopRight: =100
+                  X: =515
+                  Y: =327
+            - username_input_2:
+                Control: Classic/TextInput
+                Properties:
+                  PaddingLeft: =20
+                  PaddingRight: =20
+                  RadiusBottomLeft: =100
+                  RadiusBottomRight: =100
+                  RadiusTopLeft: =100
+                  RadiusTopRight: =100
+                  X: =515
+                  Y: =260
+            - label_admin_access:
+                Control: Label
+                Properties:
+                  Text: |-
+                    ="Admin access: "
+                  X: =365
+                  Y: =392
+            - label_password:
+                Control: Label
+                Properties:
+                  Text: |-
+                    ="Password: "
+                  X: =365
+                  Y: =327
+            - label_username:
+                Control: Label
+                Properties:
+                  Text: |-
+                    ="Username: "
+                  X: =365
+                  Y: =260
+            - btn_yes_3:
+                Control: Classic/Button
+                Properties:
+                  OnSelect: |-
+                    =Patch(
+                        login_data, 
+                        Defaults(login_data),
+                        {
+                            username: username_input_2.Text,
+                            password: password_input_2.Text, 
+                            admin_access: If(admin_access_box.Value, "Yes", "No")
+                        }
+                    );
+                    Notify("User account created successfully!", NotificationType.Success);
+                    Set(createUserBox,false)
+                  Text: ="Save"
+                  Fill: =RGBA(168, 0, 0, 1)
+                  HoverFill: =Self.Fill
+                  Visible: =createUserBox
+                  X: =745
+                  Y: =470
+            - btn_no_3:
+                Control: Classic/Button
+                Properties:
+                  OnSelect: =Set(createUserBox,false);
+                  Text: ="Exit"
+                  Visible: =createUserBox
+                  X: =745
+                  Y: =547
     - EditBox:
         Control: GroupContainer
         Variant: manualLayoutContainer
@@ -42,7 +188,7 @@
         - btn_yes_1:
             Control: Classic/Button
             Properties:
-              OnSelect: "=    Patch(\r\n        login_data,\r\n        First(Filter(login_data, username = Gallery3.Selected.username)),\r\n        { admin_access: If(checkbox_admin_access.Value, \"Yes\", \"No\"),\r\n          username: If(currentValueLabel = \"username\", TextInput1.Text, Gallery3.Selected.username),\r\n          password: If(currentValueLabel = \"password\", TextInput1.Text, Gallery3.Selected.password)\r\n         }\r\n    );\r\n    \r\n  If(\r\n    currentValueLabel = \"username\" && TextInput1.Text <> Gallery3.Selected.username,\r\n    Notify(\"Username updated successfully\", NotificationType.Success),\r\n    \r\n    currentValueLabel = \"password\" && TextInput1.Text <> Gallery3.Selected.password,\r\n    Notify(\"Password updated successfully\", NotificationType.Success),\r\n    \r\n    checkbox_admin_access.Value && Gallery3.Selected.admin_access <> \"Yes\",\r\n    Notify(\"Admin access granted\", NotificationType.Success),\r\n    \r\n    !checkbox_admin_access.Value && Gallery3.Selected.admin_access = \"Yes\",\r\n    Notify(\"Admin access revoked\", NotificationType.Success),\r\n    \r\n    Notify(\"No changes made\", NotificationType.Information)\r\n);"
+              OnSelect: "=Patch(\r\n    login_data,\r\n    First(Filter(login_data, username = Gallery3.Selected.username)),\r\n    {\r\n        admin_access: If(checkbox_admin_access.Value, \"Yes\", \"No\"),\r\n        username: If(editDataUsernamePassword && currentValueLabel = \"username\", TextInput1.Text, Gallery3.Selected.username),\r\n        password: If(editDataUsernamePassword && currentValueLabel = \"password\", TextInput1.Text, Gallery3.Selected.password)\r\n    }\r\n);\r\n\r\n    \r\n  If(\r\n    editDataUsernamePassword && currentValueLabel = \"username\" && TextInput1.Text <> Gallery3.Selected.username,\r\n    Notify(\"Username updated successfully\", NotificationType.Success),\r\n    \r\n    editDataUsernamePassword && currentValueLabel = \"password\" && TextInput1.Text <> Gallery3.Selected.password,\r\n    Notify(\"Password updated successfully\", NotificationType.Success),\r\n    \r\n    checkbox_admin_access.Value && Gallery3.Selected.admin_access <> \"Yes\",\r\n    Notify(\"Admin access granted\", NotificationType.Success),\r\n    \r\n    !checkbox_admin_access.Value && Gallery3.Selected.admin_access = \"Yes\",\r\n    Notify(\"Admin access revoked\", NotificationType.Success),\r\n    \r\n    Notify(\"No changes made\", NotificationType.Information)\r\n);"
               Text: ="Save"
               Fill: =RGBA(168, 0, 0, 1)
               HoverFill: =Self.Fill
@@ -451,27 +597,6 @@
           Fill: =RGBA(255, 255, 255, 1)
           Height: =If(!MenuLeftNav_14.showMenuProp, 50, App.Height)
           Width: =MenuLeftNav_14.MenuWidth
-    - Icon6:
-        Control: Classic/Icon
-        Variant: AddUser
-        Properties:
-          Height: =51
-          Icon: =Icon.AddUser
-          Width: =51
-          X: =1273
-          Y: =80
-    - Button6:
-        Control: Classic/Button
-        Properties:
-          Text: ="Add User"
-          Height: =64
-          RadiusBottomLeft: =100
-          RadiusBottomRight: =100
-          RadiusTopLeft: =100
-          RadiusTopRight: =100
-          Width: =251
-          X: =1094
-          Y: =74
     - Gallery3:
         Control: Gallery
         Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
