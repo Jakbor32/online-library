@@ -1,0 +1,351 @@
+- Add Book:
+    Control: Screen
+    Properties:
+      Fill: =RGBA(241, 244, 249, 1)
+    Children:
+    - Form_input_addnew_book:
+        Control: Group
+        Children:
+        - summary_input:
+            Control: Classic/TextInput
+            Properties:
+              Default: =
+              HintText: ="enter book summary"
+              MaxLength: =100
+              Height: =130
+              Mode: =TextMode.MultiLine
+              Width: =473
+              X: =259
+              Y: =525
+        - genre_combobox:
+            Control: Classic/ComboBox
+            Properties:
+              DisplayFields: =["Value"]
+              InputTextPlaceholder: ="select genre"
+              Items: =Distinct(Sheet1s, Genre)
+              SearchFields: =["Value"]
+              SelectMultiple: =false
+              X: =259
+              Y: =475
+        - coverTestImage:
+            Control: Image
+            Properties:
+              Image: |+
+                =If(IsBlank(coverLink_input.Text), 'Open_book_nae_02.svg', coverLink_input.Text)
+              Height: =490
+              Width: =327
+              X: =839
+              Y: =120
+        - coverLink_input:
+            Control: Classic/TextInput
+            Properties:
+              Default: =
+              HintText: ="copy url here"
+              Width: =470
+              X: =263
+              Y: =408
+        - publication_year_input:
+            Control: Classic/TextInput
+            Properties:
+              Default: =
+              HintText: ="year"
+              MaxLength: =4
+              Format: =TextFormat.Number
+              Width: =129
+              X: =263
+              Y: =354
+        - language_combobox:
+            Control: Classic/ComboBox
+            Properties:
+              DisplayFields: =["Value"]
+              InputTextPlaceholder: ="select language"
+              Items: =Distinct(Sheet1s, Language)
+              SearchFields: =["Value"]
+              SelectMultiple: =false
+              X: =262
+              Y: =299
+        - ISBN_input:
+            Control: Classic/TextInput
+            Properties:
+              Default: =
+              HintText: ="enter ISBN"
+              MaxLength: =12
+              X: =263
+              Y: =242
+        - Author_input:
+            Control: Classic/TextInput
+            Properties:
+              Default: =
+              HintText: ="enter book author"
+              X: =263
+              Y: =191
+        - Title_input:
+            Control: Classic/TextInput
+            Properties:
+              Default: =
+              HintText: ="enter book title"
+              X: =263
+              Y: =135
+        - Index_input_read_only:
+            Control: Classic/TextInput
+            Properties:
+              Default: =Last(Sheet1s).Index + 1
+              Align: =Align.Center
+              DisplayMode: =DisplayMode.View
+              PaddingLeft: =5
+              Width: =79
+              X: =259
+              Y: =80
+    - label_preview:
+        Control: Label
+        Properties:
+          Text: ="Preview of your book cover "
+          Align: =Align.Center
+          Height: =46
+          Width: =459
+          X: =780
+          Y: =65
+    - MenuLeftNav_11:
+        Control: Component
+        ComponentName: MenuLeftNav
+        Properties:
+          AdminAccess: =varAdminAccess
+          HamburgerMenuColor: =Color.Blue
+          LoggedUser: =varLoggedUser
+          MenuBkgColor: =RGBA(220,220,220,1)
+          MenuColor: =Color.Purple
+          MenuItems: |
+            =Table(
+                {
+                    MenuLabel: "Dashboard",
+                    MenuIcon: Icon.Home,
+                    MenuScreenNavigate: Dashboard,
+                    MenuID: 1,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Book Catalog",
+                    MenuIcon: Icon.Database,
+                    MenuScreenNavigate: 'Book Catalog',
+                    MenuID: 2,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Book Details",
+                    MenuIcon: Icon.ListScrollWatchlist,
+                    MenuScreenNavigate: 'Book Details',
+                    MenuID: 3,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Your Books",
+                    MenuIcon: Icon.Notebook,
+                    MenuScreenNavigate: 'Your Books',
+                    MenuID: 4,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Wishlist / Favorites",
+                    MenuIcon: Icon.Heart,
+                    MenuScreenNavigate: 'Wishlist / Favorites',
+                    MenuID: 5,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Book Reservations",
+                    MenuIcon: Icon.CalendarBlank,
+                    MenuScreenNavigate: 'Book Reservations',
+                    MenuID: 6,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Borrowing History",
+                    MenuIcon: Icon.History,
+                    MenuScreenNavigate: 'Borrowing History',
+                    MenuID: 7,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Library Ranking",
+                    MenuIcon: Icon.Globe,
+                    MenuScreenNavigate: 'Library Ranking',
+                    MenuID: 8,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "User Profile",
+                    MenuIcon: Icon.Person,
+                    MenuScreenNavigate: 'User Profile',
+                    MenuID: 9,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Admin Panel",
+                    MenuIcon: Icon.Manufacture,
+                    //MenuScreenNavigate: 'Admin Panel',
+                    MenuID: 10,
+                    VisibleSubMenu: true,
+                    SubMenu: Table(
+                        {
+                            MenuLabel: "Add Book",
+                            MenuIcon: Icon.AddDocument,
+                            MenuScreenNavigate: 'Add Book',
+                            MenuID: 1
+                        },
+                        {
+                            MenuLabel: "Edit Book",
+                            MenuIcon: Icon.ColorPicker,
+                            MenuScreenNavigate: 'Edit Book',
+                            MenuID: 2
+                        },
+                        {
+                            MenuLabel: "Delete Book",
+                            MenuIcon: Icon.ClearDrawing,
+                            MenuScreenNavigate: 'Delete Book',
+                            MenuID: 3
+                        },
+                        {
+                            MenuLabel: "Manage Users",
+                            MenuIcon: Icon.People,
+                            MenuScreenNavigate: 'Manage Users',
+                            MenuID: 4
+                        },
+                        {
+                            MenuLabel: "Manage Loans",
+                            MenuIcon: Icon.Currency,
+                            MenuScreenNavigate: 'Manage Loans',
+                            MenuID: 5
+                        },
+                        {
+                            MenuLabel: "Manage Reservations",
+                            MenuIcon: Icon.PhotosPictures,
+                            MenuScreenNavigate: 'Manage Reservations',
+                            MenuID: 6
+                        },
+                        {
+                            MenuLabel: "Library Settings",
+                            MenuIcon: Icon.Settings,
+                            MenuScreenNavigate: 'Library Settings',
+                            MenuID: 7
+                        },
+                        {
+                            MenuLabel: "Check Log",
+                            MenuIcon: Icon.Warning,
+                            MenuScreenNavigate: 'Check Log',
+                            MenuID: 8
+                        }
+                    )
+                }
+            )
+          SetMenuWidth: =300
+          Height: =If(!MenuLeftNav_11.showMenuProp, 50, App.Height)
+          Width: =MenuLeftNav_11.MenuWidth
+    - Form_label_addnew_book:
+        Control: Group
+        Children:
+        - Label_ISBN:
+            Control: Label
+            Properties:
+              Text: ="ISBN"
+              Height: =43
+              X: =59
+              Y: =245
+        - Label_Index:
+            Control: Label
+            Properties:
+              Text: ="Index"
+              Height: =43
+              X: =59
+              Y: =81
+        - Label_Publication_year:
+            Control: Label
+            Properties:
+              Text: ="Publication Year"
+              Height: =43
+              X: =59
+              Y: =351
+        - Label_Summary:
+            Control: Label
+            Properties:
+              Text: ="Summary"
+              Height: =43
+              X: =59
+              Y: =567
+        - Label_Language:
+            Control: Label
+            Properties:
+              Text: ="Language"
+              Height: =43
+              X: =59
+              Y: =297
+        - Label_Genre:
+            Control: Label
+            Properties:
+              Text: ="Genre"
+              Height: =43
+              X: =59
+              Y: =475
+        - Label_Cover_URL:
+            Control: Label
+            Properties:
+              Text: ="Cover URL"
+              Height: =43
+              X: =59
+              Y: =406
+        - Label_Author:
+            Control: Label
+            Properties:
+              Text: ="Author"
+              Height: =43
+              X: =59
+              Y: =192
+        - Label_Title:
+            Control: Label
+            Properties:
+              Text: ="Title"
+              Height: =43
+              X: =59
+              Y: =132
+    - addBookBtn:
+        Control: Classic/Button
+        Properties:
+          OnSelect: |+
+            =Patch(
+                Sheet1s,
+                Defaults(Sheet1s), 
+                {
+                    Title: Title_input.Text,
+                    Author: Author_input.Text,
+                    ISBN: ISBN_input.Text,
+                    Language: language_combobox.Selected.Value, 
+                    Publication_Year: publication_year_input.Text,
+                    Cover_URL: coverLink_input.Text,
+                    Genre: genre_combobox.Selected.Value,
+                    Summary: summary_input.Text,
+                    Index: Index_input_read_only.Text
+                }
+            );
+
+            Notify("Book added successfully!", NotificationType.Success);
+          Text: ="Add Book"
+          Height: =45
+          Width: =181
+          X: =1080
+          Y: =655
+    - PageTitle_5:
+        Control: Component
+        ComponentName: PageTitle
+        Properties:
+          screenInfo: =App.ActiveScreen
+          Fill: =RGBA(0, 0, 0, 1)
+          Height: =50
+          Width: =200
+          X: =1166
+    - rectangle_preview_cover_img:
+        Control: Rectangle
+        Properties:
+          Fill: =RGBA(237, 237, 237, 1)
+          Height: =577
+          Width: =459
+          X: =780
+          Y: =65
