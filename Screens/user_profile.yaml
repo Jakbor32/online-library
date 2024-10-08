@@ -1,0 +1,392 @@
+- User Profile:
+    Control: Screen
+    Children:
+    - Popup_3:
+        Control: GroupContainer
+        Variant: manualLayoutContainer
+        Properties:
+          Height: =768
+          Visible: =reportIssueBox
+          Width: =1366
+        Children:
+        - popup_bg_box_5:
+            Control: Rectangle
+            Properties:
+              Fill: =RGBA(0, 0, 0, 0.4)
+              Height: =768
+              Visible: =reportIssueBox
+              Width: =1366
+        - popup_box_5:
+            Control: Rectangle
+            Properties:
+              BorderColor: =RGBA(0, 134, 208, 1)
+              BorderThickness: =5
+              Fill: =RGBA(241, 244, 249, 1)
+              Height: =682
+              Visible: =reportIssueBox
+              Width: =1226
+              X: =68
+              Y: =44
+        - btn_no_5:
+            Control: Classic/Button
+            Properties:
+              OnSelect: =Set(reportIssueBox,false);
+              Text: ="Cancel"
+              Visible: =reportIssueBox
+              X: =908
+              Y: =652
+        - btn_yes_5:
+            Control: Classic/Button
+            Properties:
+              OnSelect: |+
+                =Patch(
+                    Library_Issues,
+                    Defaults(Library_Issues), 
+                    {
+                        Issue_Index: CountRows(Library_Issues) + 1, 
+                        Title: Description_area.Text, 
+                        Category: Category_list.Selected.Category, 
+                        Date: DatePicker1.SelectedDate, 
+                        Description: TextInput5.Text, 
+                        Level: Level_Options.Selected.Description,
+                        username: loggedInUser.username
+                    }
+                );
+                Notify("The issue has been successfully reported!", NotificationType.Success);
+              Text: ="Send"
+              Fill: =RGBA(168, 0, 0, 1)
+              FontWeight: =FontWeight.Bold
+              HoverFill: =Self.Fill
+              Visible: =reportIssueBox
+              X: =1107
+              Y: =652
+        - Title_Issue:
+            Control: HtmlViewer
+            Properties:
+              HtmlText: ="<div style='text-align:center; font-weight:bold;'>Report an Issue</div>"
+              Height: =64
+              Size: =25
+              Width: =1226
+              X: =68
+              Y: =49
+        - Issue_Form:
+            Control: Group
+            Children:
+            - IssueTitle_Label:
+                Control: Label
+                Properties:
+                  Text: ="Isue Title"
+                  Height: =37
+                  Width: =115
+                  X: =282
+                  Y: =150
+            - TextInput5:
+                Control: Classic/TextInput
+                Properties:
+                  Default: =
+                  HintText: ="Enter your title"
+                  Height: =57
+                  X: =397
+                  Y: =142
+            - IssueCategory_Label:
+                Control: Label
+                Properties:
+                  Text: ="Select issue category"
+                  Height: =65
+                  Width: =237
+                  X: =764
+                  Y: =292
+            - ProblemDate_Label:
+                Control: Label
+                Properties:
+                  Text: ="Problem Date"
+                  X: =159
+                  Y: =557
+            - IssueLevel_label:
+                Control: Label
+                Properties:
+                  Text: ="Issue Level"
+                  X: =166
+                  Y: =475
+            - Description_area:
+                Control: Classic/TextInput
+                Properties:
+                  Default: =
+                  HintText: ="Describe your issue here"
+                  Height: =194
+                  Mode: =TextMode.MultiLine
+                  PaddingBottom: =15
+                  PaddingLeft: =15
+                  PaddingRight: =15
+                  PaddingTop: =15
+                  Width: =581
+                  X: =136
+                  Y: =228
+            - Category_list:
+                Control: ListBox
+                Properties:
+                  Items: |+
+                    =Table(
+                      {Category: "Account Access"},
+                      {Category: "Book Availability"},
+                      {Category: "Checkout Issues"},
+                      {Category: "Reservation Problems"},
+                      {Category: "Overdue Notifications"},
+                      {Category: "Payment Issues"},
+                      {Category: "User Interface"},
+                      {Category: "Search Functionality"},
+                      {Category: "Catalog Errors"},
+                      {Category: "Mobile Access"},
+                      {Category: "E-book Issues"},
+                      {Category: "Event Registration"},
+                      {Category: "Feedback Submission"},
+                      {Category: "Account Settings"},
+                      {Category: "System Outage"}
+                    )
+                  Height: =460
+                  SelectMultiple: =false
+                  Width: =245
+                  X: =1001
+                  Y: =113
+            - Level_Options:
+                Control: Classic/DropDown
+                Properties:
+                  Items: |+
+                    =Table(
+                      {Level: 1, Description: "1 - Minor Bug - A typo in the application’s footer text."},
+                      {Level: 2, Description: "2 - Usability Issue - A button that does not respond on the homepage."},
+                      {Level: 3, Description: "3 - Functional Issue - Users cannot log in with their credentials."},
+                      {Level: 4, Description: "4 - Performance Lag - The application takes longer than 5 seconds to load."},
+                      {Level: 5, Description: "5 - Security Vulnerability - User data can be accessed without proper authentication."},
+                      {Level: 6, Description: "6 - System Outage - The entire application is down and users cannot access it."}
+                    )
+                  Height: =57
+                  Width: =408
+                  X: =309
+                  Y: =468
+            - DatePicker1:
+                Control: Classic/DatePicker
+                Properties:
+                  Height: =57
+                  Width: =408
+                  X: =309
+                  Y: =550
+    - UserProfileOptions:
+        Control: Group
+        Children:
+        - LanguageBtn:
+            Control: Classic/Button
+            Properties:
+              OnSelect: =// lang options
+              Text: ="Language Preferences"
+              Height: =70
+              Width: =435
+              X: =890
+              Y: =320
+        - UserGuideBtn:
+            Control: Classic/Button
+            Properties:
+              OnSelect: =Launch("https://github.com/Jakbor32/online-library/?tab=readme-ov-file#1-introduction")
+              Text: ="User Guide"
+              Height: =70
+              Width: =435
+              X: =890
+              Y: =520
+        - ReportIssueBtn:
+            Control: Classic/Button
+            Properties:
+              OnSelect: =Set(reportIssueBox, true)
+              Text: ="Report an Issue"
+              Height: =70
+              Width: =435
+              X: =890
+              Y: =420
+        - LogoutBtn:
+            Control: Classic/Button
+            Properties:
+              OnSelect: |-
+                =Set(loggedInUser,{});
+                Navigate(Login_page,ScreenTransition.Fade)
+              Text: ="Logout"
+              Height: =70
+              Width: =435
+              X: =890
+              Y: =620
+        - SupportBtn:
+            Control: Classic/Button
+            Properties:
+              Text: ="Contact with support"
+              Height: =70
+              Width: =435
+              X: =890
+              Y: =120
+        - ChangePasswordBtn:
+            Control: Classic/Button
+            Properties:
+              Text: ="Change password"
+              Height: =70
+              Width: =435
+              X: =890
+              Y: =220
+    - Image1:
+        Control: Image
+        Properties:
+          Image: =right_arrow
+          Height: =424
+          ImagePosition: =ImagePosition.Tile
+          Width: =487
+          X: =175
+          Y: =210
+    - Welcome_Title:
+        Control: HtmlViewer
+        Properties:
+          HtmlText: ="Welcome <b>"& loggedInUser.username&"</b> choose your case"
+          Height: =89
+          Size: =20
+          Width: =444
+          X: =139
+          Y: =131
+    - MenuLeftNav_9:
+        Control: Component
+        ComponentName: MenuLeftNav
+        Properties:
+          AdminAccess: =varAdminAccess
+          HamburgerMenuColor: =Color.Blue
+          LoggedUser: =varLoggedUser
+          MenuBkgColor: =RGBA(220,220,220,1)
+          MenuColor: =Color.Purple
+          MenuItems: |
+            =Table(
+                {
+                    MenuLabel: "Dashboard",
+                    MenuIcon: Icon.Home,
+                    MenuScreenNavigate: Dashboard,
+                    MenuID: 1,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Book Catalog",
+                    MenuIcon: Icon.Database,
+                    MenuScreenNavigate: 'Book Catalog',
+                    MenuID: 2,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Book Details",
+                    MenuIcon: Icon.ListScrollWatchlist,
+                    MenuScreenNavigate: 'Book Details',
+                    MenuID: 3,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Your Books",
+                    MenuIcon: Icon.Notebook,
+                    MenuScreenNavigate: 'Your Books',
+                    MenuID: 4,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Wishlist / Favorites",
+                    MenuIcon: Icon.Heart,
+                    MenuScreenNavigate: 'Wishlist / Favorites',
+                    MenuID: 5,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Book Reservations",
+                    MenuIcon: Icon.CalendarBlank,
+                    MenuScreenNavigate: 'Book Reservations',
+                    MenuID: 6,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Borrowing History",
+                    MenuIcon: Icon.History,
+                    MenuScreenNavigate: 'Borrowing History',
+                    MenuID: 7,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Library Ranking",
+                    MenuIcon: Icon.Globe,
+                    MenuScreenNavigate: 'Library Ranking',
+                    MenuID: 8,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "User Profile",
+                    MenuIcon: Icon.Person,
+                    MenuScreenNavigate: 'User Profile',
+                    MenuID: 9,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Admin Panel",
+                    MenuIcon: Icon.Manufacture,
+                    //MenuScreenNavigate: 'Admin Panel',
+                    MenuID: 10,
+                    VisibleSubMenu: true,
+                    SubMenu: Table(
+                        {
+                            MenuLabel: "Add Book",
+                            MenuIcon: Icon.AddDocument,
+                            MenuScreenNavigate: 'Add Book',
+                            MenuID: 1
+                        },
+                        {
+                            MenuLabel: "Edit Book",
+                            MenuIcon: Icon.ColorPicker,
+                            MenuScreenNavigate: 'Edit Book',
+                            MenuID: 2
+                        },
+                        {
+                            MenuLabel: "Delete Book",
+                            MenuIcon: Icon.ClearDrawing,
+                            MenuScreenNavigate: 'Delete Book',
+                            MenuID: 3
+                        },
+                        {
+                            MenuLabel: "Manage Users",
+                            MenuIcon: Icon.People,
+                            MenuScreenNavigate: 'Manage Users',
+                            MenuID: 4
+                        },
+                        {
+                            MenuLabel: "Manage Loans",
+                            MenuIcon: Icon.Currency,
+                            MenuScreenNavigate: 'Manage Loans',
+                            MenuID: 5
+                        },
+                        {
+                            MenuLabel: "Manage Reservations",
+                            MenuIcon: Icon.PhotosPictures,
+                            MenuScreenNavigate: 'Manage Reservations',
+                            MenuID: 6
+                        },
+                        {
+                            MenuLabel: "Library Settings",
+                            MenuIcon: Icon.Settings,
+                            MenuScreenNavigate: 'Library Settings',
+                            MenuID: 7
+                        },
+                        {
+                            MenuLabel: "Check Log",
+                            MenuIcon: Icon.Warning,
+                            MenuScreenNavigate: 'Check Log',
+                            MenuID: 8
+                        }
+                    )
+                }
+            )
+          SetMenuWidth: =300
+          Height: =If(!MenuLeftNav_9.showMenuProp, 50, App.Height)
+          Width: =MenuLeftNav_9.MenuWidth
+    - PageTitle_7:
+        Control: Component
+        ComponentName: PageTitle
+        Properties:
+          screenInfo: =App.ActiveScreen
+          Fill: =RGBA(0, 0, 0, 1)
+          Height: =50
+          Width: =200
+          X: =1166
