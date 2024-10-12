@@ -1,6 +1,277 @@
 - User Profile:
     Control: Screen
     Children:
+    - UserProfileOptions:
+        Control: Group
+        Children:
+        - LanguageBtn:
+            Control: Classic/Button
+            Properties:
+              OnSelect: =// lang options
+              Text: ="Language Preferences"
+              Height: =70
+              Width: =435
+              X: =890
+              Y: =320
+        - UserGuideBtn:
+            Control: Classic/Button
+            Properties:
+              OnSelect: =Launch("https://github.com/Jakbor32/online-library/?tab=readme-ov-file#1-introduction")
+              Text: ="User Guide"
+              Height: =70
+              Width: =435
+              X: =890
+              Y: =520
+        - ReportIssueBtn:
+            Control: Classic/Button
+            Properties:
+              OnSelect: =Set(reportIssueBox, true)
+              Text: ="Report an Issue"
+              Height: =70
+              Width: =435
+              X: =890
+              Y: =420
+        - LogoutBtn:
+            Control: Classic/Button
+            Properties:
+              OnSelect: |-
+                =Set(loggedInUser,{});
+                Navigate(Login_page,ScreenTransition.Fade)
+              Text: ="Logout"
+              Height: =70
+              Width: =435
+              X: =890
+              Y: =620
+        - SupportBtn:
+            Control: Classic/Button
+            Properties:
+              OnSelect: =Set(supportBox,true);
+              Text: ="Contact with support"
+              Height: =70
+              Width: =435
+              X: =890
+              Y: =120
+        - ChangePasswordBtn:
+            Control: Classic/Button
+            Properties:
+              OnSelect: =Set(userPasswordBox, true)
+              Text: ="Change password"
+              Height: =70
+              Width: =435
+              X: =890
+              Y: =220
+    - Popup_5:
+        Control: GroupContainer
+        Variant: manualLayoutContainer
+        Properties:
+          Height: =768
+          Visible: =userPasswordBox
+          Width: =1366
+        Children:
+        - popup_bg_box_7:
+            Control: Rectangle
+            Properties:
+              Fill: =RGBA(0, 0, 0, 0.4)
+              Height: =768
+              Visible: =userPasswordBox
+              Width: =1366
+        - popup_box_7:
+            Control: Rectangle
+            Properties:
+              BorderColor: =RGBA(0, 134, 208, 1)
+              BorderThickness: =5
+              Fill: =RGBA(241, 244, 249, 1)
+              Height: =424
+              Visible: =userPasswordBox
+              Width: =750
+              X: =308
+              Y: =159
+        - btn_no_7:
+            Control: Classic/Button
+            Properties:
+              OnSelect: =Set(userPasswordBox,false);
+              Text: ="Exit"
+              Visible: =userPasswordBox
+              X: =864
+              Y: =516
+        - Title_Issue_2:
+            Control: HtmlViewer
+            Properties:
+              HtmlText: ="<div style='text-align:center; font-weight:bold;'>Change your password</div>"
+              Height: =64
+              Size: =25
+              Width: =610
+              X: =378
+              Y: =176
+        - TextInput4:
+            Control: Classic/TextInput
+            Properties:
+              Default: =
+              HintText: ="enter new password"
+              Height: =53
+              Mode: =TextMode.Password
+              Width: =353
+              X: =522
+              Y: =272
+        - TextInput4_1:
+            Control: Classic/TextInput
+            Properties:
+              Default: =
+              HintText: ="repeat new password"
+              Height: =53
+              Mode: =TextMode.Password
+              Width: =353
+              X: =522
+              Y: =351
+        - Label8:
+            Control: Label
+            Properties:
+              Text: |-
+                ="New password
+                "
+              X: =358
+              Y: =278
+        - Label8_1:
+            Control: Label
+            Properties:
+              Text: ="Repeat password"
+              X: =358
+              Y: =357
+        - btn_no_8:
+            Control: Classic/Button
+            Properties:
+              OnSelect: |+
+                =If(
+                    TextInput4.Text = TextInput4_1.Text,
+                    Patch(
+                        login_data,
+                        LookUp(login_data, username = loggedInUser.username),
+                        {
+                            password: TextInput4.Text
+                        }
+                    );
+                    Notify("Password updated successfully", NotificationType.Success);
+                    Set(userPasswordBox, false),
+                    Notify("Passwords do not match", NotificationType.Error)
+                );
+              Text: ="Change"
+              Fill: =RGBA(99, 139, 44, 1)
+              HoverBorderColor: =RGBA(99, 139, 44, 1)
+              HoverFill: =RGBA(99, 139, 44, 1)
+              Visible: =userPasswordBox
+              X: =671
+              Y: =516
+    - Popup_4:
+        Control: GroupContainer
+        Variant: manualLayoutContainer
+        Properties:
+          Height: =768
+          Visible: =supportBox
+          Width: =1366
+        Children:
+        - popup_bg_box_6:
+            Control: Rectangle
+            Properties:
+              Fill: =RGBA(0, 0, 0, 0.4)
+              Height: =768
+              Visible: =supportBox
+              Width: =1366
+        - popup_box_6:
+            Control: Rectangle
+            Properties:
+              BorderColor: =RGBA(0, 134, 208, 1)
+              BorderThickness: =5
+              Fill: =RGBA(241, 244, 249, 1)
+              Height: =424
+              Visible: =supportBox
+              Width: =750
+              X: =308
+              Y: =159
+        - btn_no_6:
+            Control: Classic/Button
+            Properties:
+              OnSelect: =Set(supportBox,false);
+              Text: ="Exit"
+              Visible: =supportBox
+              X: =808
+              Y: =496
+        - Title_Issue_1:
+            Control: HtmlViewer
+            Properties:
+              HtmlText: ="<div style='text-align:center; font-weight:bold;'>Contact info</div>"
+              Height: =64
+              Size: =25
+              Width: =610
+              X: =378
+              Y: =176
+        - Label1:
+            Control: Label
+            Properties:
+              Text: ="jan.kowalski@testinbox.pl"
+              Width: =242
+              X: =430
+              Y: =270
+        - Label2:
+            Control: Label
+            Properties:
+              Text: ="+ 48 123 456 789"
+              X: =430
+              Y: =369
+        - Icon2:
+            Control: Classic/Icon
+            Variant: Mail
+            Properties:
+              Height: =46
+              Icon: =Icon.Mail
+              Width: =38
+              X: =363
+              Y: =267
+        - Icon3:
+            Control: Classic/Icon
+            Variant: Phone
+            Properties:
+              Height: =52
+              Icon: =Icon.Phone
+              Width: =38
+              X: =363
+              Y: =357
+        - Icon4:
+            Control: Classic/Icon
+            Variant: Globe
+            Properties:
+              Height: =62
+              Icon: =Icon.Globe
+              Width: =38
+              X: =363
+              Y: =441
+        - Label2_7:
+            Control: Label
+            Properties:
+              Text: ="www.powerapps-library.pl"
+              Width: =242
+              X: =430
+              Y: =454
+        - Label5:
+            Control: Label
+            Properties:
+              Text: |-
+                ="ABC Company
+                123 Main Street
+                Springfield, IL 62701
+                USA"
+              Height: =172
+              Size: =15
+              Width: =200
+              X: =788
+              Y: =282
+        - Label7:
+            Control: Label
+            Properties:
+              Text: ="Company address:"
+              Size: =10
+              Width: =180
+              X: =788
+              Y: =273
     - Popup_3:
         Control: GroupContainer
         Variant: manualLayoutContainer
@@ -43,7 +314,7 @@
                     Library_Issues,
                     Defaults(Library_Issues), 
                     {
-                        Issue_Index: CountRows(Library_Issues) + 1, 
+                        Issue_Index: CountIf(Library_Issues, !IsBlank(Issue_Index)) + 1,
                         Title: Description_area.Text, 
                         Category: Category_list.Selected.Category, 
                         Date: DatePicker1.SelectedDate, 
@@ -53,6 +324,7 @@
                     }
                 );
                 Notify("The issue has been successfully reported!", NotificationType.Success);
+                Set(reportIssueBox,false);
               Text: ="Send"
               Fill: =RGBA(168, 0, 0, 1)
               FontWeight: =FontWeight.Bold
@@ -143,10 +415,10 @@
                       {Category: "Account Settings"},
                       {Category: "System Outage"}
                     )
-                  Height: =460
+                  Height: =468
                   SelectMultiple: =false
-                  Width: =245
-                  X: =1001
+                  Width: =276
+                  X: =970
                   Y: =113
             - Level_Options:
                 Control: Classic/DropDown
@@ -171,81 +443,6 @@
                   Width: =408
                   X: =309
                   Y: =550
-    - UserProfileOptions:
-        Control: Group
-        Children:
-        - LanguageBtn:
-            Control: Classic/Button
-            Properties:
-              OnSelect: =// lang options
-              Text: ="Language Preferences"
-              Height: =70
-              Width: =435
-              X: =890
-              Y: =320
-        - UserGuideBtn:
-            Control: Classic/Button
-            Properties:
-              OnSelect: =Launch("https://github.com/Jakbor32/online-library/?tab=readme-ov-file#1-introduction")
-              Text: ="User Guide"
-              Height: =70
-              Width: =435
-              X: =890
-              Y: =520
-        - ReportIssueBtn:
-            Control: Classic/Button
-            Properties:
-              OnSelect: =Set(reportIssueBox, true)
-              Text: ="Report an Issue"
-              Height: =70
-              Width: =435
-              X: =890
-              Y: =420
-        - LogoutBtn:
-            Control: Classic/Button
-            Properties:
-              OnSelect: |-
-                =Set(loggedInUser,{});
-                Navigate(Login_page,ScreenTransition.Fade)
-              Text: ="Logout"
-              Height: =70
-              Width: =435
-              X: =890
-              Y: =620
-        - SupportBtn:
-            Control: Classic/Button
-            Properties:
-              Text: ="Contact with support"
-              Height: =70
-              Width: =435
-              X: =890
-              Y: =120
-        - ChangePasswordBtn:
-            Control: Classic/Button
-            Properties:
-              Text: ="Change password"
-              Height: =70
-              Width: =435
-              X: =890
-              Y: =220
-    - Image1:
-        Control: Image
-        Properties:
-          Image: =right_arrow
-          Height: =424
-          ImagePosition: =ImagePosition.Tile
-          Width: =487
-          X: =175
-          Y: =210
-    - Welcome_Title:
-        Control: HtmlViewer
-        Properties:
-          HtmlText: ="Welcome <b>"& loggedInUser.username&"</b> choose your case"
-          Height: =89
-          Size: =20
-          Width: =444
-          X: =139
-          Y: =131
     - MenuLeftNav_9:
         Control: Component
         ComponentName: MenuLeftNav
@@ -381,6 +578,24 @@
           SetMenuWidth: =300
           Height: =If(!MenuLeftNav_9.showMenuProp, 50, App.Height)
           Width: =MenuLeftNav_9.MenuWidth
+    - Image1:
+        Control: Image
+        Properties:
+          Image: =right_arrow
+          Height: =424
+          ImagePosition: =ImagePosition.Tile
+          Width: =487
+          X: =175
+          Y: =210
+    - Welcome_Title:
+        Control: HtmlViewer
+        Properties:
+          HtmlText: ="Welcome <b>"& loggedInUser.username&"</b> choose your case"
+          Height: =89
+          Size: =20
+          Width: =444
+          X: =139
+          Y: =131
     - PageTitle_7:
         Control: Component
         ComponentName: PageTitle
