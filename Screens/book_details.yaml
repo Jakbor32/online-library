@@ -257,6 +257,44 @@
                   Width: =264
                   X: =613
                   Y: =82
+        - Button2_1:
+            Control: Classic/Button
+            Properties:
+              OnSelect: |+
+                =Set(
+                    existingRecord,
+                    LookUp(Wishlist, Book_ID = id_data.Text && Username = loggedInUser.username)
+                );
+
+                If(
+                    !IsBlank(existingRecord),
+                    Remove(Wishlist, existingRecord),
+                    Patch(
+                        Wishlist,
+                        Defaults(Wishlist),
+                        {
+                            Index: If(IsEmpty(Wishlist), 1, Max(Wishlist, Index) + 1),
+                            Book_ID: id_data.Text,
+                            Username: loggedInUser.username
+                        }
+                    )
+                )
+              Text: |+
+                =If(
+                    IsBlank(LookUp(Wishlist, Book_ID = id_data.Text && Username = loggedInUser.username)),
+                    "Add to wishlist",
+                    "Remove from wishlist"
+                )
+              Fill: =RGBA(255, 0, 0, 1)
+              Height: =68
+              HoverFill: =ColorFade(RGBA(255, 0, 0, 1), -20%)
+              RadiusBottomLeft: =100
+              RadiusBottomRight: =100
+              RadiusTopLeft: =100
+              RadiusTopRight: =100
+              Width: =283
+              X: =1023
+              Y: =180
         - Book_Fields:
             Control: Group
             Children:
