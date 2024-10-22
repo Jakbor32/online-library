@@ -161,7 +161,7 @@
               OnSelect: |-
                 =Remove(
                     Wishlist,
-                    LookUp(Wishlist, Index = Gallery2_1.Selected.Index && Username = loggedInUser.username)
+                    LookUp(Wishlist, Book_ID = Gallery2_1.Selected.Index && Username = loggedInUser.username)
                 );
               Text: ="Remove"
               Fill: =RGBA(255, 0, 0, 1)
@@ -246,7 +246,6 @@
         ComponentName: PageTitle
         Properties:
           screenInfo: =App.ActiveScreen
-          Fill: =RGBA(0, 0, 0, 1)
           Height: =50
           Width: =200
           X: =1166
