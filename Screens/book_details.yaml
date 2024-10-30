@@ -152,14 +152,14 @@
         Properties:
           OnSelect: =Navigate(Dashboard,ScreenTransition.Cover)
           Text: ="Back to dashboard"
-          Height: =68
+          Height: =44
           RadiusBottomLeft: =100
           RadiusBottomRight: =100
           RadiusTopLeft: =100
           RadiusTopRight: =100
-          Width: =283
-          X: =1028
-          Y: =148
+          Width: =209
+          X: =1132
+          Y: =701
     - Gallery1:
         Control: Gallery
         Variant: galleryVertical
@@ -177,6 +177,46 @@
           Width: =1366
           Y: =74
         Children:
+        - Rent_book_btn:
+            Control: Classic/Button
+            Properties:
+              OnSelect: |+
+                =Set(selectedBookId, id_data.Text);
+                Set(currentUsername, loggedInUser.username);
+                Set(existingLoan, LookUp(BookLoans, Book_ID = selectedBookId && (IsBlank(Return_Date) || Return_Date >= Today())));
+                If(
+                    IsBlank(existingLoan),
+                    Patch(
+                        BookLoans,
+                        Defaults(BookLoans),
+                        {
+                            Index: If(IsEmpty(BookLoans), 1, Max(BookLoans, Index) + 1),
+                            Book_ID: selectedBookId,
+                            Username: currentUsername,
+                            Borrow_Date: Today(),
+                            Return_Date: DateAdd(Today(), 14),
+                            'Status (cre0e_status)': "rented"
+                        }
+                    ),
+                   Set(daysRemaining, DateDiff(Today(), existingLoan.Return_Date));
+                    Notify("The book is unavailable! Days remaining: " & daysRemaining, NotificationType.Error)
+                )
+              Text: |+
+                =If(
+                    IsBlank(LookUp(BookLoans, Book_ID = id_data.Text && (IsBlank(Return_Date) || Return_Date >= Today()))),
+                    "Rent a Book",
+                    "Rented"
+                )
+              Fill: =RGBA(99, 139, 44, 1)
+              Height: =52
+              HoverFill: =ColorFade(RGBA(99, 139, 44, 1), -20%)
+              RadiusBottomLeft: =100
+              RadiusBottomRight: =100
+              RadiusTopLeft: =100
+              RadiusTopRight: =100
+              Width: =183
+              X: =1092
+              Y: =213
         - Book_data:
             Control: Group
             Children:
@@ -257,7 +297,7 @@
                   Width: =264
                   X: =613
                   Y: =82
-        - Button2_1:
+        - Add_to_wishlist:
             Control: Classic/Button
             Properties:
               OnSelect: |+
@@ -286,15 +326,15 @@
                     "Remove from wishlist"
                 )
               Fill: =RGBA(255, 0, 0, 1)
-              Height: =68
+              Height: =52
               HoverFill: =ColorFade(RGBA(255, 0, 0, 1), -20%)
               RadiusBottomLeft: =100
               RadiusBottomRight: =100
               RadiusTopLeft: =100
               RadiusTopRight: =100
-              Width: =283
-              X: =1023
-              Y: =180
+              Width: =183
+              X: =1092
+              Y: =137
         - Book_Fields:
             Control: Group
             Children:
@@ -376,7 +416,6 @@
         ComponentName: PageTitle
         Properties:
           screenInfo: =App.ActiveScreen
-          Fill: =RGBA(0, 0, 0, 1)
           Height: =50
           Width: =200
           X: =1166
