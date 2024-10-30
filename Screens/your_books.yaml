@@ -1,0 +1,294 @@
+- Your Books:
+    Control: Screen
+    Children:
+    - MenuLeftNav_4:
+        Control: Component
+        ComponentName: MenuLeftNav
+        Properties:
+          AdminAccess: =varAdminAccess
+          HamburgerMenuColor: =Color.Blue
+          LoggedUser: =varLoggedUser
+          MenuBkgColor: =RGBA(220,220,220,1)
+          MenuColor: =Color.Purple
+          MenuItems: |
+            =Table(
+                {
+                    MenuLabel: "Dashboard",
+                    MenuIcon: Icon.Home,
+                    MenuScreenNavigate: Dashboard,
+                    MenuID: 1,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Book Catalog",
+                    MenuIcon: Icon.Database,
+                    MenuScreenNavigate: 'Book Catalog',
+                    MenuID: 2,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Book Details",
+                    MenuIcon: Icon.ListScrollWatchlist,
+                    MenuScreenNavigate: 'Book Details',
+                    MenuID: 3,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Your Books",
+                    MenuIcon: Icon.Notebook,
+                    MenuScreenNavigate: 'Your Books',
+                    MenuID: 4,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Wishlist / Favorites",
+                    MenuIcon: Icon.Heart,
+                    MenuScreenNavigate: 'Wishlist / Favorites',
+                    MenuID: 5,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Book Reservations",
+                    MenuIcon: Icon.CalendarBlank,
+                    MenuScreenNavigate: 'Book Reservations',
+                    MenuID: 6,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Borrowing History",
+                    MenuIcon: Icon.History,
+                    MenuScreenNavigate: 'Borrowing History',
+                    MenuID: 7,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Library Ranking",
+                    MenuIcon: Icon.Globe,
+                    MenuScreenNavigate: 'Library Ranking',
+                    MenuID: 8,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "User Profile",
+                    MenuIcon: Icon.Person,
+                    MenuScreenNavigate: 'User Profile',
+                    MenuID: 9,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Admin Panel",
+                    MenuIcon: Icon.Manufacture,
+                    //MenuScreenNavigate: 'Admin Panel',
+                    MenuID: 10,
+                    VisibleSubMenu: true,
+                    SubMenu: Table(
+                        {
+                            MenuLabel: "Add Book",
+                            MenuIcon: Icon.AddDocument,
+                            MenuScreenNavigate: 'Add Book',
+                            MenuID: 1
+                        },
+                        {
+                            MenuLabel: "Edit Book",
+                            MenuIcon: Icon.ColorPicker,
+                            MenuScreenNavigate: 'Edit Book',
+                            MenuID: 2
+                        },
+                        {
+                            MenuLabel: "Delete Book",
+                            MenuIcon: Icon.ClearDrawing,
+                            MenuScreenNavigate: 'Delete Book',
+                            MenuID: 3
+                        },
+                        {
+                            MenuLabel: "Manage Users",
+                            MenuIcon: Icon.People,
+                            MenuScreenNavigate: 'Manage Users',
+                            MenuID: 4
+                        },
+                        {
+                            MenuLabel: "Manage Loans",
+                            MenuIcon: Icon.Currency,
+                            MenuScreenNavigate: 'Manage Loans',
+                            MenuID: 5
+                        },
+                        {
+                            MenuLabel: "Manage Reservations",
+                            MenuIcon: Icon.PhotosPictures,
+                            MenuScreenNavigate: 'Manage Reservations',
+                            MenuID: 6
+                        },
+                        {
+                            MenuLabel: "Library Settings",
+                            MenuIcon: Icon.Settings,
+                            MenuScreenNavigate: 'Library Settings',
+                            MenuID: 7
+                        },
+                        {
+                            MenuLabel: "Check Log",
+                            MenuIcon: Icon.Warning,
+                            MenuScreenNavigate: 'Check Log',
+                            MenuID: 8
+                        }
+                    )
+                }
+            )
+          SetMenuWidth: =300
+          Height: =If(!MenuLeftNav_4.showMenuProp, 50, App.Height)
+          Width: =MenuLeftNav_4.MenuWidth
+    - PageTitle_9:
+        Control: Component
+        ComponentName: PageTitle
+        Properties:
+          screenInfo: =App.ActiveScreen
+          Height: =50
+          Width: =200
+          X: =1166
+    - YourBooks_gallery:
+        Control: Gallery
+        Variant: BrowseLayout_Horizontal_TwoTextOneImageVariant_ver5.0
+        Properties:
+          Items: |+
+            =Filter(Sheet1s, Index in book_loans_gallery.AllItems.Book_ID)
+          DelayItemLoading: =true
+          Height: =376
+          LoadingSpinner: =LoadingSpinner.Data
+          NavigationStep: =5
+          ShowNavigation: =true
+          ShowScrollbar: =false
+          TemplatePadding: =0
+          TemplateSize: =Min(440, Self.Height - 60)
+          Transition: =Transition.Push
+          Width: =1365
+          Y: =155
+        Children:
+        - divider:
+            Control: Rectangle
+            Properties:
+              OnSelect: =Select(Parent)
+              Fill: =RGBA(0, 0, 0, 1)
+              Height: =376
+              Width: =8
+        - reamaining_return_time:
+            Control: Label
+            Properties:
+              OnSelect: =Select(Parent)
+              Text: |+
+                =With(
+                    { daysRemaining: DateDiff(Today(), LookUp(BookLoans, Book_ID = ThisItem.Index).Return_Date) },
+                    If(
+                        daysRemaining >= 0,
+                        daysRemaining & " days remaining until return",
+                        "Return date has passed"
+                    )
+                )
+              Width: =276
+              X: =27
+              Y: =323
+        - go_to_book_btn:
+            Control: Classic/Button
+            Properties:
+              OnSelect: |-
+                =Navigate('Book Details', ScreenTransition.Fade, {SelectedItem: ThisItem})
+              Text: =
+              Fill: =RGBA(0, 0, 0, 0)
+              Height: =336
+              HoverFill: =RGBA(0, 0, 0, 0)
+              PressedFill: =RGBA(0, 0, 0, 0)
+              Width: =276
+              X: =32
+              Y: =13
+        - book_title_3:
+            Control: Label
+            Properties:
+              OnSelect: =Select(Parent)
+              Text: =ThisItem.Title
+              Align: =Align.Center
+              Height: =52
+              Width: =180
+              X: =69
+              Y: =266
+        - book_image_3:
+            Control: Image
+            Properties:
+              OnSelect: =Select(Parent)
+              Image: =ThisItem.Cover_URL
+              Height: =248
+              ImagePosition: =ImagePosition.Fill
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              Width: =174
+              X: =72
+              Y: =13
+    - book_loans_gallery:
+        Control: Gallery
+        Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+        Properties:
+          Items: "=Filter(\r\n    BookLoans,\r\n    Username = loggedInUser.username && \r\n    Return_Date >= Today()\r\n    \r\n)\r\n"
+          DelayItemLoading: =true
+          Height: =93
+          Layout: =Layout.Vertical
+          LoadingSpinner: =LoadingSpinner.Data
+          TemplatePadding: =0
+          TemplateSize: =104
+          Visible: =false
+          Width: =130
+          Y: =663
+        Children:
+        - Label10:
+            Control: Label
+            Properties:
+              OnSelect: =Select(Parent)
+              Text: =ThisItem.Username
+              X: =136
+              Y: =27
+        - Label9:
+            Control: Label
+            Properties:
+              OnSelect: =Select(Parent)
+              Text: =ThisItem.Book_ID
+              X: =15
+              Y: =64
+        - Label3:
+            Control: Label
+            Properties:
+              OnSelect: =Select(Parent)
+              Text: =ThisItem.Index
+              X: =26
+        - Rectangle1:
+            Control: Rectangle
+            Properties:
+              OnSelect: =Select(Parent)
+              Height: =Parent.TemplateHeight - Separator4.Height
+              Visible: =ThisItem.IsSelected
+              Width: =4
+        - Separator4:
+            Control: Rectangle
+            Properties:
+              OnSelect: =Select(Parent)
+              Fill: =RGBA(255, 255, 255, 1)
+              Height: =8
+              Width: =Parent.TemplateWidth
+              Y: =Parent.TemplateHeight - Self.Height
+        - NextArrow1:
+            Control: Classic/Icon
+            Variant: ChevronRight
+            Properties:
+              OnSelect: =Select(Parent)
+              AccessibleLabel: =Self.Tooltip
+              Tooltip: ="View item details"
+              BorderColor: =RGBA(0, 0, 0, 1)
+              Color: =RGBA(166, 166, 166, 1)
+              DisabledBorderColor: =RGBA(56, 56, 56, 1)
+              DisabledColor: =RGBA(119, 119, 119, 1)
+              Height: =50
+              Icon: =Icon.ChevronRight
+              PaddingBottom: =16
+              PaddingLeft: =16
+              PaddingRight: =16
+              PaddingTop: =16
+              Width: =50
+              X: =Parent.TemplateWidth - Self.Width - 12
+              Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
