@@ -1,0 +1,566 @@
+- Check Log:
+    Control: Screen
+    Children:
+    - gallery_th:
+        Control: Group
+        Children:
+        - book_id:
+            Control: Label
+            Properties:
+              Text: ="Book ID"
+              Align: =Align.Center
+              Color: =RGBA(255, 255, 255, 1)
+              FontWeight: =FontWeight.Semibold
+              Height: =56
+              X: =615
+              Y: =194
+        - status:
+            Control: Label
+            Properties:
+              Text: ="Status"
+              Align: =Align.Center
+              Color: =RGBA(255, 255, 255, 1)
+              FontWeight: =FontWeight.Semibold
+              Height: =56
+              X: =1201
+              Y: =194
+        - date:
+            Control: Label
+            Properties:
+              Text: ="Date"
+              Align: =Align.Center
+              Color: =RGBA(255, 255, 255, 1)
+              FontWeight: =FontWeight.Semibold
+              Height: =56
+              X: =1059
+              Y: =194
+        - level:
+            Control: Label
+            Properties:
+              Text: ="Level"
+              Align: =Align.Center
+              Color: =RGBA(255, 255, 255, 1)
+              FontWeight: =FontWeight.Semibold
+              Height: =56
+              X: =946
+              Y: =194
+        - event_desc:
+            Control: Label
+            Properties:
+              Text: ="Description"
+              Align: =Align.Center
+              Color: =RGBA(255, 255, 255, 1)
+              FontWeight: =FontWeight.Semibold
+              Height: =56
+              X: =765
+              Y: =194
+        - event_type:
+            Control: Label
+            Properties:
+              Text: ="Type"
+              Align: =Align.Center
+              Color: =RGBA(255, 255, 255, 1)
+              FontWeight: =FontWeight.Semibold
+              Height: =56
+              X: =493
+              Y: =194
+        - user_role:
+            Control: Label
+            Properties:
+              Text: ="Role"
+              Align: =Align.Center
+              Color: =RGBA(255, 255, 255, 1)
+              FontWeight: =FontWeight.Semibold
+              Height: =56
+              X: =387
+              Y: =194
+        - event_username:
+            Control: Label
+            Properties:
+              Text: ="Username"
+              Align: =Align.Center
+              Color: =RGBA(255, 255, 255, 1)
+              FontWeight: =FontWeight.Semibold
+              Height: =56
+              X: =285
+              Y: =194
+        - event_screen:
+            Control: Label
+            Properties:
+              Text: ="Screen"
+              Align: =Align.Center
+              Color: =RGBA(255, 255, 255, 1)
+              FontWeight: =FontWeight.Semibold
+              Height: =56
+              X: =166
+              Y: =194
+        - event_id:
+            Control: Label
+            Properties:
+              Text: ="ID"
+              Align: =Align.Center
+              Color: =RGBA(255, 255, 255, 1)
+              FontWeight: =FontWeight.Semibold
+              Height: =56
+              Width: =59
+              X: =15
+              Y: =194
+        - event_name:
+            Control: Label
+            Properties:
+              Text: ="Name"
+              Align: =Align.Center
+              Color: =RGBA(255, 255, 255, 1)
+              FontWeight: =FontWeight.Semibold
+              Height: =56
+              X: =44
+              Y: =194
+    - PageTitle_11:
+        Control: Component
+        ComponentName: PageTitle
+        Properties:
+          screenInfo: =App.ActiveScreen
+          Height: =50
+          Width: =200
+          X: =1166
+    - MenuLeftNav_18:
+        Control: Component
+        ComponentName: MenuLeftNav
+        Properties:
+          AdminAccess: =varAdminAccess
+          HamburgerMenuColor: =Color.Blue
+          LoggedUser: =varLoggedUser
+          MenuBkgColor: =RGBA(220,220,220,1)
+          MenuColor: =Color.Purple
+          MenuItems: |
+            =Table(
+                {
+                    MenuLabel: "Dashboard",
+                    MenuIcon: Icon.Home,
+                    MenuScreenNavigate: Dashboard,
+                    MenuID: 1,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Book Catalog",
+                    MenuIcon: Icon.Database,
+                    MenuScreenNavigate: 'Book Catalog',
+                    MenuID: 2,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Book Details",
+                    MenuIcon: Icon.ListScrollWatchlist,
+                    MenuScreenNavigate: 'Book Details',
+                    MenuID: 3,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Your Books",
+                    MenuIcon: Icon.Notebook,
+                    MenuScreenNavigate: 'Your Books',
+                    MenuID: 4,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Wishlist / Favorites",
+                    MenuIcon: Icon.Heart,
+                    MenuScreenNavigate: 'Wishlist / Favorites',
+                    MenuID: 5,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Book Reservations",
+                    MenuIcon: Icon.CalendarBlank,
+                    MenuScreenNavigate: 'Book Reservations',
+                    MenuID: 6,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Borrowing History",
+                    MenuIcon: Icon.History,
+                    MenuScreenNavigate: 'Borrowing History',
+                    MenuID: 7,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Library Ranking",
+                    MenuIcon: Icon.Globe,
+                    MenuScreenNavigate: 'Library Ranking',
+                    MenuID: 8,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "User Profile",
+                    MenuIcon: Icon.Person,
+                    MenuScreenNavigate: 'User Profile',
+                    MenuID: 9,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Admin Panel",
+                    MenuIcon: Icon.Manufacture,
+                    //MenuScreenNavigate: 'Admin Panel',
+                    MenuID: 10,
+                    VisibleSubMenu: true,
+                    SubMenu: Table(
+                        {
+                            MenuLabel: "Add Book",
+                            MenuIcon: Icon.AddDocument,
+                            MenuScreenNavigate: 'Add Book',
+                            MenuID: 1
+                        },
+                        {
+                            MenuLabel: "Edit Book",
+                            MenuIcon: Icon.ColorPicker,
+                            MenuScreenNavigate: 'Edit Book',
+                            MenuID: 2
+                        },
+                        {
+                            MenuLabel: "Delete Book",
+                            MenuIcon: Icon.ClearDrawing,
+                            MenuScreenNavigate: 'Delete Book',
+                            MenuID: 3
+                        },
+                        {
+                            MenuLabel: "Manage Users",
+                            MenuIcon: Icon.People,
+                            MenuScreenNavigate: 'Manage Users',
+                            MenuID: 4
+                        },
+                        {
+                            MenuLabel: "Manage Loans",
+                            MenuIcon: Icon.Currency,
+                            MenuScreenNavigate: 'Manage Loans',
+                            MenuID: 5
+                        },
+                        {
+                            MenuLabel: "Manage Reservations",
+                            MenuIcon: Icon.PhotosPictures,
+                            MenuScreenNavigate: 'Manage Reservations',
+                            MenuID: 6
+                        },
+                        {
+                            MenuLabel: "Library Settings",
+                            MenuIcon: Icon.Settings,
+                            MenuScreenNavigate: 'Library Settings',
+                            MenuID: 7
+                        },
+                        {
+                            MenuLabel: "Check Log",
+                            MenuIcon: Icon.Warning,
+                            MenuScreenNavigate: 'Check Log',
+                            MenuID: 8
+                        }
+                    )
+                }
+            )
+          SetMenuWidth: =300
+          Height: =If(!MenuLeftNav_18.showMenuProp, 50, App.Height)
+          Width: =MenuLeftNav_18.MenuWidth
+    - Gallery_container:
+        Control: GroupContainer
+        Variant: manualLayoutContainer
+        Properties:
+          Height: =558
+          Width: =1334
+          X: =15
+          Y: =194
+        Children:
+        - gallery_logs:
+            Control: Gallery
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: =Library_logs
+              DelayItemLoading: =true
+              Height: =502
+              Layout: =Layout.Vertical
+              LoadingSpinner: =LoadingSpinner.Data
+              TemplatePadding: =0
+              TemplateSize: =65
+              Width: =1334
+              Y: =55
+            Children:
+            - event_level_option:
+                Control: Circle
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Fill: |+
+                    =Switch(
+                        Value(ThisItem.Event_Level),
+                        1, RGBA(255, 0, 0, 1),
+                        2, RGBA(255, 165, 0, 1),
+                        3, RGBA(255, 255, 0, 1),
+                        RGBA(56, 96, 178, 1)     
+                    )
+                  Height: =20
+                  Width: =20
+                  X: =994
+                  Y: =27
+            - gallery_divider:
+                Control: Rectangle
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Height: =2
+                  Width: =1334
+                  Y: =63
+            - log_status:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Event_Status
+                  Align: =Align.Center
+                  FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                  Height: =21
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =101
+                  X: =1214
+                  Y: =27
+            - log_date:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.'Created On'
+                  Align: =Align.Center
+                  FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                  Height: =21
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =175
+                  X: =1026
+                  Y: =27
+            - log_desc:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Description
+                  Align: =Align.Center
+                  FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                  Height: =21
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =280
+                  X: =697
+                  Y: =27
+            - log_book_id:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: |+
+                    =If(
+                        IsBlank(ThisItem.Book_ID), 
+                        "N/A",  // Jeśli Book_ID jest pusty, wyświetl "N/A"
+                        ThisItem.Book_ID  // W przeciwnym razie wyświetl Book_ID
+                    )
+                  Align: =Align.Center
+                  FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                  Height: =Self.Size * 1.8
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =log_index.Width
+                  X: =645
+                  Y: =26
+            - log_type:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Event_Type
+                  Align: =Align.Center
+                  FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                  Height: =21
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =191
+                  X: =454
+                  Y: =27
+            - log_user_role:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.User_Role
+                  Align: =Align.Center
+                  FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                  Height: =Self.Size * 1.8
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =log_index.Width
+                  X: =402
+                  Y: =27
+            - log_username:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Username
+                  Align: =Align.Center
+                  FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                  Height: =21
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =106
+                  X: =287
+                  Y: =27
+            - log_screen:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Event_Screen
+                  Align: =Align.Center
+                  FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                  Height: =21
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =130
+                  X: =157
+                  Y: =27
+            - log_name:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Event_Name
+                  Align: =Align.Center
+                  FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                  Height: =21
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =105
+                  X: =52
+                  Y: =27
+            - log_index:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Event_ID
+                  Align: =Align.Center
+                  FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                  Height: =21
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =52
+                  Y: =27
+    - event_type_container:
+        Control: GroupContainer
+        Variant: manualLayoutContainer
+        Properties:
+          Height: =101
+          Width: =1334
+          X: =15
+          Y: =76
+        Children:
+        - btn_container_5:
+            Control: GroupContainer
+            Variant: horizontalAutoLayoutContainer
+            Properties:
+              Height: =78
+              LayoutAlignItems: =LayoutAlignItems.Center
+              LayoutJustifyContent: =LayoutJustifyContent.Center
+              LayoutMode: =LayoutMode.Auto
+              Width: =241
+              X: =809
+              Y: =10
+            Children:
+            - other_logs:
+                Control: Classic/Button
+                Properties:
+                  Text: ="Admin logs"
+        - btn_container_4:
+            Control: GroupContainer
+            Variant: horizontalAutoLayoutContainer
+            Properties:
+              Height: =78
+              LayoutAlignItems: =LayoutAlignItems.Center
+              LayoutJustifyContent: =LayoutJustifyContent.Center
+              LayoutMode: =LayoutMode.Auto
+              Width: =241
+              X: =16
+              Y: =10
+            Children:
+            - login_logs:
+                Control: Classic/Button
+                Properties:
+                  Text: ="Login logs"
+        - btn_container_3:
+            Control: GroupContainer
+            Variant: horizontalAutoLayoutContainer
+            Properties:
+              Height: =78
+              LayoutAlignItems: =LayoutAlignItems.Center
+              LayoutJustifyContent: =LayoutJustifyContent.Center
+              LayoutMode: =LayoutMode.Auto
+              Width: =241
+              X: =277
+              Y: =10
+            Children:
+            - books_logs:
+                Control: Classic/Button
+                Properties:
+                  Text: ="Books logs"
+        - btn_container_2:
+            Control: GroupContainer
+            Variant: horizontalAutoLayoutContainer
+            Properties:
+              Height: =78
+              LayoutAlignItems: =LayoutAlignItems.Center
+              LayoutJustifyContent: =LayoutJustifyContent.Center
+              LayoutMode: =LayoutMode.Auto
+              Width: =241
+              X: =543
+              Y: =10
+            Children:
+            - user_logs:
+                Control: Classic/Button
+                Properties:
+                  Text: ="Users logs"
+        - btn_container_1:
+            Control: GroupContainer
+            Variant: horizontalAutoLayoutContainer
+            Properties:
+              Height: =78
+              LayoutAlignItems: =LayoutAlignItems.Center
+              LayoutJustifyContent: =LayoutJustifyContent.Center
+              LayoutMode: =LayoutMode.Auto
+              Width: =241
+              X: =1073
+              Y: =10
+            Children:
+            - admin_logs:
+                Control: Classic/Button
+                Properties:
+                  Text: ="Other logs"
+    - gallery_th_bg:
+        Control: Rectangle
+        Properties:
+          Height: =56
+          Width: =1334
+          X: =15
+          Y: =194
