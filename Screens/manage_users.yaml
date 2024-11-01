@@ -6,32 +6,6 @@
         UpdateContext({ SelectedRecordID: Blank() })
       Fill: =RGBA(241, 244, 249, 1)
     Children:
-    - Create_new_user:
-        Control: Group
-        Children:
-        - Icon6:
-            Control: Classic/Icon
-            Variant: AddUser
-            Properties:
-              OnSelect: =Set(createUserBox,true)
-              Height: =51
-              Icon: =Icon.AddUser
-              Width: =51
-              X: =1273
-              Y: =80
-        - create_new_user_btn:
-            Control: Classic/Button
-            Properties:
-              OnSelect: =Set(createUserBox,true)
-              Text: ="Add User"
-              Height: =64
-              RadiusBottomLeft: =100
-              RadiusBottomRight: =100
-              RadiusTopLeft: =100
-              RadiusTopRight: =100
-              Width: =251
-              X: =1094
-              Y: =74
     - CreateUserBox:
         Control: GroupContainer
         Variant: manualLayoutContainer
@@ -125,7 +99,7 @@
             - btn_yes_3:
                 Control: Classic/Button
                 Properties:
-                  OnSelect: |-
+                  OnSelect: |+
                     =Patch(
                         login_data, 
                         Defaults(login_data),
@@ -135,8 +109,25 @@
                             admin_access: If(admin_access_box.Value, "Yes", "No")
                         }
                     );
+
                     Notify("User account created successfully!", NotificationType.Success);
-                    Set(createUserBox,false)
+                    Set(createUserBox, false);
+
+                    Patch(
+                        Library_logs,
+                        Defaults(Library_logs),
+                        {
+                            Event_ID: Text(Max(Library_logs, Event_ID) + 1),
+                            Event_Type: "User Management",
+                            Description: "User account created",
+                            Event_Name: "Create User",
+                            Event_Screen: App.ActiveScreen.Name,
+                            Event_Level: "3",
+                            Username: loggedInUser.username,
+                            User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
+                            Event_Status: "Successful"
+                        }
+                    );
                   Text: ="Save"
                   Fill: =RGBA(168, 0, 0, 1)
                   HoverFill: =Self.Fill
@@ -151,6 +142,32 @@
                   Visible: =createUserBox
                   X: =745
                   Y: =547
+    - Create_new_user:
+        Control: Group
+        Children:
+        - Icon6:
+            Control: Classic/Icon
+            Variant: AddUser
+            Properties:
+              OnSelect: =Set(createUserBox,true)
+              Height: =51
+              Icon: =Icon.AddUser
+              Width: =51
+              X: =1273
+              Y: =80
+        - create_new_user_btn:
+            Control: Classic/Button
+            Properties:
+              OnSelect: =Set(createUserBox,true)
+              Text: ="Add User"
+              Height: =64
+              RadiusBottomLeft: =100
+              RadiusBottomRight: =100
+              RadiusTopLeft: =100
+              RadiusTopRight: =100
+              Width: =251
+              X: =1094
+              Y: =74
     - EditBox:
         Control: GroupContainer
         Variant: manualLayoutContainer
@@ -188,7 +205,7 @@
         - btn_yes_1:
             Control: Classic/Button
             Properties:
-              OnSelect: "=Patch(\r\n    login_data,\r\n    First(Filter(login_data, username = Gallery3.Selected.username)),\r\n    {\r\n        admin_access: If(checkbox_admin_access.Value, \"Yes\", \"No\"),\r\n        username: If(editDataUsernamePassword && currentValueLabel = \"username\", TextInput1.Text, Gallery3.Selected.username),\r\n        password: If(editDataUsernamePassword && currentValueLabel = \"password\", TextInput1.Text, Gallery3.Selected.password)\r\n    }\r\n);\r\n\r\n    \r\n  If(\r\n    editDataUsernamePassword && currentValueLabel = \"username\" && TextInput1.Text <> Gallery3.Selected.username,\r\n    Notify(\"Username updated successfully\", NotificationType.Success),\r\n    \r\n    editDataUsernamePassword && currentValueLabel = \"password\" && TextInput1.Text <> Gallery3.Selected.password,\r\n    Notify(\"Password updated successfully\", NotificationType.Success),\r\n    \r\n    checkbox_admin_access.Value && Gallery3.Selected.admin_access <> \"Yes\",\r\n    Notify(\"Admin access granted\", NotificationType.Success),\r\n    \r\n    !checkbox_admin_access.Value && Gallery3.Selected.admin_access = \"Yes\",\r\n    Notify(\"Admin access revoked\", NotificationType.Success),\r\n    \r\n    Notify(\"No changes made\", NotificationType.Information)\r\n);"
+              OnSelect: "=Patch(\r\n    login_data,\r\n    First(Filter(login_data, username = Gallery3.Selected.username)),\r\n    {\r\n        admin_access: If(checkbox_admin_access.Value, \"Yes\", \"No\"),\r\n        username: If(editDataUsernamePassword && currentValueLabel = \"username\", TextInput1.Text, Gallery3.Selected.username),\r\n        password: If(editDataUsernamePassword && currentValueLabel = \"password\", TextInput1.Text, Gallery3.Selected.password)\r\n    }\r\n);\r\n\r\n    \r\n  If(\r\n    editDataUsernamePassword && currentValueLabel = \"username\" && TextInput1.Text <> Gallery3.Selected.username,\r\n    Notify(\"Username updated successfully\", NotificationType.Success),\r\n    \r\n    editDataUsernamePassword && currentValueLabel = \"password\" && TextInput1.Text <> Gallery3.Selected.password,\r\n    Notify(\"Password updated successfully\", NotificationType.Success),\r\n    \r\n    checkbox_admin_access.Value && Gallery3.Selected.admin_access <> \"Yes\",\r\n    Notify(\"Admin access granted\", NotificationType.Success),\r\n    \r\n    !checkbox_admin_access.Value && Gallery3.Selected.admin_access = \"Yes\",\r\n    Notify(\"Admin access revoked\", NotificationType.Success),\r\n    \r\n    Notify(\"No changes made\", NotificationType.Information)\r\n);\r\n\r\nPatch(\r\n    Library_logs,\r\n    Defaults(Library_logs),\r\n    {\r\n        Event_ID: Text(Max(Library_logs, Event_ID) + 1),\r\n        Event_Type: \"User Management\",\r\n        Description: \"User data updated\",\r\n        Event_Name: \"Update User Data\",\r\n        Event_Screen: App.ActiveScreen.Name,\r\n        Event_Level: \"3\",\r\n        Username: loggedInUser.username,\r\n        User_Role: If(loggedInUser.admin_access = \"Yes\", \"Admin\", \"User\"),\r\n        Event_Status: \"Successful\"\r\n    }\r\n);"
               Text: ="Save"
               Fill: =RGBA(168, 0, 0, 1)
               HoverFill: =Self.Fill
@@ -198,9 +215,25 @@
         - Change_username_btn:
             Control: Classic/Button
             Properties:
-              OnSelect: |-
+              OnSelect: |+
                 =UpdateContext({currentValue: Gallery3.Selected.username, currentValueLabel: "username"});
                 Set(editDataUsernamePassword, true);
+
+                Patch(
+                    Library_logs,
+                    Defaults(Library_logs),
+                    {
+                        Event_ID: Text(Max(Library_logs, Event_ID) + 1),
+                        Event_Type: "User Management",
+                        Description: "Editing data for user",
+                        Event_Name: "Edit User Data",
+                        Event_Screen: App.ActiveScreen.Name,
+                        Event_Level: "3",
+                        Username: loggedInUser.username,
+                        User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
+                        Event_Status: "Successful"
+                    }
+                );
               Text: ="Change Username"
               Height: =49
               Width: =308
@@ -209,9 +242,25 @@
         - Change_password_btn:
             Control: Classic/Button
             Properties:
-              OnSelect: |-
+              OnSelect: |+
                 =UpdateContext({currentValue: Gallery3.Selected.password, currentValueLabel: "password"});
                 Set(editDataUsernamePassword, true);
+
+                Patch(
+                    Library_logs,
+                    Defaults(Library_logs),
+                    {
+                        Event_ID: Text(Max(Library_logs, Event_ID) + 1),
+                        Event_Type: "User Management",
+                        Description: "Editing password for user",
+                        Event_Name: "Edit User Password",
+                        Event_Screen: App.ActiveScreen.Name,
+                        Event_Level: "3",
+                        Username: loggedInUser.username,
+                         User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
+                        Event_Status: "Successful"
+                    }
+                );
               Text: ="Change Password"
               Height: =49
               Width: =308
@@ -420,7 +469,23 @@
                 );
 
                 Notify("User successfully deleted!", NotificationType.Success);
-                Set(makePopupVisible,false);
+                Set(makePopupVisible, false);
+
+                Patch(
+                    Library_logs,
+                    Defaults(Library_logs),
+                    {
+                        Event_ID: Text(Max(Library_logs, Event_ID) + 1),
+                        Event_Type: "User Management",
+                        Description: "User successfully deleted",
+                        Event_Name: "Delete User",
+                        Event_Screen: App.ActiveScreen.Name,
+                        Event_Level: "1",
+                        Username: loggedInUser.username,
+                        User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
+                        Event_Status: "Successful"
+                    }
+                );
               Text: ="Yes"
               Fill: =RGBA(168, 0, 0, 1)
               HoverFill: =Self.Fill
@@ -683,6 +748,22 @@
                     }
                 );
                 Notify("Account status changed!", NotificationType.Success);
+
+                Patch(
+                    Library_logs,
+                    Defaults(Library_logs),
+                    {
+                        Event_ID: Text(Max(Library_logs, Event_ID) + 1),
+                        Event_Type: "User Management",
+                        Description: "Account status changed",
+                        Event_Name: "Change Account Status",
+                        Event_Screen: App.ActiveScreen.Name,
+                        Event_Level: "3",
+                        Username: ThisItem.username,
+                        User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
+                        Event_Status: "Successful"
+                    }
+                );
               Text: |-
                 =If(
                     account_status_label.Text = "Active", 
@@ -774,7 +855,6 @@
         ComponentName: PageTitle
         Properties:
           screenInfo: =App.ActiveScreen
-          Fill: =RGBA(0, 0, 0, 1)
           Height: =50
           Width: =200
           X: =1166
