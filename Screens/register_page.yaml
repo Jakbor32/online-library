@@ -1,0 +1,100 @@
+- Register_page:
+    Control: Screen
+    Properties:
+      OnVisible: =Set(varColor, RGBA(11, 96, 33, 1))
+    Children:
+    - loading_spinner_2:
+        Control: Image
+        Properties:
+          Image: ='6d0ec30d8b8f77ab999f765edd8866e8a97d59a3'
+          Height: =39
+          Visible: =varTimer
+          Width: =38
+          X: =751
+          Y: =598
+    - login_btn_1:
+        Control: Classic/Button
+        Properties:
+          OnSelect: "=Set(\r\n    existingUser,\r\n    LookUp(\r\n        login_data,\r\n        username = login_form_2.username__value\r\n    )\r\n);\r\n\r\nIf(\r\n    !IsBlank(existingUser),\r\n    Notify(\"Username already exists. Please choose another one.\", NotificationType.Error);\r\n    \r\n    // Logowanie zdarzenia\r\n    Patch(\r\n        Library_logs,\r\n        Defaults(Library_logs),\r\n        {\r\n            Event_ID: Text(Max(Library_logs, Event_ID) + 1),\r\n            Event_Type: \"Login/Register\",\r\n            Description: \"Username already exists\",\r\n            Event_Name: \"Registration Attempt\",\r\n            Event_Screen: App.ActiveScreen.Name,\r\n            Event_Level: \"3\",\r\n            Username: login_form_2.username__value,\r\n            User_Role: \"Unknown\",\r\n            Event_Status: \"Failed\"\r\n        }\r\n    ),\r\n\r\n    Patch(\r\n        login_data,\r\n        Defaults(login_data),\r\n        {\r\n            username: login_form_2.username__value,\r\n            password: login_form_2.password_value\r\n        }\r\n    );\r\n    Notify(\"Registration successful, please now login to your account\", NotificationType.Success);\r\n    \r\n    Patch(\r\n        Library_logs,\r\n        Defaults(Library_logs),\r\n        {\r\n            Event_ID: Text(Max(Library_logs, Event_ID) + 1),\r\n            Event_Type: \"Login/Register\",\r\n            Description: \"Registration successful\",\r\n            Event_Name: \"Registration Attempt\",\r\n            Event_Screen: App.ActiveScreen.Name,\r\n            Event_Level: \"3\",\r\n            Username: login_form_2.username__value,\r\n            User_Role: \"User\",\r\n            Event_Status: \"Successful\"\r\n        }\r\n    );\r\n\r\n    Set(varActionType, \"register\");\r\n    Set(varTimer, true);\r\n);\r\n"
+          Text: ="Sign Up"
+          Height: =47
+          RadiusBottomLeft: =50
+          RadiusBottomRight: =50
+          RadiusTopLeft: =50
+          RadiusTopRight: =50
+          Width: =297
+          X: =554
+          Y: =594
+    - Github_link:
+        Control: Group
+        Children:
+        - Button3:
+            Control: Classic/Button
+            Properties:
+              OnSelect: =Launch("https://github.com/Jakbor32")
+              Text: =
+              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+              DisabledFill: =RGBA(0, 0, 0, 0)
+              Fill: =RGBA(0, 0, 0, 0)
+              Height: =30
+              HoverBorderColor: =RGBA(0, 0, 0, 0)
+              HoverFill: =RGBA(0, 0, 0, 0)
+              PressedFill: =RGBA(0, 0, 0, 0)
+              RadiusBottomLeft: =100
+              RadiusBottomRight: =100
+              RadiusTopLeft: =100
+              RadiusTopRight: =100
+              Width: =34
+              X: =220
+              Y: =128
+        - github_logo:
+            Control: Image
+            Properties:
+              OnSelect: =
+              Image: ='25231'
+              DisabledFill: =RGBA(0, 0, 0, 0)
+              Height: =48
+              HoverBorderColor: =RGBA(0, 0, 0, 0)
+              HoverFill: =RGBA(0, 0, 0, 0)
+              PressedFill: =RGBA(0, 0, 0, 0)
+              Width: =34
+              X: =220
+              Y: =118
+    - beauty_cat_1:
+        Control: Image
+        Properties:
+          OnSelect: =
+          Image: =reading
+          Height: =185
+          Width: =304
+          X: =111
+    - login_register_switch_2:
+        Control: Component
+        ComponentName: login_register_switch
+        Properties:
+          Btn_color_login: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+          Btn_color_register: =RGBA(30, 155, 200, 1)
+          Login_page: =Login_page
+          Register_page: =Register_page
+          Height: =80
+          Width: =300
+          X: =554
+          Y: =225
+    - login_form_2:
+        Control: Component
+        ComponentName: login_form
+        Properties:
+          data: =login_data
+          dynamic_text: ="Sign Up"
+          go_to_main_page: =App.ActiveScreen
+          Fill: =RGBA(214, 223, 238, 1)
+          Width: =900
+          X: =254
+          Y: =64
+    - background_2:
+        Control: Image
+        Properties:
+          Image: ='pngtree-an-old-bookcase-in-a-library-image_2642908'
+          Height: =768
+          ImagePosition: =ImagePosition.Stretch
+          Width: =1366
