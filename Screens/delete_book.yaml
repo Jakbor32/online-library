@@ -1,5 +1,7 @@
 - Delete Book:
     Control: Screen
+    Properties:
+      Fill: =RGBA(237, 237, 237, 1)
     Children:
     - Popup_1:
         Control: GroupContainer
@@ -42,7 +44,25 @@
                 =RemoveIf(Sheet1s, Index = AllBooks.Selected.Index);
 
                 Notify("Book successfully deleted!", NotificationType.Success);
-                Set(makePopupVisible,false);
+
+                Patch(
+                    Library_logs,
+                    Defaults(Library_logs),
+                    {
+                        Event_ID: Text(Max(Library_logs, Event_ID) + 1),
+                        Event_Type: "Book Management",
+                        Description: "Book successfully deleted",
+                        Event_Name: "Delete Book",
+                        Event_Screen: App.ActiveScreen.Name,
+                        Event_Level: "3",
+                        Book_ID: AllBooks.Selected.Index,
+                        Username: loggedInUser.username,
+                        User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
+                        Event_Status: "Successful"
+                    }
+                );
+
+                Set(makePopupVisible, false);
               Text: ="Yes"
               Fill: =RGBA(168, 0, 0, 1)
               HoverFill: =Self.Fill
@@ -319,7 +339,6 @@
         ComponentName: PageTitle
         Properties:
           screenInfo: =App.ActiveScreen
-          Fill: =RGBA(0, 0, 0, 1)
           Height: =50
           Width: =200
           X: =1166
