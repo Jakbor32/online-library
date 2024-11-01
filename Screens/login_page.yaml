@@ -1,0 +1,201 @@
+- Login_page:
+    Control: Screen
+    Children:
+    - loading_spinner:
+        Control: Image
+        Properties:
+          Image: ='6d0ec30d8b8f77ab999f765edd8866e8a97d59a3'
+          Height: =39
+          Visible: =varTimer
+          Width: =38
+          X: =751
+          Y: =598
+    - Timer1:
+        Control: Timer
+        Properties:
+          OnTimerEnd: |-
+            =If(
+                varActionType = "login",
+                Navigate(Dashboard),
+                If(
+                    varActionType = "register",
+                    Navigate(Login_page)
+                )
+            );
+            Set(varTimer, false);
+            Set(varActionType, "");
+          Duration: =3000
+          Start: =varTimer
+          Visible: =false
+          X: =40
+          Y: =40
+    - Github_link_1:
+        Control: Group
+        Children:
+        - Button3_1:
+            Control: Classic/Button
+            Properties:
+              OnSelect: =Launch("https://github.com/Jakbor32")
+              Text: =
+              Color: =RGBA(0, 0, 0, 0)
+              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+              DisabledColor: =RGBA(0, 0, 0, 0)
+              Fill: =RGBA(0, 0, 0, 0)
+              Height: =30
+              HoverBorderColor: =RGBA(0, 0, 0, 0)
+              HoverColor: =RGBA(0, 0, 0, 0)
+              HoverFill: =RGBA(0, 0, 0, 0)
+              RadiusBottomLeft: =100
+              RadiusBottomRight: =100
+              RadiusTopLeft: =100
+              RadiusTopRight: =100
+              Width: =34
+              X: =220
+              Y: =128
+        - github_logo_1:
+            Control: Image
+            Properties:
+              OnSelect: =
+              Image: ='25231'
+              Height: =48
+              Width: =34
+              X: =220
+              Y: =118
+    - beauty_cat:
+        Control: Image
+        Properties:
+          OnSelect: =
+          Image: =reading
+          Height: =185
+          Width: =304
+          X: =111
+    - login_register_switch_1:
+        Control: Component
+        ComponentName: login_register_switch
+        Properties:
+          Btn_color_login: =RGBA(30, 155, 200, 1)
+          Btn_color_register: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+          Login_page: =Login_page
+          Register_page: =Register_page
+          Fill: =RGBA(255, 0, 0, 0)
+          Height: =80
+          Width: =300
+          X: =554
+          Y: =225
+    - login_btn:
+        Control: Classic/Button
+        Properties:
+          OnSelect: |+
+            =Set(
+                loggedInUser,
+                LookUp(
+                    login_data,
+                    username = login_form_1.username__value
+                )
+            );
+
+            If(
+                IsBlank(loggedInUser),
+                Notify("User not found", NotificationType.Error);
+                Patch(
+                    Library_logs,
+                    Defaults(Library_logs),
+                    {
+                        Event_ID: Text(Max(Library_logs, Event_ID) + 1),
+                        Event_Type: "Login/Register",
+                        Description: "User not found",
+                        Event_Name: "Login",
+                        Event_Screen: App.ActiveScreen.Name,
+                        Event_Level: "3",
+                        Username: login_form_1.username__value,
+                        User_Role: "Unknown",
+                        Event_Status: "Failed"
+                    }
+                ),
+                If(
+                    loggedInUser.password = login_form_1.password_value,
+                    If(
+                        loggedInUser.Account_status = false,
+                        Set(varActionType, "login");
+                        Set(varTimer, true);
+                        Set(varLoggedUser, loggedInUser.username);
+                        Set(varAdminAccess, loggedInUser.admin_access);
+                        Notify("Login successful", NotificationType.Success);
+                        Patch(
+                            Library_logs,
+                            Defaults(Library_logs),
+                            {
+                                Event_ID: Text(Max(Library_logs, Event_ID) + 1),
+                                Event_Type: "Login/Register",
+                                Description: "Login successful",
+                                Event_Name: "Login",
+                                Event_Screen: App.ActiveScreen.Name,
+                                Event_Level: "3",
+                                Username: loggedInUser.username,
+                                User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
+                                Event_Status: "Successful"
+                            }
+                        ),
+                        Notify("Your account has been blocked.", NotificationType.Warning);
+                        Patch(
+                            Library_logs,
+                            Defaults(Library_logs),
+                            {
+                                Event_ID: Text(Max(Library_logs, Event_ID) + 1),
+                                Event_Type: "Login/Register",
+                                Description: "Account blocked",
+                                Event_Name: "Login",
+                                Event_Screen: App.ActiveScreen.Name,
+                                Event_Level: "3",
+                                Username: loggedInUser.username,
+                                User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
+                                Event_Status: "Failed"
+                            }
+                        )
+                    ),
+                    Notify("Incorrect password", NotificationType.Error);
+                    Patch(
+                        Library_logs,
+                        Defaults(Library_logs),
+                        {
+                            Event_ID: Text(Max(Library_logs, Event_ID) + 1),
+                            Event_Type: "Login/Register",
+                            Description: "Incorrect password",
+                            Event_Name: "Login",
+                            Event_Screen: App.ActiveScreen.Name,
+                            Event_Level: "3",
+                            Username: loggedInUser.username,
+                            User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
+                            Event_Status: "Failed"
+                        }
+                    )
+                )
+            );
+          Text: ="Sign In"
+          Height: =47
+          RadiusBottomLeft: =50
+          RadiusBottomRight: =50
+          RadiusTopLeft: =50
+          RadiusTopRight: =50
+          TabIndex: =1
+          Width: =297
+          X: =554
+          Y: =594
+    - login_form_1:
+        Control: Component
+        ComponentName: login_form
+        Properties:
+          data: =login_data
+          dynamic_text: ="Sign In"
+          go_to_main_page: =Dashboard
+          Fill: =RGBA(214, 223, 238, 1)
+          Width: =900
+          X: =254
+          Y: =64
+    - background:
+        Control: Image
+        Properties:
+          Image: ='pngtree-an-old-bookcase-in-a-library-image_2642908'
+          Height: =768
+          ImagePosition: =ImagePosition.Stretch
+          Width: =1366
