@@ -58,6 +58,24 @@
                 );
 
                 Notify("Book successfully updated!", NotificationType.Success);
+
+                Patch(
+                    Library_logs,
+                    Defaults(Library_logs),
+                    {
+                        Event_ID: Text(Max(Library_logs, Event_ID) + 1),
+                        Event_Type: "Book Management",
+                        Description: "Book successfully updated",
+                        Event_Name: "Update Book",
+                        Event_Screen: App.ActiveScreen.Name,
+                        Event_Level: "3",
+                        Book_ID: DataCardValue4.Text,
+                        Username: loggedInUser.username,
+                        User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
+                        Event_Status: "Successful"
+                    }
+                );
+
                 Set(showPopupEditBox, false);
               Text: ="Yes"
               Fill: =RGBA(168, 0, 0, 1)
@@ -229,7 +247,6 @@
         ComponentName: PageTitle
         Properties:
           screenInfo: =App.ActiveScreen
-          Fill: =RGBA(0, 0, 0, 1)
           Height: =50
           Width: =200
           X: =1166
@@ -244,6 +261,147 @@
           X: =237
           Y: =171
         Children:
+        - Index_DataCard1:
+            Control: TypedDataCard
+            Variant: textualEditCard
+            Layout: vertical
+            Properties:
+              DataField: ="cre0e_index"
+              Default: =ThisItem.Index
+              DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_index)
+              MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_index)
+              Update: =DataCardValue4.Text
+              DisplayMode: =Parent.DisplayMode
+              Height: =50
+              Width: =560
+            Children:
+            - StarVisible4:
+                Control: Label
+                Layout: vertical
+                Properties:
+                  Text: ="*"
+                  Align: =Align.Center
+                  Height: =DataCardKey4.Height
+                  Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                  Width: =30
+                  Wrap: =false
+                  Y: =DataCardKey4.Y
+            - ErrorMessage4:
+                Control: Label
+                Layout: vertical
+                Properties:
+                  Live: =Live.Assertive
+                  Text: =Parent.Error
+                  AutoHeight: =true
+                  Height: =10
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Visible: =Parent.DisplayMode=DisplayMode.Edit
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardValue4.Y + DataCardValue4.Height
+            - DataCardValue4:
+                Control: Classic/TextInput
+                Layout: vertical
+                Properties:
+                  Default: =Gallery5.Selected.Index
+                  DelayOutput: =true
+                  MaxLength: =Parent.MaxLength
+                  Tooltip: =Parent.DisplayName
+                  BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                  DisplayMode: =DisplayMode.Disabled
+                  PaddingLeft: =5
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardKey4.Y + DataCardKey4.Height + 5
+            - DataCardKey4:
+                Control: Label
+                Layout: vertical
+                Properties:
+                  Text: =Parent.DisplayName
+                  AutoHeight: =true
+                  Height: =34
+                  Width: =Parent.Width - 60
+                  Wrap: =false
+                  X: =30
+                  Y: =10
+        - Title_DataCard1:
+            Control: TypedDataCard
+            Variant: textualEditCard
+            Layout: vertical
+            Properties:
+              DataField: ="cre0e_title"
+              Default: =ThisItem.Title
+              DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_title)
+              MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_title)
+              Update: =DataCardValue10.Text
+              DisplayMode: =Parent.DisplayMode
+              Height: =50
+              Width: =560
+              X: =1
+            Children:
+            - StarVisible10:
+                Control: Label
+                Layout: vertical
+                Properties:
+                  Text: ="*"
+                  Align: =Align.Center
+                  Height: =DataCardKey10.Height
+                  Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                  Width: =30
+                  Wrap: =false
+                  Y: =DataCardKey10.Y
+            - ErrorMessage10:
+                Control: Label
+                Layout: vertical
+                Properties:
+                  Live: =Live.Assertive
+                  Text: =Parent.Error
+                  AutoHeight: =true
+                  Height: =10
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Visible: =Parent.DisplayMode=DisplayMode.Edit
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardValue10.Y + DataCardValue10.Height
+            - DataCardValue10:
+                Control: Classic/TextInput
+                Layout: vertical
+                Properties:
+                  Default: =Gallery5.Selected.Title
+                  DelayOutput: =true
+                  MaxLength: =Parent.MaxLength
+                  Tooltip: =Parent.DisplayName
+                  BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                  DisplayMode: =Parent.DisplayMode
+                  PaddingLeft: =5
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardKey10.Y + DataCardKey10.Height + 5
+            - DataCardKey10:
+                Control: Label
+                Layout: vertical
+                Properties:
+                  Text: =Parent.DisplayName
+                  AutoHeight: =true
+                  Height: =34
+                  Width: =Parent.Width - 60
+                  Wrap: =false
+                  X: =30
+                  Y: =10
         - Author_DataCard1:
             Control: TypedDataCard
             Variant: textualEditCard
@@ -305,6 +463,274 @@
                   X: =30
                   Y: =DataCardKey1.Y + DataCardKey1.Height + 5
             - DataCardKey1:
+                Control: Label
+                Layout: vertical
+                Properties:
+                  Text: =Parent.DisplayName
+                  AutoHeight: =true
+                  Height: =34
+                  Width: =Parent.Width - 60
+                  Wrap: =false
+                  X: =30
+                  Y: =10
+        - Genre_DataCard1:
+            Control: TypedDataCard
+            Variant: textualEditCard
+            Layout: vertical
+            Properties:
+              DataField: ="cre0e_genre"
+              Default: =ThisItem.Genre
+              DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_genre)
+              MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_genre)
+              Update: =
+              DisplayMode: =Parent.DisplayMode
+              Height: =50
+              Width: =560
+              X: =1
+              Y: =1
+            Children:
+            - ComboBox1:
+                Control: Classic/ComboBox
+                Properties:
+                  DefaultSelectedItems: |+
+                    =Distinct(Filter(Sheet1s, Genre = Gallery5.Selected.Genre), Genre)
+                  DisplayFields: =["Value"]
+                  Items: =Distinct(Sheet1s, Genre)
+                  SearchFields: =["Value"]
+                  SelectMultiple: =false
+                  Width: =500
+                  X: =30
+                  Y: =40
+            - StarVisible3:
+                Control: Label
+                Layout: vertical
+                Properties:
+                  Text: ="*"
+                  Align: =Align.Center
+                  Height: =DataCardKey3.Height
+                  Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                  Width: =30
+                  Wrap: =false
+                  Y: =DataCardKey3.Y
+            - ErrorMessage3:
+                Control: Label
+                Layout: vertical
+                Properties:
+                  Live: =Live.Assertive
+                  Text: =Parent.Error
+                  AutoHeight: =true
+                  Height: =10
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Visible: =Parent.DisplayMode=DisplayMode.Edit
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =
+            - DataCardKey3:
+                Control: Label
+                Layout: vertical
+                Properties:
+                  Text: =Parent.DisplayName
+                  AutoHeight: =true
+                  Height: =34
+                  Width: =Parent.Width - 60
+                  Wrap: =false
+                  X: =30
+                  Y: =10
+        - ISBN_DataCard1:
+            Control: TypedDataCard
+            Variant: textualEditCard
+            Layout: vertical
+            Properties:
+              DataField: ="cre0e_isbn"
+              Default: =ThisItem.ISBN
+              DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_isbn)
+              MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_isbn)
+              Update: =DataCardValue5.Text
+              DisplayMode: =Parent.DisplayMode
+              Height: =50
+              Width: =560
+              Y: =2
+            Children:
+            - StarVisible5:
+                Control: Label
+                Layout: vertical
+                Properties:
+                  Text: ="*"
+                  Align: =Align.Center
+                  Height: =DataCardKey5.Height
+                  Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                  Width: =30
+                  Wrap: =false
+                  Y: =DataCardKey5.Y
+            - ErrorMessage5:
+                Control: Label
+                Layout: vertical
+                Properties:
+                  Live: =Live.Assertive
+                  Text: =Parent.Error
+                  AutoHeight: =true
+                  Height: =10
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Visible: =Parent.DisplayMode=DisplayMode.Edit
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardValue5.Y + DataCardValue5.Height
+            - DataCardValue5:
+                Control: Classic/TextInput
+                Layout: vertical
+                Properties:
+                  Default: =Gallery5.Selected.ISBN
+                  DelayOutput: =true
+                  MaxLength: =Parent.MaxLength
+                  Tooltip: =Parent.DisplayName
+                  BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                  DisplayMode: =Parent.DisplayMode
+                  PaddingLeft: =5
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =DataCardKey5.Y + DataCardKey5.Height + 5
+            - DataCardKey5:
+                Control: Label
+                Layout: vertical
+                Properties:
+                  Text: =Parent.DisplayName
+                  AutoHeight: =true
+                  Height: =34
+                  Width: =Parent.Width - 60
+                  Wrap: =false
+                  X: =30
+                  Y: =10
+        - Publication_Year_DataCard1:
+            Control: TypedDataCard
+            Variant: textualEditCard
+            Layout: vertical
+            Properties:
+              DataField: ="cre0e_publication_year"
+              Default: =ThisItem.Publication_Year
+              DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_publication_year)
+              MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_publication_year)
+              Update: =
+              DisplayMode: =Parent.DisplayMode
+              Height: =50
+              Width: =560
+              X: =1
+              Y: =2
+            Children:
+            - TextInput3:
+                Control: Classic/TextInput
+                Properties:
+                  Default: =Gallery5.Selected.Publication_Year
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =500
+                  X: =30
+                  Y: =40
+            - StarVisible8:
+                Control: Label
+                Layout: vertical
+                Properties:
+                  Text: ="*"
+                  Align: =Align.Center
+                  Height: =DataCardKey8.Height
+                  Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                  Width: =30
+                  Wrap: =false
+                  Y: =DataCardKey8.Y
+            - ErrorMessage8:
+                Control: Label
+                Layout: vertical
+                Properties:
+                  Live: =Live.Assertive
+                  Text: =Parent.Error
+                  AutoHeight: =true
+                  Height: =10
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Visible: =Parent.DisplayMode=DisplayMode.Edit
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =
+            - DataCardKey8:
+                Control: Label
+                Layout: vertical
+                Properties:
+                  Text: =Parent.DisplayName
+                  AutoHeight: =true
+                  Height: =34
+                  Width: =Parent.Width - 60
+                  Wrap: =false
+                  X: =30
+                  Y: =10
+        - Language_DataCard1:
+            Control: TypedDataCard
+            Variant: textualEditCard
+            Layout: vertical
+            Properties:
+              DataField: ="cre0e_language"
+              Default: =ThisItem.Language
+              DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_language)
+              MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_language)
+              Update: =
+              DisplayMode: =Parent.DisplayMode
+              Height: =50
+              Width: =560
+              Y: =3
+            Children:
+            - ComboBox3:
+                Control: Classic/ComboBox
+                Properties:
+                  DefaultSelectedItems: |+
+                    =Distinct(Filter(Sheet1s, Language = Gallery5.Selected.Language),Language)
+                  DisplayFields: =["Value"]
+                  IsSearchable: =false
+                  Items: =Distinct(Sheet1s,Language)
+                  SearchFields: =["Value"]
+                  SelectMultiple: =false
+                  Width: =500
+                  X: =30
+                  Y: =40
+            - StarVisible6:
+                Control: Label
+                Layout: vertical
+                Properties:
+                  Text: ="*"
+                  Align: =Align.Center
+                  Height: =DataCardKey6.Height
+                  Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                  Width: =30
+                  Wrap: =false
+                  Y: =DataCardKey6.Y
+            - ErrorMessage6:
+                Control: Label
+                Layout: vertical
+                Properties:
+                  Live: =Live.Assertive
+                  Text: =Parent.Error
+                  AutoHeight: =true
+                  Height: =10
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Visible: =Parent.DisplayMode=DisplayMode.Edit
+                  Width: =Parent.Width - 60
+                  X: =30
+                  Y: =
+            - DataCardKey6:
                 Control: Label
                 Layout: vertical
                 Properties:
@@ -387,277 +813,6 @@
                   Wrap: =false
                   X: =30
                   Y: =10
-        - Genre_DataCard1:
-            Control: TypedDataCard
-            Variant: textualEditCard
-            Layout: vertical
-            Properties:
-              DataField: ="cre0e_genre"
-              Default: =ThisItem.Genre
-              DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_genre)
-              MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_genre)
-              Update: =
-              DisplayMode: =Parent.DisplayMode
-              Height: =50
-              Width: =560
-              X: =1
-              Y: =1
-            Children:
-            - ComboBox1:
-                Control: Classic/ComboBox
-                Properties:
-                  DefaultSelectedItems: |+
-                    =Distinct(Filter(Sheet1s, Genre = Gallery5.Selected.Genre), Genre)
-                  DisplayFields: =["Value"]
-                  Items: =Distinct(Sheet1s, Genre)
-                  SearchFields: =["Value"]
-                  SelectMultiple: =false
-                  Width: =500
-                  X: =30
-                  Y: =40
-            - StarVisible3:
-                Control: Label
-                Layout: vertical
-                Properties:
-                  Text: ="*"
-                  Align: =Align.Center
-                  Height: =DataCardKey3.Height
-                  Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
-                  Width: =30
-                  Wrap: =false
-                  Y: =DataCardKey3.Y
-            - ErrorMessage3:
-                Control: Label
-                Layout: vertical
-                Properties:
-                  Live: =Live.Assertive
-                  Text: =Parent.Error
-                  AutoHeight: =true
-                  Height: =10
-                  PaddingBottom: =0
-                  PaddingLeft: =0
-                  PaddingRight: =0
-                  PaddingTop: =0
-                  Visible: =Parent.DisplayMode=DisplayMode.Edit
-                  Width: =Parent.Width - 60
-                  X: =30
-                  Y: =
-            - DataCardKey3:
-                Control: Label
-                Layout: vertical
-                Properties:
-                  Text: =Parent.DisplayName
-                  AutoHeight: =true
-                  Height: =34
-                  Width: =Parent.Width - 60
-                  Wrap: =false
-                  X: =30
-                  Y: =10
-        - Index_DataCard1:
-            Control: TypedDataCard
-            Variant: textualEditCard
-            Layout: vertical
-            Properties:
-              DataField: ="cre0e_index"
-              Default: =ThisItem.Index
-              DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_index)
-              MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_index)
-              Update: =DataCardValue4.Text
-              DisplayMode: =Parent.DisplayMode
-              Height: =50
-              Width: =560
-            Children:
-            - StarVisible4:
-                Control: Label
-                Layout: vertical
-                Properties:
-                  Text: ="*"
-                  Align: =Align.Center
-                  Height: =DataCardKey4.Height
-                  Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
-                  Width: =30
-                  Wrap: =false
-                  Y: =DataCardKey4.Y
-            - ErrorMessage4:
-                Control: Label
-                Layout: vertical
-                Properties:
-                  Live: =Live.Assertive
-                  Text: =Parent.Error
-                  AutoHeight: =true
-                  Height: =10
-                  PaddingBottom: =0
-                  PaddingLeft: =0
-                  PaddingRight: =0
-                  PaddingTop: =0
-                  Visible: =Parent.DisplayMode=DisplayMode.Edit
-                  Width: =Parent.Width - 60
-                  X: =30
-                  Y: =DataCardValue4.Y + DataCardValue4.Height
-            - DataCardValue4:
-                Control: Classic/TextInput
-                Layout: vertical
-                Properties:
-                  Default: =Gallery5.Selected.Index
-                  DelayOutput: =true
-                  MaxLength: =Parent.MaxLength
-                  Tooltip: =Parent.DisplayName
-                  BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
-                  DisplayMode: =DisplayMode.Disabled
-                  PaddingLeft: =5
-                  RadiusBottomLeft: =0
-                  RadiusBottomRight: =0
-                  RadiusTopLeft: =0
-                  RadiusTopRight: =0
-                  Width: =Parent.Width - 60
-                  X: =30
-                  Y: =DataCardKey4.Y + DataCardKey4.Height + 5
-            - DataCardKey4:
-                Control: Label
-                Layout: vertical
-                Properties:
-                  Text: =Parent.DisplayName
-                  AutoHeight: =true
-                  Height: =34
-                  Width: =Parent.Width - 60
-                  Wrap: =false
-                  X: =30
-                  Y: =10
-        - ISBN_DataCard1:
-            Control: TypedDataCard
-            Variant: textualEditCard
-            Layout: vertical
-            Properties:
-              DataField: ="cre0e_isbn"
-              Default: =ThisItem.ISBN
-              DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_isbn)
-              MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_isbn)
-              Update: =DataCardValue5.Text
-              DisplayMode: =Parent.DisplayMode
-              Height: =50
-              Width: =560
-              Y: =2
-            Children:
-            - StarVisible5:
-                Control: Label
-                Layout: vertical
-                Properties:
-                  Text: ="*"
-                  Align: =Align.Center
-                  Height: =DataCardKey5.Height
-                  Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
-                  Width: =30
-                  Wrap: =false
-                  Y: =DataCardKey5.Y
-            - ErrorMessage5:
-                Control: Label
-                Layout: vertical
-                Properties:
-                  Live: =Live.Assertive
-                  Text: =Parent.Error
-                  AutoHeight: =true
-                  Height: =10
-                  PaddingBottom: =0
-                  PaddingLeft: =0
-                  PaddingRight: =0
-                  PaddingTop: =0
-                  Visible: =Parent.DisplayMode=DisplayMode.Edit
-                  Width: =Parent.Width - 60
-                  X: =30
-                  Y: =DataCardValue5.Y + DataCardValue5.Height
-            - DataCardValue5:
-                Control: Classic/TextInput
-                Layout: vertical
-                Properties:
-                  Default: =Gallery5.Selected.ISBN
-                  DelayOutput: =true
-                  MaxLength: =Parent.MaxLength
-                  Tooltip: =Parent.DisplayName
-                  BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
-                  DisplayMode: =Parent.DisplayMode
-                  PaddingLeft: =5
-                  RadiusBottomLeft: =0
-                  RadiusBottomRight: =0
-                  RadiusTopLeft: =0
-                  RadiusTopRight: =0
-                  Width: =Parent.Width - 60
-                  X: =30
-                  Y: =DataCardKey5.Y + DataCardKey5.Height + 5
-            - DataCardKey5:
-                Control: Label
-                Layout: vertical
-                Properties:
-                  Text: =Parent.DisplayName
-                  AutoHeight: =true
-                  Height: =34
-                  Width: =Parent.Width - 60
-                  Wrap: =false
-                  X: =30
-                  Y: =10
-        - Language_DataCard1:
-            Control: TypedDataCard
-            Variant: textualEditCard
-            Layout: vertical
-            Properties:
-              DataField: ="cre0e_language"
-              Default: =ThisItem.Language
-              DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_language)
-              MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_language)
-              Update: =
-              DisplayMode: =Parent.DisplayMode
-              Height: =50
-              Width: =560
-              Y: =3
-            Children:
-            - ComboBox3:
-                Control: Classic/ComboBox
-                Properties:
-                  DefaultSelectedItems: |+
-                    =Distinct(Filter(Sheet1s, Language = Gallery5.Selected.Language),Language)
-                  IsSearchable: =false
-                  Items: =Distinct(Sheet1s,Language)
-                  SelectMultiple: =false
-                  Width: =500
-                  X: =30
-                  Y: =40
-            - StarVisible6:
-                Control: Label
-                Layout: vertical
-                Properties:
-                  Text: ="*"
-                  Align: =Align.Center
-                  Height: =DataCardKey6.Height
-                  Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
-                  Width: =30
-                  Wrap: =false
-                  Y: =DataCardKey6.Y
-            - ErrorMessage6:
-                Control: Label
-                Layout: vertical
-                Properties:
-                  Live: =Live.Assertive
-                  Text: =Parent.Error
-                  AutoHeight: =true
-                  Height: =10
-                  PaddingBottom: =0
-                  PaddingLeft: =0
-                  PaddingRight: =0
-                  PaddingTop: =0
-                  Visible: =Parent.DisplayMode=DisplayMode.Edit
-                  Width: =Parent.Width - 60
-                  X: =30
-                  Y: =
-            - DataCardKey6:
-                Control: Label
-                Layout: vertical
-                Properties:
-                  Text: =Parent.DisplayName
-                  AutoHeight: =true
-                  Height: =34
-                  Width: =Parent.Width - 60
-                  Wrap: =false
-                  X: =30
-                  Y: =10
         - Number_of_Pages_DataCard1:
             Control: TypedDataCard
             Variant: textualEditCard
@@ -719,71 +874,6 @@
                   X: =30
                   Y: =DataCardKey7.Y + DataCardKey7.Height + 5
             - DataCardKey7:
-                Control: Label
-                Layout: vertical
-                Properties:
-                  Text: =Parent.DisplayName
-                  AutoHeight: =true
-                  Height: =34
-                  Width: =Parent.Width - 60
-                  Wrap: =false
-                  X: =30
-                  Y: =10
-        - Publication_Year_DataCard1:
-            Control: TypedDataCard
-            Variant: textualEditCard
-            Layout: vertical
-            Properties:
-              DataField: ="cre0e_publication_year"
-              Default: =ThisItem.Publication_Year
-              DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_publication_year)
-              MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_publication_year)
-              Update: =
-              DisplayMode: =Parent.DisplayMode
-              Height: =50
-              Width: =560
-              X: =1
-              Y: =2
-            Children:
-            - TextInput3:
-                Control: Classic/TextInput
-                Properties:
-                  Default: =Gallery5.Selected.Publication_Year
-                  RadiusBottomLeft: =0
-                  RadiusBottomRight: =0
-                  RadiusTopLeft: =0
-                  RadiusTopRight: =0
-                  Width: =500
-                  X: =30
-                  Y: =40
-            - StarVisible8:
-                Control: Label
-                Layout: vertical
-                Properties:
-                  Text: ="*"
-                  Align: =Align.Center
-                  Height: =DataCardKey8.Height
-                  Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
-                  Width: =30
-                  Wrap: =false
-                  Y: =DataCardKey8.Y
-            - ErrorMessage8:
-                Control: Label
-                Layout: vertical
-                Properties:
-                  Live: =Live.Assertive
-                  Text: =Parent.Error
-                  AutoHeight: =true
-                  Height: =10
-                  PaddingBottom: =0
-                  PaddingLeft: =0
-                  PaddingRight: =0
-                  PaddingTop: =0
-                  Visible: =Parent.DisplayMode=DisplayMode.Edit
-                  Width: =Parent.Width - 60
-                  X: =30
-                  Y: =
-            - DataCardKey8:
                 Control: Label
                 Layout: vertical
                 Properties:
@@ -856,77 +946,6 @@
                   X: =30
                   Y: =DataCardKey9.Y + DataCardKey9.Height + 5
             - DataCardKey9:
-                Control: Label
-                Layout: vertical
-                Properties:
-                  Text: =Parent.DisplayName
-                  AutoHeight: =true
-                  Height: =34
-                  Width: =Parent.Width - 60
-                  Wrap: =false
-                  X: =30
-                  Y: =10
-        - Title_DataCard1:
-            Control: TypedDataCard
-            Variant: textualEditCard
-            Layout: vertical
-            Properties:
-              DataField: ="cre0e_title"
-              Default: =ThisItem.Title
-              DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_title)
-              MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_title)
-              Update: =DataCardValue10.Text
-              DisplayMode: =Parent.DisplayMode
-              Height: =50
-              Width: =560
-              X: =1
-            Children:
-            - StarVisible10:
-                Control: Label
-                Layout: vertical
-                Properties:
-                  Text: ="*"
-                  Align: =Align.Center
-                  Height: =DataCardKey10.Height
-                  Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
-                  Width: =30
-                  Wrap: =false
-                  Y: =DataCardKey10.Y
-            - ErrorMessage10:
-                Control: Label
-                Layout: vertical
-                Properties:
-                  Live: =Live.Assertive
-                  Text: =Parent.Error
-                  AutoHeight: =true
-                  Height: =10
-                  PaddingBottom: =0
-                  PaddingLeft: =0
-                  PaddingRight: =0
-                  PaddingTop: =0
-                  Visible: =Parent.DisplayMode=DisplayMode.Edit
-                  Width: =Parent.Width - 60
-                  X: =30
-                  Y: =DataCardValue10.Y + DataCardValue10.Height
-            - DataCardValue10:
-                Control: Classic/TextInput
-                Layout: vertical
-                Properties:
-                  Default: =Gallery5.Selected.Title
-                  DelayOutput: =true
-                  MaxLength: =Parent.MaxLength
-                  Tooltip: =Parent.DisplayName
-                  BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
-                  DisplayMode: =Parent.DisplayMode
-                  PaddingLeft: =5
-                  RadiusBottomLeft: =0
-                  RadiusBottomRight: =0
-                  RadiusTopLeft: =0
-                  RadiusTopRight: =0
-                  Width: =Parent.Width - 60
-                  X: =30
-                  Y: =DataCardKey10.Y + DataCardKey10.Height + 5
-            - DataCardKey10:
                 Control: Label
                 Layout: vertical
                 Properties:
