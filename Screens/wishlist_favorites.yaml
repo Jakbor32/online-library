@@ -158,10 +158,27 @@
         - Button6:
             Control: Classic/Button
             Properties:
-              OnSelect: |-
+              OnSelect: |+
                 =Remove(
                     Wishlist,
                     LookUp(Wishlist, Book_ID = Gallery2_1.Selected.Index && Username = loggedInUser.username)
+                );
+
+                Patch(
+                    Library_logs,
+                    Defaults(Library_logs),
+                    {
+                        Event_ID: Text(Max(Library_logs, Event_ID) + 1),
+                        Event_Type: "Wishlist",
+                        Description: "Book removed from wishlist",
+                        Event_Name: "Remove Book",
+                        Event_Screen: App.ActiveScreen.Name,
+                        Event_Level: "3",
+                        Book_ID: Gallery2_1.Selected.Index,
+                        Username: loggedInUser.username,
+                        User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
+                        Event_Status: "Successful"
+                    }
                 );
               Text: ="Remove"
               Fill: =RGBA(255, 0, 0, 1)
