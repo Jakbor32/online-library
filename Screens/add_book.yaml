@@ -327,6 +327,23 @@
             );
 
             Notify("Book added successfully!", NotificationType.Success);
+
+            Patch(
+                Library_logs,
+                Defaults(Library_logs),
+                {
+                    Event_ID: Text(Max(Library_logs, Event_ID) + 1),
+                    Event_Type: "Book Management",
+                    Description: "Book added successfully",
+                    Event_Name: "Add Book",
+                    Event_Screen: App.ActiveScreen.Name,
+                    Event_Level: "3",
+                    Book_ID: Text(Max(Sheet1s,Index) + 1),
+                    Username: loggedInUser.username,
+                    User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
+                    Event_Status: "Successful"
+                }
+            );
           Text: ="Add Book"
           Height: =45
           Width: =181
@@ -337,7 +354,6 @@
         ComponentName: PageTitle
         Properties:
           screenInfo: =App.ActiveScreen
-          Fill: =RGBA(0, 0, 0, 1)
           Height: =50
           Width: =200
           X: =1166
