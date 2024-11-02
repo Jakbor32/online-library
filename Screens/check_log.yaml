@@ -1,6 +1,16 @@
 - Check Log:
     Control: Screen
     Children:
+    - Icon5:
+        Control: Classic/Icon
+        Variant: Reload
+        Properties:
+          OnSelect: "=ClearCollect(LibraryLogs, Library_logs); \r\nSet(SelectedLogs, SortByColumns(LibraryLogs, \"createdon\", SortOrder.Descending)); "
+          Height: =38
+          Icon: =Icon.Reload
+          Width: =39
+          X: =1084
+          Y: =25
     - gallery_th:
         Control: Group
         Children:
@@ -271,7 +281,8 @@
             Control: Gallery
             Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
             Properties:
-              Items: =Library_logs
+              Items: |+
+                =SelectedLogs
               DelayItemLoading: =true
               Height: =502
               Layout: =Layout.Vertical
@@ -287,7 +298,7 @@
                   OnSelect: =Select(Parent)
                   Fill: |+
                     =Switch(
-                        Value(ThisItem.Event_Level),
+                        Value(ThisItem.cre0e_event_level),
                         1, RGBA(255, 0, 0, 1),
                         2, RGBA(255, 165, 0, 1),
                         3, RGBA(255, 255, 0, 1),
@@ -308,7 +319,7 @@
                 Control: Label
                 Properties:
                   OnSelect: =Select(Parent)
-                  Text: =ThisItem.Event_Status
+                  Text: =ThisItem.cre0e_event_status
                   Align: =Align.Center
                   FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
                   Height: =21
@@ -324,7 +335,7 @@
                 Control: Label
                 Properties:
                   OnSelect: =Select(Parent)
-                  Text: =ThisItem.'Created On'
+                  Text: =ThisItem.createdon
                   Align: =Align.Center
                   FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
                   Height: =21
@@ -358,9 +369,9 @@
                   OnSelect: =Select(Parent)
                   Text: |+
                     =If(
-                        IsBlank(ThisItem.Book_ID), 
-                        "N/A",  // Jeśli Book_ID jest pusty, wyświetl "N/A"
-                        ThisItem.Book_ID  // W przeciwnym razie wyświetl Book_ID
+                        IsBlank(ThisItem.cre0e_book_id), 
+                        "N/A", 
+                        ThisItem.cre0e_book_id 
                     )
                   Align: =Align.Center
                   FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
@@ -377,7 +388,7 @@
                 Control: Label
                 Properties:
                   OnSelect: =Select(Parent)
-                  Text: =ThisItem.Event_Type
+                  Text: =ThisItem.cre0e_event_type
                   Align: =Align.Center
                   FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
                   Height: =21
@@ -393,23 +404,7 @@
                 Control: Label
                 Properties:
                   OnSelect: =Select(Parent)
-                  Text: =ThisItem.User_Role
-                  Align: =Align.Center
-                  FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
-                  Height: =Self.Size * 1.8
-                  PaddingBottom: =0
-                  PaddingLeft: =0
-                  PaddingRight: =0
-                  PaddingTop: =0
-                  VerticalAlign: =VerticalAlign.Top
-                  Width: =log_index.Width
-                  X: =402
-                  Y: =27
-            - log_username:
-                Control: Label
-                Properties:
-                  OnSelect: =Select(Parent)
-                  Text: =ThisItem.Username
+                  Text: =ThisItem.cre0e_user_role
                   Align: =Align.Center
                   FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
                   Height: =21
@@ -418,14 +413,30 @@
                   PaddingRight: =0
                   PaddingTop: =0
                   VerticalAlign: =VerticalAlign.Top
-                  Width: =106
+                  Width: =88
+                  X: =380
+                  Y: =27
+            - log_username:
+                Control: Label
+                Properties:
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.cre0e_username
+                  Align: =Align.Center
+                  FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                  Height: =21
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =93
                   X: =287
                   Y: =27
             - log_screen:
                 Control: Label
                 Properties:
                   OnSelect: =Select(Parent)
-                  Text: =ThisItem.Event_Screen
+                  Text: =ThisItem.cre0e_event_screen
                   Align: =Align.Center
                   FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
                   Height: =21
@@ -441,7 +452,7 @@
                 Control: Label
                 Properties:
                   OnSelect: =Select(Parent)
-                  Text: =ThisItem.Event_Name
+                  Text: =ThisItem.cre0e_event_name
                   Align: =Align.Center
                   FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
                   Height: =21
@@ -457,7 +468,7 @@
                 Control: Label
                 Properties:
                   OnSelect: =Select(Parent)
-                  Text: =ThisItem.Event_ID
+                  Text: =ThisItem.cre0e_event_id
                   Align: =Align.Center
                   FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
                   Height: =21
@@ -468,6 +479,17 @@
                   VerticalAlign: =VerticalAlign.Top
                   Width: =52
                   Y: =27
+        - noLogsLabel:
+            Control: Label
+            Properties:
+              Text: |+
+                ="No logs available."
+              Align: =Align.Center
+              Height: =503
+              Size: =30
+              Visible: =showNoLogsMessage
+              Width: =1334
+              Y: =55
     - event_type_container:
         Control: GroupContainer
         Variant: manualLayoutContainer
@@ -492,7 +514,10 @@
             - other_logs:
                 Control: Classic/Button
                 Properties:
-                  Text: ="Admin logs"
+                  OnSelect: |-
+                    =Set(SelectedLogs, Filter(LibraryLogs, false));
+                    UpdateContext({ showNoLogsMessage: IsEmpty(SelectedLogs) });
+                  Text: ="Other logs"
         - btn_container_4:
             Control: GroupContainer
             Variant: horizontalAutoLayoutContainer
@@ -508,6 +533,11 @@
             - login_logs:
                 Control: Classic/Button
                 Properties:
+                  OnSelect: |+
+                    =ClearCollect(LibraryLogs, Library_logs); 
+                    Set(SelectedLogs, SortByColumns(Filter(LibraryLogs, Event_Screen in ["Register_page", "Login_page"]), 
+                    "createdon", SortOrder.Descending));
+                    UpdateContext({ showNoLogsMessage: IsEmpty(SelectedLogs) });
                   Text: ="Login logs"
         - btn_container_3:
             Control: GroupContainer
@@ -524,6 +554,10 @@
             - books_logs:
                 Control: Classic/Button
                 Properties:
+                  OnSelect: |-
+                    =ClearCollect(LibraryLogs, Library_logs); 
+                    Set(SelectedLogs, SortByColumns(Filter(LibraryLogs, Event_Screen in ["Book Details", "Wishlist / Favorites", "Add Book", "Edit Book", "Delete Book"]), "createdon", SortOrder.Descending));
+                    UpdateContext({ showNoLogsMessage: IsEmpty(SelectedLogs) });
                   Text: ="Books logs"
         - btn_container_2:
             Control: GroupContainer
@@ -540,6 +574,10 @@
             - user_logs:
                 Control: Classic/Button
                 Properties:
+                  OnSelect: |-
+                    =ClearCollect(LibraryLogs, Library_logs); 
+                    Set(SelectedLogs, SortByColumns(Filter(LibraryLogs, Event_Screen = "User Profile"), "createdon", SortOrder.Descending));
+                    UpdateContext({ showNoLogsMessage: IsEmpty(SelectedLogs) });
                   Text: ="Users logs"
         - btn_container_1:
             Control: GroupContainer
@@ -556,7 +594,11 @@
             - admin_logs:
                 Control: Classic/Button
                 Properties:
-                  Text: ="Other logs"
+                  OnSelect: |-
+                    =ClearCollect(LibraryLogs, Library_logs); 
+                    Set(SelectedLogs, SortByColumns(Filter(LibraryLogs, Event_Screen = "Manage Users"), "createdon", SortOrder.Descending));
+                    UpdateContext({ showNoLogsMessage: IsEmpty(SelectedLogs) });
+                  Text: ="Admin logs"
     - gallery_th_bg:
         Control: Rectangle
         Properties:
