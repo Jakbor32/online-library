@@ -1,0 +1,282 @@
+- Borrowing History:
+    Control: Screen
+    Children:
+    - Th_gallery:
+        Control: Group
+        Children:
+        - status_label:
+            Control: Label
+            Properties:
+              Text: ="Status"
+              Align: =Align.Center
+              X: =1150
+              Y: =139
+        - return_date_label:
+            Control: Label
+            Properties:
+              Text: ="Return_Date"
+              Align: =Align.Center
+              X: =711
+              Y: =139
+        - borrow_date_label:
+            Control: Label
+            Properties:
+              Text: ="Borrow_Date"
+              Align: =Align.Center
+              X: =455
+              Y: =139
+        - name_label:
+            Control: Label
+            Properties:
+              Text: ="Name"
+              Align: =Align.Center
+              X: =86
+              Y: =139
+        - created_label:
+            Control: Label
+            Properties:
+              Text: ="Created"
+              Align: =Align.Center
+              Width: =192
+              X: =933
+              Y: =139
+        - book_id_label:
+            Control: Label
+            Properties:
+              Text: ="Book_ID"
+              Align: =Align.Center
+              Width: =189
+              X: =254
+              Y: =139
+        - id_label:
+            Control: Label
+            Properties:
+              Text: ="ID"
+              Align: =Align.Center
+              Width: =75
+              Y: =139
+        - bg_gallery:
+            Control: Rectangle
+            Properties:
+              Fill: =RGBA(202, 202, 202, 1)
+              Height: =56
+              Width: =1366
+              Y: =131
+    - PageTitle_12:
+        Control: Component
+        ComponentName: PageTitle
+        Properties:
+          screenInfo: =App.ActiveScreen
+          Height: =50
+          Width: =200
+          X: =1166
+    - MenuLeftNav_7:
+        Control: Component
+        ComponentName: MenuLeftNav
+        Properties:
+          AdminAccess: =varAdminAccess
+          HamburgerMenuColor: =Color.Blue
+          LoggedUser: =varLoggedUser
+          MenuBkgColor: =RGBA(220,220,220,1)
+          MenuColor: =Color.Purple
+          MenuItems: |
+            =Table(
+                {
+                    MenuLabel: "Dashboard",
+                    MenuIcon: Icon.Home,
+                    MenuScreenNavigate: Dashboard,
+                    MenuID: 1,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Book Catalog",
+                    MenuIcon: Icon.Database,
+                    MenuScreenNavigate: 'Book Catalog',
+                    MenuID: 2,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Book Details",
+                    MenuIcon: Icon.ListScrollWatchlist,
+                    MenuScreenNavigate: 'Book Details',
+                    MenuID: 3,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Your Books",
+                    MenuIcon: Icon.Notebook,
+                    MenuScreenNavigate: 'Your Books',
+                    MenuID: 4,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Wishlist / Favorites",
+                    MenuIcon: Icon.Heart,
+                    MenuScreenNavigate: 'Wishlist / Favorites',
+                    MenuID: 5,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Book Reservations",
+                    MenuIcon: Icon.CalendarBlank,
+                    MenuScreenNavigate: 'Book Reservations',
+                    MenuID: 6,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Borrowing History",
+                    MenuIcon: Icon.History,
+                    MenuScreenNavigate: 'Borrowing History',
+                    MenuID: 7,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Library Ranking",
+                    MenuIcon: Icon.Globe,
+                    MenuScreenNavigate: 'Library Ranking',
+                    MenuID: 8,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "User Profile",
+                    MenuIcon: Icon.Person,
+                    MenuScreenNavigate: 'User Profile',
+                    MenuID: 9,
+                    SubMenu: Table()
+                },
+                {
+                    MenuLabel: "Admin Panel",
+                    MenuIcon: Icon.Manufacture,
+                    //MenuScreenNavigate: 'Admin Panel',
+                    MenuID: 10,
+                    VisibleSubMenu: true,
+                    SubMenu: Table(
+                        {
+                            MenuLabel: "Add Book",
+                            MenuIcon: Icon.AddDocument,
+                            MenuScreenNavigate: 'Add Book',
+                            MenuID: 1
+                        },
+                        {
+                            MenuLabel: "Edit Book",
+                            MenuIcon: Icon.ColorPicker,
+                            MenuScreenNavigate: 'Edit Book',
+                            MenuID: 2
+                        },
+                        {
+                            MenuLabel: "Delete Book",
+                            MenuIcon: Icon.ClearDrawing,
+                            MenuScreenNavigate: 'Delete Book',
+                            MenuID: 3
+                        },
+                        {
+                            MenuLabel: "Manage Users",
+                            MenuIcon: Icon.People,
+                            MenuScreenNavigate: 'Manage Users',
+                            MenuID: 4
+                        },
+                        {
+                            MenuLabel: "Manage Loans",
+                            MenuIcon: Icon.Currency,
+                            MenuScreenNavigate: 'Manage Loans',
+                            MenuID: 5
+                        },
+                        {
+                            MenuLabel: "Manage Reservations",
+                            MenuIcon: Icon.PhotosPictures,
+                            MenuScreenNavigate: 'Manage Reservations',
+                            MenuID: 6
+                        },
+                        {
+                            MenuLabel: "Library Settings",
+                            MenuIcon: Icon.Settings,
+                            MenuScreenNavigate: 'Library Settings',
+                            MenuID: 7
+                        },
+                        {
+                            MenuLabel: "Check Log",
+                            MenuIcon: Icon.Warning,
+                            MenuScreenNavigate: 'Check Log',
+                            MenuID: 8
+                        }
+                    )
+                }
+            )
+          SetMenuWidth: =300
+          Height: =If(!MenuLeftNav_7.showMenuProp, 50, App.Height)
+          Width: =MenuLeftNav_7.MenuWidth
+    - borrowing_history_gallery:
+        Control: Gallery
+        Variant: variableTemplateHeightGallery
+        Properties:
+          Items: =Filter(BookLoans, Username = loggedInUser.username)
+          DelayItemLoading: =true
+          Layout: =Layout.Vertical
+          LoadingSpinner: =LoadingSpinner.Data
+          TemplateSize: =59
+          Width: =1366
+          Y: =187
+        Children:
+        - status_label_g:
+            Control: Label
+            Properties:
+              OnSelect: =Select(Parent)
+              Text: =ThisItem.'Status (cre0e_status)'
+              Align: =Align.Center
+              Width: =189
+              X: =1133
+              Y: =10
+        - return_date_label_g:
+            Control: Label
+            Properties:
+              OnSelect: =Select(Parent)
+              Text: =ThisItem.Return_Date
+              Align: =Align.Center
+              Width: =189
+              X: =682
+              Y: =10
+        - borrow_date_label_g:
+            Control: Label
+            Properties:
+              OnSelect: =Select(Parent)
+              Text: =ThisItem.Borrow_Date
+              Align: =Align.Center
+              Width: =189
+              X: =435
+              Y: =10
+        - name_label_g:
+            Control: Label
+            Properties:
+              OnSelect: =Select(Parent)
+              Text: =ThisItem.Username
+              Align: =Align.Center
+              Width: =153
+              X: =77
+              Y: =10
+        - book_id_label_g:
+            Control: Label
+            Properties:
+              OnSelect: =Select(Parent)
+              Text: =ThisItem.Book_ID
+              Align: =Align.Center
+              Width: =189
+              X: =246
+              Y: =10
+        - created_label_g:
+            Control: Label
+            Properties:
+              OnSelect: =Select(Parent)
+              Text: =ThisItem.'Created On'
+              Align: =Align.Center
+              Width: =189
+              X: =923
+              Y: =10
+        - id_label_g:
+            Control: Label
+            Properties:
+              OnSelect: =Select(Parent)
+              Text: =ThisItem.Index
+              Align: =Align.Center
+              Width: =56
+              X: =2
+              Y: =10
