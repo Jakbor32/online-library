@@ -1,6 +1,18 @@
 - Book Catalog:
     Control: Screen
     Children:
+    - resetCbFiltering:
+        Control: Classic/Button
+        Properties:
+          OnSelect: |-
+            =Reset(cbGenre);
+            Reset(cbLanguage);
+            Reset(cbPublicationYear);
+          Text: ="Reset"
+          Height: =44
+          Width: =108
+          X: =1236
+          Y: =85
     - MenuLeftNav_2:
         Control: Component
         ComponentName: MenuLeftNav
@@ -143,22 +155,22 @@
           Items: |+
             =Filter(
                 Sheet1s,
-                (IsBlank(ComboBox2_1.Selected.Value) || Genre = ComboBox2_1.Selected.Value),
-                (IsBlank(ComboBox2_2.Selected.Value) || Language = ComboBox2_2.Selected.Value),
-                (IsBlank(ComboBox2.Selected.Value) || Publication_Year = ComboBox2.Selected.Value)
+                (IsBlank(cbGenre.Selected.Value) || Genre in cbGenre.SelectedItems),
+                (IsBlank(cbLanguage.Selected.Value) || Language in cbLanguage.SelectedItems),
+                (IsBlank(cbPublicationYear.Selected.Value) || Publication_Year in cbPublicationYear.SelectedItems)
             )
+          WrapCount: =2
           DelayItemLoading: =true
-          Height: =336
+          Height: =626
           LoadingSpinner: =LoadingSpinner.Data
           NavigationStep: =5
           ShowNavigation: =true
           ShowScrollbar: =false
           TemplatePadding: =0
-          TemplateSize: =Min(440, Self.Height - 60)
+          TemplateSize: =296
           Transition: =Transition.Push
           Width: =1365
-          X: =1
-          Y: =432
+          Y: =142
         Children:
         - Button5_2:
             Control: Classic/Button
@@ -170,7 +182,7 @@
               Height: =336
               HoverFill: =RGBA(0, 0, 0, 0)
               PressedFill: =RGBA(0, 0, 0, 0)
-              Width: =276
+              Width: =283
         - Label4_2:
             Control: Label
             Properties:
@@ -195,7 +207,7 @@
               Width: =174
               X: =51
               Y: =13
-    - ComboBox2_2:
+    - cbLanguage:
         Control: Classic/ComboBox
         Properties:
           DisplayFields: =["Value"]
@@ -204,9 +216,9 @@
           SearchFields: =["Value"]
           Height: =38
           Width: =276
-          X: =544
-          Y: =294
-    - ComboBox2_1:
+          X: =502
+          Y: =85
+    - cbGenre:
         Control: Classic/ComboBox
         Properties:
           DisplayFields: =["Value"]
@@ -215,9 +227,9 @@
           SearchFields: =["Value"]
           Height: =38
           Width: =276
-          X: =109
-          Y: =294
-    - ComboBox2:
+          X: =90
+          Y: =85
+    - cbPublicationYear:
         Control: Classic/ComboBox
         Properties:
           DisplayFields: =["Value"]
@@ -226,8 +238,8 @@
           SearchFields: =["Value"]
           Height: =38
           Width: =276
-          X: =955
-          Y: =294
+          X: =921
+          Y: =85
     - PageTitle_10:
         Control: Component
         ComponentName: PageTitle
