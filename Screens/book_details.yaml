@@ -177,13 +177,76 @@
           Width: =1366
           Y: =74
         Children:
+        - Reserve_book_btn:
+            Control: Classic/Button
+            Properties:
+              OnSelect: |+
+                =ClearCollect(CurrentReservations, Filter(Library_Reservations, Book_ID = selectedBookId && 'Status (cre0e_status)' = "Reserved"));
+                Set(NewIndex, Text(If(IsEmpty(Library_Reservations), 1, Value(Max(Library_Reservations, Index)) + 1), "[$-en-US]0"));
+                Set(QueuePosition, Text(CountRows(CurrentReservations) + 1, "[$-en-US]0"));
+                Collect(Library_Reservations, {
+                    Index: NewIndex,
+                    Book_ID: selectedBookId,
+                    Username: currentUsername,
+                    'Status (cre0e_status)': "Reserved",
+                    Queue_Position: QueuePosition
+                });
+
+                Notify("Book reserved successfully! Your position in queue: " & QueuePosition, NotificationType.Success);
+
+
+                Patch(
+                    Library_logs,
+                    Defaults(Library_logs),
+                    {
+                        Event_ID: Text(Max(Library_logs, Event_ID) + 1),
+                        Event_Type: "Book Reservation",
+                        Description: "Book reserved successfully",
+                        Event_Name: "Reserve Book",
+                        Event_Screen: App.ActiveScreen.Name,
+                        Event_Level: "3",  
+                        Book_ID: selectedBookId,
+                        Username: currentUsername,
+                        User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
+                        Event_Status: "Successful"
+                    }
+                )
+
+              Text: |+
+                =If(
+                    !IsBlank(
+                        LookUp(Library_Reservations, Book_ID = selectedBookId && Username = currentUsername && 'Status (cre0e_status)' = "Reserved")
+                    ),
+                    "Reserved", 
+                    "Reserve a book" 
+                )
+              DisplayMode: |+
+                =If(
+                    !IsBlank(
+                        LookUp(Library_Reservations, Book_ID = selectedBookId && Username = currentUsername && 'Status (cre0e_status)' = "Reserved")
+                    ),
+                    DisplayMode.Disabled,
+                    DisplayMode.Edit
+                )
+              Fill: =RGBA(99, 139, 44, 1)
+              Height: =52
+              HoverFill: =ColorFade(RGBA(99, 139, 44, 1), -20%)
+              RadiusBottomLeft: =100
+              RadiusBottomRight: =100
+              RadiusTopLeft: =100
+              RadiusTopRight: =100
+              Width: =183
+              X: =1092
+              Y: =289
         - Rent_book_btn:
             Control: Classic/Button
             Properties:
               OnSelect: |+
                 =Set(selectedBookId, id_data.Text);
                 Set(currentUsername, loggedInUser.username);
-                Set(existingLoan, LookUp(BookLoans, Book_ID = selectedBookId && (IsBlank(Return_Date) || Return_Date >= Today())));
+                Set(existingLoan, LookUp(BookLoans, Book_ID = selectedBookId && 'Status (cre0e_status)' = "rented"));
+
+
 
                 If(
                     IsBlank(existingLoan),
@@ -216,7 +279,11 @@
                         }
                     ),
                     Set(daysRemaining, DateDiff(Today(), existingLoan.Return_Date));
-                    Notify("The book is unavailable! Days remaining: " & daysRemaining, NotificationType.Error);
+                    If(
+                        existingLoan.'Status (cre0e_status)' = "rented" && existingLoan.Return_Date >= Today(),
+                        Notify("The book is unavailable! Days remaining: " & daysRemaining, NotificationType.Error),
+                        Notify("The book is unavailable. Please wait for its return.", NotificationType.Error)
+                    );
                     Patch(
                         Library_logs,
                         Defaults(Library_logs),
@@ -236,13 +303,29 @@
                 );
               Text: |+
                 =If(
-                    IsBlank(LookUp(BookLoans, Book_ID = id_data.Text && (IsBlank(Return_Date) || Return_Date >= Today()))),
-                    "Rent a Book",
+                    IsBlank(LookUp(BookLoans, Book_ID = selectedBookId && 'Status (cre0e_status)' = "rented")),
+                    "Rent a Book", 
                     "Rented"
                 )
-              Fill: =RGBA(99, 139, 44, 1)
+              Fill: |+
+                =If(
+                    !IsBlank(LookUp(BookLoans, Book_ID = selectedBookId && 'Status (cre0e_status)' = "rented")),
+                    RGBA(255, 0, 0, 1), 
+                    RGBA(0, 255, 0, 1)
+                )
               Height: =52
-              HoverFill: =ColorFade(RGBA(99, 139, 44, 1), -20%)
+              HoverFill: |+
+                =If(
+                    !IsBlank(LookUp(BookLoans, Book_ID = selectedBookId && 'Status (cre0e_status)' = "rented")),
+                    RGBA(255, 0, 0, 1), 
+                    RGBA(0, 255, 0, 1)
+                )
+              PressedFill: |+
+                =If(
+                    !IsBlank(LookUp(BookLoans, Book_ID = selectedBookId && 'Status (cre0e_status)' = "rented")),
+                    RGBA(255, 0, 0, 1), 
+                    RGBA(0, 255, 0, 1)
+                )
               RadiusBottomLeft: =100
               RadiusBottomRight: =100
               RadiusTopLeft: =100
