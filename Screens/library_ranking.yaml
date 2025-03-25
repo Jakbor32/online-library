@@ -1,0 +1,429 @@
+Screens:
+  Library Ranking:
+    Properties:
+      LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
+      OnVisible: |+
+        =ClearCollect(
+            GroupedBookLoans,
+            AddColumns(
+                GroupBy(BookLoans, cre0e_username, cre0e_index),
+                "LoanCount",
+                CountRows(UserLoans)
+            )
+        )
+    Children:
+      - Container14:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            Height: =768
+            LayoutDirection: =LayoutDirection.Horizontal
+            Width: =1366
+          Children:
+            - Global_ranking_container:
+                Control: GroupContainer@1.3.0
+                Variant: ManualLayout
+                Children:
+                  - global_ranking_label:
+                      Control: Label@2.5.1
+                      Properties:
+                        Align: =Align.Center
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =55
+                        Size: =20
+                        Text: ="Global ranking"
+                        Width: =275
+                        X: =180
+                        Y: =8
+                  - gold_cup_1:
+                      Control: Image@2.2.3
+                      Group: group_cups_image
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Height: =60
+                        Image: =first_place
+                        Width: =30
+                        X: =170
+                        Y: =125
+                  - bronze_cup_1:
+                      Control: Image@2.2.3
+                      Group: group_cups_image
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Height: =60
+                        Image: =third_place
+                        Width: =30
+                        X: =168
+                        Y: =245
+                  - silver_cup_1:
+                      Control: Image@2.2.3
+                      Group: group_cups_image
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Height: =60
+                        Image: =second_place
+                        Width: =30
+                        X: =170
+                        Y: =185
+                  - Ranking_gallery:
+                      Control: Gallery@2.15.0
+                      Variant: Vertical
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Height: =488
+                        Items: |-
+                          =
+                              GroupBy(
+                                  BookLoans,
+                                  cre0e_username,
+                                  cre0e_index
+                              )
+                        TemplateSize: =52
+                        Width: =293
+                        X: =200
+                        Y: =125
+                      Children:
+                        - name_label_1:
+                            Control: Label@2.5.1
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Font: =Font.'Open Sans'
+                              Height: =48
+                              OnSelect: =Select(Parent)
+                              Text: =ThisItem.cre0e_username
+                              Width: =83
+                              Y: =4
+                        - get_all_books_per_user:
+                            Control: Gallery@2.15.0
+                            Variant: BrowseLayout_Horizontal_TwoTextOneImageVariant_ver5.0
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Height: =40
+                              Items: =ThisItem.cre0e_index
+                              Visible: =false
+                              Width: =46
+                              X: =226
+                        - amount_label_1:
+                            Control: Label@2.5.1
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Font: =Font.'Open Sans'
+                              Height: =52
+                              OnSelect: =Select(Parent)
+                              Text: =get_all_books_per_user.AllItemsCount
+                              Width: =48
+                              X: =235
+                  - Name__label:
+                      Control: Label@2.5.1
+                      Properties:
+                        Align: =Align.Center
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Text: ="Name"
+                        Width: =76
+                        X: =198
+                        Y: =85
+                  - Amount__label:
+                      Control: Label@2.5.1
+                      Properties:
+                        Align: =Align.Center
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Text: ="Amount"
+                        Width: =107
+                        X: =417
+                        Y: =85
+            - Vertical_container:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  LayoutDirection: =LayoutDirection.Vertical
+                Children:
+                  - Last_year_container:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Children:
+                        - last_year_label:
+                            Control: Label@2.5.1
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Font: =Font.'Open Sans'
+                              Height: =55
+                              PaddingLeft: =15
+                              Size: =20
+                              Text: ="Last year:"
+                              Width: =275
+                        - gold_cup_2:
+                            Control: Image@2.2.3
+                            Group: Group_cups_image_2
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Height: =61
+                              Image: =first_place
+                              Width: =50
+                              X: =105
+                              Y: =92
+                        - bronze_cup_2:
+                            Control: Image@2.2.3
+                            Group: Group_cups_image_2
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Image: =third_place
+                              Width: =50
+                              X: =105
+                              Y: =238
+                        - silver_cup_2:
+                            Control: Image@2.2.3
+                            Group: Group_cups_image_2
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Image: =second_place
+                              Width: =50
+                              X: =105
+                              Y: =153
+                        - bronze:
+                            Control: Label@2.5.1
+                            Group: Best_score_group
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =30
+                              Text: ="------"
+                              Width: =54
+                              X: =168
+                              Y: =273
+                        - silver:
+                            Control: Label@2.5.1
+                            Group: Best_score_group
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =30
+                              Text: ="------"
+                              Width: =54
+                              X: =168
+                              Y: =188
+                        - gold:
+                            Control: Label@2.5.1
+                            Group: Best_score_group
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =30
+                              Text: ="------"
+                              Width: =54
+                              X: =168
+                              Y: =107
+                  - Your_rented_books_container:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Children:
+                        - your_rented_books_label:
+                            Control: Label@2.5.1
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Font: =Font.'Open Sans'
+                              Height: =55
+                              PaddingLeft: =15
+                              Size: =20
+                              Text: ="Your rented books:"
+                              Width: =275
+                              X: =4
+                              Y: =12
+                        - Ranking_gallery_1:
+                            Control: Gallery@2.15.0
+                            Variant: Vertical
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Height: =85
+                              Items: =GroupBy(Filter(BookLoans, cre0e_username = loggedInUser.username), cre0e_username, cre0e_index)
+                              TemplateSize: =52
+                              Width: =144
+                              X: =285
+                              Y: =8
+                            Children:
+                              - name_label_2:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Font: =Font.'Open Sans'
+                                    Height: =48
+                                    OnSelect: =Select(Parent)
+                                    Text: =ThisItem.cre0e_username
+                                    Width: =83
+                                    Y: =4
+                              - get_all_books_per_user_1:
+                                  Control: Gallery@2.15.0
+                                  Variant: BrowseLayout_Horizontal_TwoTextOneImageVariant_ver5.0
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Height: =40
+                                    Items: =ThisItem.cre0e_index
+                                    Visible: =false
+                                    Width: =46
+                                    X: =226
+                              - amount_label_2:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Font: =Font.'Open Sans'
+                                    Height: =52
+                                    OnSelect: =Select(Parent)
+                                    Text: =get_all_books_per_user_1.AllItemsCount
+                                    Width: =48
+                                    X: =83
+      - PageTitle_15:
+          Control: CanvasComponent
+          ComponentName: PageTitle
+          Properties:
+            Height: =50
+            Width: =200
+            X: =1166
+            screenInfo: =App.ActiveScreen
+      - MenuLeftNav_8:
+          Control: CanvasComponent
+          ComponentName: MenuLeftNav
+          Properties:
+            AdminAccess: =varAdminAccess
+            ExpandMenu: =
+            HamburgerMenuColor: =Color.Blue
+            Height: =If(!MenuLeftNav_8.showMenuProp, 50, App.Height)
+            LoggedUser: =varLoggedUser
+            MenuBkgColor: =RGBA(220,220,220,1)
+            MenuColor: =Color.Purple
+            MenuItems: |
+              =Table(
+                  {
+                      MenuLabel: "Dashboard",
+                      MenuIcon: Icon.Home,
+                      MenuScreenNavigate: Dashboard,
+                      MenuID: 1,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Book Catalog",
+                      MenuIcon: Icon.Database,
+                      MenuScreenNavigate: 'Book Catalog',
+                      MenuID: 2,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Book Details",
+                      MenuIcon: Icon.ListScrollWatchlist,
+                      MenuScreenNavigate: 'Book Details',
+                      MenuID: 3,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Your Books",
+                      MenuIcon: Icon.Notebook,
+                      MenuScreenNavigate: 'Your Books',
+                      MenuID: 4,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Wishlist / Favorites",
+                      MenuIcon: Icon.Heart,
+                      MenuScreenNavigate: 'Wishlist / Favorites',
+                      MenuID: 5,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Book Reservations",
+                      MenuIcon: Icon.CalendarBlank,
+                      MenuScreenNavigate: 'Book Reservations',
+                      MenuID: 6,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Borrowing History",
+                      MenuIcon: Icon.History,
+                      MenuScreenNavigate: 'Borrowing History',
+                      MenuID: 7,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Library Ranking",
+                      MenuIcon: Icon.Globe,
+                      MenuScreenNavigate: 'Library Ranking',
+                      MenuID: 8,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "User Profile",
+                      MenuIcon: Icon.Person,
+                      MenuScreenNavigate: 'User Profile',
+                      MenuID: 9,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Admin Panel",
+                      MenuIcon: Icon.Manufacture,
+                      //MenuScreenNavigate: 'Admin Panel',
+                      MenuID: 10,
+                      VisibleSubMenu: true,
+                      SubMenu: Table(
+                          {
+                              MenuLabel: "Add Book",
+                              MenuIcon: Icon.AddDocument,
+                              MenuScreenNavigate: 'Add Book',
+                              MenuID: 1
+                          },
+                          {
+                              MenuLabel: "Edit Book",
+                              MenuIcon: Icon.ColorPicker,
+                              MenuScreenNavigate: 'Edit Book',
+                              MenuID: 2
+                          },
+                          {
+                              MenuLabel: "Delete Book",
+                              MenuIcon: Icon.ClearDrawing,
+                              MenuScreenNavigate: 'Delete Book',
+                              MenuID: 3
+                          },
+                          {
+                              MenuLabel: "Manage Users",
+                              MenuIcon: Icon.People,
+                              MenuScreenNavigate: 'Manage Users',
+                              MenuID: 4
+                          },
+                          {
+                              MenuLabel: "Manage Loans",
+                              MenuIcon: Icon.Currency,
+                              MenuScreenNavigate: 'Manage Loans',
+                              MenuID: 5
+                          },
+                          {
+                              MenuLabel: "Manage Reservations",
+                              MenuIcon: Icon.PhotosPictures,
+                              MenuScreenNavigate: 'Manage Reservations',
+                              MenuID: 6
+                          },
+                          {
+                              MenuLabel: "Library Settings",
+                              MenuIcon: Icon.Settings,
+                              MenuScreenNavigate: 'Library Settings',
+                              MenuID: 7
+                          },
+                          {
+                              MenuLabel: "Check Log",
+                              MenuIcon: Icon.Warning,
+                              MenuScreenNavigate: 'Check Log',
+                              MenuID: 8
+                          }
+                      )
+                  }
+              )
+            SetMenuWidth: =300
+            Width: =MenuLeftNav_8.MenuWidth

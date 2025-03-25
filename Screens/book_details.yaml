@@ -1,519 +1,625 @@
-- Book Details:
-    Control: Screen
+Screens:
+  Book Details:
     Properties:
       Fill: =RGBA(237, 237, 237, 1)
+      LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
     Children:
-    - Search_book_name:
-        Control: Classic/TextInput
-        Properties:
-          OnChange: |-
-            =UpdateContext({ SelectedItem: Blank() })
-          Default: =
-          HintText: ="Enter Book Name"
-          X: =468
-          Y: =10
-    - MenuLeftNav_3:
-        Control: Component
-        ComponentName: MenuLeftNav
-        Properties:
-          AdminAccess: =varAdminAccess
-          HamburgerMenuColor: =Color.Blue
-          LoggedUser: =varLoggedUser
-          MenuBkgColor: =RGBA(220,220,220,1)
-          MenuColor: =Color.Purple
-          MenuItems: |
-            =Table(
-                {
-                    MenuLabel: "Dashboard",
-                    MenuIcon: Icon.Home,
-                    MenuScreenNavigate: Dashboard,
-                    MenuID: 1,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Book Catalog",
-                    MenuIcon: Icon.Database,
-                    MenuScreenNavigate: 'Book Catalog',
-                    MenuID: 2,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Book Details",
-                    MenuIcon: Icon.ListScrollWatchlist,
-                    MenuScreenNavigate: 'Book Details',
-                    MenuID: 3,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Your Books",
-                    MenuIcon: Icon.Notebook,
-                    MenuScreenNavigate: 'Your Books',
-                    MenuID: 4,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Wishlist / Favorites",
-                    MenuIcon: Icon.Heart,
-                    MenuScreenNavigate: 'Wishlist / Favorites',
-                    MenuID: 5,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Book Reservations",
-                    MenuIcon: Icon.CalendarBlank,
-                    MenuScreenNavigate: 'Book Reservations',
-                    MenuID: 6,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Borrowing History",
-                    MenuIcon: Icon.History,
-                    MenuScreenNavigate: 'Borrowing History',
-                    MenuID: 7,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Library Ranking",
-                    MenuIcon: Icon.Globe,
-                    MenuScreenNavigate: 'Library Ranking',
-                    MenuID: 8,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "User Profile",
-                    MenuIcon: Icon.Person,
-                    MenuScreenNavigate: 'User Profile',
-                    MenuID: 9,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Admin Panel",
-                    MenuIcon: Icon.Manufacture,
-                    //MenuScreenNavigate: 'Admin Panel',
-                    MenuID: 10,
-                    VisibleSubMenu: true,
-                    SubMenu: Table(
-                        {
-                            MenuLabel: "Add Book",
-                            MenuIcon: Icon.AddDocument,
-                            MenuScreenNavigate: 'Add Book',
-                            MenuID: 1
-                        },
-                        {
-                            MenuLabel: "Edit Book",
-                            MenuIcon: Icon.ColorPicker,
-                            MenuScreenNavigate: 'Edit Book',
-                            MenuID: 2
-                        },
-                        {
-                            MenuLabel: "Delete Book",
-                            MenuIcon: Icon.ClearDrawing,
-                            MenuScreenNavigate: 'Delete Book',
-                            MenuID: 3
-                        },
-                        {
-                            MenuLabel: "Manage Users",
-                            MenuIcon: Icon.People,
-                            MenuScreenNavigate: 'Manage Users',
-                            MenuID: 4
-                        },
-                        {
-                            MenuLabel: "Manage Loans",
-                            MenuIcon: Icon.Currency,
-                            MenuScreenNavigate: 'Manage Loans',
-                            MenuID: 5
-                        },
-                        {
-                            MenuLabel: "Manage Reservations",
-                            MenuIcon: Icon.PhotosPictures,
-                            MenuScreenNavigate: 'Manage Reservations',
-                            MenuID: 6
-                        },
-                        {
-                            MenuLabel: "Library Settings",
-                            MenuIcon: Icon.Settings,
-                            MenuScreenNavigate: 'Library Settings',
-                            MenuID: 7
-                        },
-                        {
-                            MenuLabel: "Check Log",
-                            MenuIcon: Icon.Warning,
-                            MenuScreenNavigate: 'Check Log',
-                            MenuID: 8
-                        }
+      - PageTitle_2:
+          Control: CanvasComponent
+          ComponentName: PageTitle
+          Properties:
+            Height: =50
+            Width: =200
+            X: =1166
+            screenInfo: =App.ActiveScreen
+      - Gallery1:
+          Control: Gallery@2.15.0
+          Variant: Vertical
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Fill: =RGBA(237, 237, 237, 1)
+            Height: =692
+            Items: |+
+              =Filter(Sheet1s, 
+                     (IsBlank(SelectedItem) || Index = SelectedItem.Index) && 
+                     (IsBlank(Search_book_name.Text) || Search_book_name.Text in Title))
+            TemplateSize: =643
+            Width: =1366
+            Y: =74
+          Children:
+            - IMG_Book:
+                Control: Image@2.2.3
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Height: =566
+                  Image: =ThisItem.Cover_URL
+                  OnSelect: =Select(Parent)
+                  Width: =392
+                  X: =28
+                  Y: =21
+            - author_data:
+                Control: Label@2.5.1
+                Group: Book_data
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Bold
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Author
+                  Width: =264
+                  X: =613
+                  Y: =82
+            - pages_data:
+                Control: Label@2.5.1
+                Group: Book_data
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Bold
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Number_of_Pages
+                  X: =613
+                  Y: =147
+            - year_data:
+                Control: Label@2.5.1
+                Group: Book_data
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Bold
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Publication_Year
+                  X: =613
+                  Y: =205
+            - id_data:
+                Control: Label@2.5.1
+                Group: Book_data
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Bold
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Index
+                  X: =613
+                  Y: =373
+            - genre_data:
+                Control: Label@2.5.1
+                Group: Book_data
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Bold
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Genre
+                  X: =613
+                  Y: =265
+            - isbn_data:
+                Control: Label@2.5.1
+                Group: Book_data
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Bold
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.ISBN
+                  X: =613
+                  Y: =431
+            - name_data:
+                Control: Label@2.5.1
+                Group: Book_data
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Bold
+                  Height: =31
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Title
+                  Width: =264
+                  X: =613
+                  Y: =36
+            - lang_data:
+                Control: Label@2.5.1
+                Group: Book_data
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Bold
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Language
+                  X: =613
+                  Y: =317
+            - summary_data:
+                Control: Label@2.5.1
+                Group: Book_data
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Bold
+                  Height: =113
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Summary
+                  Width: =673
+                  X: =613
+                  Y: =474
+            - Book Name_field:
+                Control: Label@2.5.1
+                Group: Book_Fields
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  OnSelect: =Select(Parent)
+                  Text: ="Book Name:"
+                  X: =449
+                  Y: =31
+            - Author_field:
+                Control: Label@2.5.1
+                Group: Book_Fields
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  OnSelect: =Select(Parent)
+                  Text: ="Author:"
+                  X: =449
+                  Y: =82
+            - Pages_field:
+                Control: Label@2.5.1
+                Group: Book_Fields
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  OnSelect: =Select(Parent)
+                  Text: ="Pages:"
+                  X: =449
+                  Y: =140
+            - Year_field:
+                Control: Label@2.5.1
+                Group: Book_Fields
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  Height: =59
+                  OnSelect: =Select(Parent)
+                  Text: ="Publication Year:"
+                  X: =449
+                  Y: =198
+            - Genre_field:
+                Control: Label@2.5.1
+                Group: Book_Fields
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  OnSelect: =Select(Parent)
+                  Text: ="Genre:"
+                  X: =449
+                  Y: =260
+            - Lang_field:
+                Control: Label@2.5.1
+                Group: Book_Fields
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  OnSelect: =Select(Parent)
+                  Text: ="Language:"
+                  X: =449
+                  Y: =316
+            - ID_field:
+                Control: Label@2.5.1
+                Group: Book_Fields
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  OnSelect: =Select(Parent)
+                  Text: ="Book ID:"
+                  X: =449
+                  Y: =374
+            - ISBN_field:
+                Control: Label@2.5.1
+                Group: Book_Fields
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  OnSelect: =Select(Parent)
+                  Text: ="ISBN:"
+                  X: =449
+                  Y: =431
+            - Book sumary_field:
+                Control: Label@2.5.1
+                Group: Book_Fields
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  OnSelect: =Select(Parent)
+                  Text: ="Book Summary:"
+                  X: =449
+                  Y: =511
+            - Add_to_wishlist:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: =ColorFade(Self.Fill, -15%)
+                  Color: =RGBA(255, 255, 255, 1)
+                  DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                  Fill: =RGBA(255, 0, 0, 1)
+                  Font: =Font.'Open Sans'
+                  Height: =52
+                  HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                  HoverColor: =RGBA(255, 255, 255, 1)
+                  HoverFill: =ColorFade(RGBA(255, 0, 0, 1), -20%)
+                  OnSelect: "=Set(\r\n    existingRecord,\r\n    LookUp(Wishlist, Book_ID = id_data.Text && Username = loggedInUser.username)\r\n);\r\n\r\nIf(\r\n    !IsBlank(existingRecord),\r\n    Remove(Wishlist, existingRecord);\r\n    \r\n    Patch(\r\n        Library_logs,\r\n        Defaults(Library_logs),\r\n        {\r\n            Event_ID: Text(Max(Library_logs, Event_ID) + 1),\r\n            Event_Type: \"Wishlist\",\r\n            Description: \"Book removed from wishlist\",\r\n            Event_Name: \"Remove Wishlist Item\",\r\n            Event_Screen: App.ActiveScreen.Name,\r\n            Event_Level: \"3\",\r\n            Book_ID: id_data.Text,\r\n            Username: loggedInUser.username,\r\n            User_Role: If(loggedInUser.admin_access = \"Yes\", \"Admin\", \"User\"),\r\n            Event_Status: \"Successful\"\r\n        }\r\n    ),\r\n    \r\n    Patch(\r\n        Wishlist,\r\n        Defaults(Wishlist),\r\n        {\r\n            Index: If(IsEmpty(Wishlist), 1, Max(Wishlist, Index) + 1),\r\n            Book_ID: id_data.Text,\r\n            Username: loggedInUser.username\r\n        }\r\n    );\r\n    Patch(\r\n        Library_logs,\r\n        Defaults(Library_logs),\r\n        {\r\n            Event_ID: Text(Max(Library_logs, Event_ID) + 1),\r\n            Event_Type: \"Wishlist\",\r\n            Description: \"Book added to wishlist\",\r\n            Event_Name: \"Add Wishlist Item\",\r\n            Event_Screen: App.ActiveScreen.Name,\r\n            Event_Level: \"3\",\r\n            Book_ID: id_data.Text,\r\n            Username: loggedInUser.username,\r\n            User_Role: If(loggedInUser.admin_access = \"Yes\", \"Admin\", \"User\"),\r\n            Event_Status: \"Successful\"\r\n        }\r\n    )\r\n);\r\n"
+                  PressedBorderColor: =Self.Fill
+                  PressedColor: =Self.Fill
+                  PressedFill: =Self.Color
+                  RadiusBottomLeft: =100
+                  RadiusBottomRight: =100
+                  RadiusTopLeft: =100
+                  RadiusTopRight: =100
+                  Text: |+
+                    =If(
+                        IsBlank(LookUp(Wishlist, Book_ID = id_data.Text && Username = loggedInUser.username)),
+                        "Add to wishlist",
+                        "Remove from wishlist"
                     )
-                }
-            )
-          SetMenuWidth: =300
-          Height: =If(!MenuLeftNav_3.showMenuProp, 50, App.Height)
-          Width: =MenuLeftNav_3.MenuWidth
-    - Button2:
-        Control: Classic/Button
-        Properties:
-          OnSelect: =Navigate(Dashboard,ScreenTransition.Cover)
-          Text: ="Back to dashboard"
-          Height: =44
-          RadiusBottomLeft: =100
-          RadiusBottomRight: =100
-          RadiusTopLeft: =100
-          RadiusTopRight: =100
-          Width: =209
-          X: =1132
-          Y: =701
-    - Gallery1:
-        Control: Gallery
-        Variant: galleryVertical
-        Properties:
-          Items: |+
-            =Filter(Sheet1s, 
-                   (IsBlank(SelectedItem) || Index = SelectedItem.Index) && 
-                   (IsBlank(Search_book_name.Text) || Search_book_name.Text in Title))
-          DelayItemLoading: =true
-          Fill: =RGBA(237, 237, 237, 1)
-          Height: =692
-          Layout: =Layout.Vertical
-          LoadingSpinner: =LoadingSpinner.Data
-          TemplateSize: =643
-          Width: =1366
-          Y: =74
-        Children:
-        - Reserve_book_btn:
-            Control: Classic/Button
-            Properties:
-              OnSelect: |+
-                =ClearCollect(CurrentReservations, Filter(Library_Reservations, Book_ID = selectedBookId && 'Status (cre0e_status)' = "Reserved"));
-                Set(NewIndex, Text(If(IsEmpty(Library_Reservations), 1, Value(Max(Library_Reservations, Index)) + 1), "[$-en-US]0"));
-                Set(QueuePosition, Text(CountRows(CurrentReservations) + 1, "[$-en-US]0"));
-                Collect(Library_Reservations, {
-                    Index: NewIndex,
-                    Book_ID: selectedBookId,
-                    Username: currentUsername,
-                    'Status (cre0e_status)': "Reserved",
-                    Queue_Position: QueuePosition
-                });
-
-                Notify("Book reserved successfully! Your position in queue: " & QueuePosition, NotificationType.Success);
+                  Width: =183
+                  X: =1092
+                  Y: =137
+            - Rent_book_btn:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: =ColorFade(Self.Fill, -15%)
+                  Color: =RGBA(255, 255, 255, 1)
+                  DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                  Fill: |+
+                    =If(
+                        !IsBlank(LookUp(BookLoans, Book_ID = selectedBookId && 'Status (cre0e_status)' = "rented")),
+                        RGBA(255, 0, 0, 1), 
+                        RGBA(0, 255, 0, 1)
+                    )
+                  Font: =Font.'Open Sans'
+                  Height: =52
+                  HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                  HoverColor: =RGBA(255, 255, 255, 1)
+                  HoverFill: |+
+                    =If(
+                        !IsBlank(LookUp(BookLoans, Book_ID = selectedBookId && 'Status (cre0e_status)' = "rented")),
+                        RGBA(255, 0, 0, 1), 
+                        RGBA(0, 255, 0, 1)
+                    )
+                  OnSelect: |+
+                    =Set(selectedBookId, id_data.Text);
+                    Set(currentUsername, loggedInUser.username);
+                    Set(existingLoan, LookUp(BookLoans, Book_ID = selectedBookId && 'Status (cre0e_status)' = "rented"));
 
 
-                Patch(
-                    Library_logs,
-                    Defaults(Library_logs),
-                    {
-                        Event_ID: Text(Max(Library_logs, Event_ID) + 1),
-                        Event_Type: "Book Reservation",
-                        Description: "Book reserved successfully",
-                        Event_Name: "Reserve Book",
-                        Event_Screen: App.ActiveScreen.Name,
-                        Event_Level: "3",  
+
+                    If(
+                        IsBlank(existingLoan),
+                        Patch(
+                            BookLoans,
+                            Defaults(BookLoans),
+                            {
+                                Index: If(IsEmpty(BookLoans), 1, Max(BookLoans, Index) + 1),
+                                Book_ID: selectedBookId,
+                                Username: currentUsername,
+                                Borrow_Date: Today(),
+                                Return_Date: DateAdd(Today(), 14),
+                                'Status (cre0e_status)': "rented"
+                            }
+                        );
+                        Patch(
+                            Library_logs,
+                            Defaults(Library_logs),
+                            {
+                                Event_ID: Text(Max(Library_logs, Event_ID) + 1),
+                                Event_Type: "Book Loan",
+                                Description: "Book borrowed successfully",
+                                Event_Name: "Borrow Book",
+                                Event_Screen: App.ActiveScreen.Name,
+                                Event_Level: "3",
+                                Book_ID: selectedBookId,
+                                Username: currentUsername,
+                                User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
+                                Event_Status: "Successful"
+                            }
+                        ),
+                        Set(daysRemaining, DateDiff(Today(), existingLoan.Return_Date));
+                        If(
+                            existingLoan.'Status (cre0e_status)' = "rented" && existingLoan.Return_Date >= Today(),
+                            Notify("The book is unavailable! Days remaining: " & daysRemaining, NotificationType.Error),
+                            Notify("The book is unavailable. Please wait for its return.", NotificationType.Error)
+                        );
+                        Patch(
+                            Library_logs,
+                            Defaults(Library_logs),
+                            {
+                                Event_ID: Text(Max(Library_logs, Event_ID) + 1),
+                                Event_Type: "Book Loan",
+                                Description: "Book is unavailable",
+                                Event_Name: "Borrow Book Attempt",
+                                Event_Screen: App.ActiveScreen.Name,
+                                Event_Level: "3",
+                                Book_ID: selectedBookId,
+                                Username: currentUsername,
+                                User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
+                                Event_Status: "Failed"
+                            }
+                        )
+                    );
+                  PressedBorderColor: =Self.Fill
+                  PressedColor: =Self.Fill
+                  PressedFill: |+
+                    =If(
+                        !IsBlank(LookUp(BookLoans, Book_ID = selectedBookId && 'Status (cre0e_status)' = "rented")),
+                        RGBA(255, 0, 0, 1), 
+                        RGBA(0, 255, 0, 1)
+                    )
+                  RadiusBottomLeft: =100
+                  RadiusBottomRight: =100
+                  RadiusTopLeft: =100
+                  RadiusTopRight: =100
+                  Text: |+
+                    =If(
+                        IsBlank(LookUp(BookLoans, Book_ID = selectedBookId && 'Status (cre0e_status)' = "rented")),
+                        "Rent a Book", 
+                        "Rented"
+                    )
+                  Width: =183
+                  X: =1092
+                  Y: =213
+            - Reserve_book_btn:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: =ColorFade(Self.Fill, -15%)
+                  Color: =RGBA(255, 255, 255, 1)
+                  DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                  DisplayMode: |+
+                    =If(
+                        !IsBlank(
+                            LookUp(Library_Reservations, Book_ID = selectedBookId && Username = currentUsername && 'Status (cre0e_status)' = "Reserved")
+                        ),
+                        DisplayMode.Disabled,
+                        DisplayMode.Edit
+                    )
+                  Fill: =RGBA(99, 139, 44, 1)
+                  Font: =Font.'Open Sans'
+                  Height: =52
+                  HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                  HoverColor: =RGBA(255, 255, 255, 1)
+                  HoverFill: =ColorFade(RGBA(99, 139, 44, 1), -20%)
+                  OnSelect: |+
+                    =ClearCollect(CurrentReservations, Filter(Library_Reservations, Book_ID = selectedBookId && 'Status (cre0e_status)' = "Reserved"));
+                    Set(NewIndex, Text(If(IsEmpty(Library_Reservations), 1, Value(Max(Library_Reservations, Index)) + 1), "[$-en-US]0"));
+                    Set(QueuePosition, Text(CountRows(CurrentReservations) + 1, "[$-en-US]0"));
+                    Collect(Library_Reservations, {
+                        Index: NewIndex,
                         Book_ID: selectedBookId,
                         Username: currentUsername,
-                        User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
-                        Event_Status: "Successful"
-                    }
-                )
+                        'Status (cre0e_status)': "Reserved",
+                        Queue_Position: QueuePosition
+                    });
 
-              Text: |+
-                =If(
-                    !IsBlank(
-                        LookUp(Library_Reservations, Book_ID = selectedBookId && Username = currentUsername && 'Status (cre0e_status)' = "Reserved")
-                    ),
-                    "Reserved", 
-                    "Reserve a book" 
-                )
-              DisplayMode: |+
-                =If(
-                    !IsBlank(
-                        LookUp(Library_Reservations, Book_ID = selectedBookId && Username = currentUsername && 'Status (cre0e_status)' = "Reserved")
-                    ),
-                    DisplayMode.Disabled,
-                    DisplayMode.Edit
-                )
-              Fill: =RGBA(99, 139, 44, 1)
-              Height: =52
-              HoverFill: =ColorFade(RGBA(99, 139, 44, 1), -20%)
-              RadiusBottomLeft: =100
-              RadiusBottomRight: =100
-              RadiusTopLeft: =100
-              RadiusTopRight: =100
-              Width: =183
-              X: =1092
-              Y: =289
-        - Rent_book_btn:
-            Control: Classic/Button
-            Properties:
-              OnSelect: |+
-                =Set(selectedBookId, id_data.Text);
-                Set(currentUsername, loggedInUser.username);
-                Set(existingLoan, LookUp(BookLoans, Book_ID = selectedBookId && 'Status (cre0e_status)' = "rented"));
+                    Notify("Book reserved successfully! Your position in queue: " & QueuePosition, NotificationType.Success);
 
 
-
-                If(
-                    IsBlank(existingLoan),
-                    Patch(
-                        BookLoans,
-                        Defaults(BookLoans),
-                        {
-                            Index: If(IsEmpty(BookLoans), 1, Max(BookLoans, Index) + 1),
-                            Book_ID: selectedBookId,
-                            Username: currentUsername,
-                            Borrow_Date: Today(),
-                            Return_Date: DateAdd(Today(), 14),
-                            'Status (cre0e_status)': "rented"
-                        }
-                    );
                     Patch(
                         Library_logs,
                         Defaults(Library_logs),
                         {
                             Event_ID: Text(Max(Library_logs, Event_ID) + 1),
-                            Event_Type: "Book Loan",
-                            Description: "Book borrowed successfully",
-                            Event_Name: "Borrow Book",
+                            Event_Type: "Book Reservation",
+                            Description: "Book reserved successfully",
+                            Event_Name: "Reserve Book",
                             Event_Screen: App.ActiveScreen.Name,
-                            Event_Level: "3",
+                            Event_Level: "3",  
                             Book_ID: selectedBookId,
                             Username: currentUsername,
                             User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
                             Event_Status: "Successful"
                         }
-                    ),
-                    Set(daysRemaining, DateDiff(Today(), existingLoan.Return_Date));
-                    If(
-                        existingLoan.'Status (cre0e_status)' = "rented" && existingLoan.Return_Date >= Today(),
-                        Notify("The book is unavailable! Days remaining: " & daysRemaining, NotificationType.Error),
-                        Notify("The book is unavailable. Please wait for its return.", NotificationType.Error)
-                    );
-                    Patch(
-                        Library_logs,
-                        Defaults(Library_logs),
-                        {
-                            Event_ID: Text(Max(Library_logs, Event_ID) + 1),
-                            Event_Type: "Book Loan",
-                            Description: "Book is unavailable",
-                            Event_Name: "Borrow Book Attempt",
-                            Event_Screen: App.ActiveScreen.Name,
-                            Event_Level: "3",
-                            Book_ID: selectedBookId,
-                            Username: currentUsername,
-                            User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
-                            Event_Status: "Failed"
-                        }
                     )
-                );
-              Text: |+
-                =If(
-                    IsBlank(LookUp(BookLoans, Book_ID = selectedBookId && 'Status (cre0e_status)' = "rented")),
-                    "Rent a Book", 
-                    "Rented"
-                )
-              Fill: |+
-                =If(
-                    !IsBlank(LookUp(BookLoans, Book_ID = selectedBookId && 'Status (cre0e_status)' = "rented")),
-                    RGBA(255, 0, 0, 1), 
-                    RGBA(0, 255, 0, 1)
-                )
-              Height: =52
-              HoverFill: |+
-                =If(
-                    !IsBlank(LookUp(BookLoans, Book_ID = selectedBookId && 'Status (cre0e_status)' = "rented")),
-                    RGBA(255, 0, 0, 1), 
-                    RGBA(0, 255, 0, 1)
-                )
-              PressedFill: |+
-                =If(
-                    !IsBlank(LookUp(BookLoans, Book_ID = selectedBookId && 'Status (cre0e_status)' = "rented")),
-                    RGBA(255, 0, 0, 1), 
-                    RGBA(0, 255, 0, 1)
-                )
-              RadiusBottomLeft: =100
-              RadiusBottomRight: =100
-              RadiusTopLeft: =100
-              RadiusTopRight: =100
-              Width: =183
-              X: =1092
-              Y: =213
-        - Book_data:
-            Control: Group
-            Children:
-            - summary_data:
-                Control: Label
-                Properties:
-                  OnSelect: =Select(Parent)
-                  Text: =ThisItem.Summary
-                  FontWeight: =FontWeight.Bold
-                  Height: =113
-                  Width: =673
-                  X: =613
-                  Y: =474
-            - lang_data:
-                Control: Label
-                Properties:
-                  OnSelect: =Select(Parent)
-                  Text: =ThisItem.Language
-                  FontWeight: =FontWeight.Bold
-                  X: =613
-                  Y: =317
-            - name_data:
-                Control: Label
-                Properties:
-                  OnSelect: =Select(Parent)
-                  Text: =ThisItem.Title
-                  FontWeight: =FontWeight.Bold
-                  Height: =31
-                  Width: =264
-                  X: =613
-                  Y: =36
-            - isbn_data:
-                Control: Label
-                Properties:
-                  OnSelect: =Select(Parent)
-                  Text: =ThisItem.ISBN
-                  FontWeight: =FontWeight.Bold
-                  X: =613
-                  Y: =431
-            - genre_data:
-                Control: Label
-                Properties:
-                  OnSelect: =Select(Parent)
-                  Text: =ThisItem.Genre
-                  FontWeight: =FontWeight.Bold
-                  X: =613
-                  Y: =265
-            - id_data:
-                Control: Label
-                Properties:
-                  OnSelect: =Select(Parent)
-                  Text: =ThisItem.Index
-                  FontWeight: =FontWeight.Bold
-                  X: =613
-                  Y: =373
-            - year_data:
-                Control: Label
-                Properties:
-                  OnSelect: =Select(Parent)
-                  Text: =ThisItem.Publication_Year
-                  FontWeight: =FontWeight.Bold
-                  X: =613
-                  Y: =205
-            - pages_data:
-                Control: Label
-                Properties:
-                  OnSelect: =Select(Parent)
-                  Text: =ThisItem.Number_of_Pages
-                  FontWeight: =FontWeight.Bold
-                  X: =613
-                  Y: =147
-            - author_data:
-                Control: Label
-                Properties:
-                  OnSelect: =Select(Parent)
-                  Text: =ThisItem.Author
-                  FontWeight: =FontWeight.Bold
-                  Width: =264
-                  X: =613
-                  Y: =82
-        - Add_to_wishlist:
-            Control: Classic/Button
-            Properties:
-              OnSelect: "=Set(\r\n    existingRecord,\r\n    LookUp(Wishlist, Book_ID = id_data.Text && Username = loggedInUser.username)\r\n);\r\n\r\nIf(\r\n    !IsBlank(existingRecord),\r\n    Remove(Wishlist, existingRecord);\r\n    \r\n    Patch(\r\n        Library_logs,\r\n        Defaults(Library_logs),\r\n        {\r\n            Event_ID: Text(Max(Library_logs, Event_ID) + 1),\r\n            Event_Type: \"Wishlist\",\r\n            Description: \"Book removed from wishlist\",\r\n            Event_Name: \"Remove Wishlist Item\",\r\n            Event_Screen: App.ActiveScreen.Name,\r\n            Event_Level: \"3\",\r\n            Book_ID: id_data.Text,\r\n            Username: loggedInUser.username,\r\n            User_Role: If(loggedInUser.admin_access = \"Yes\", \"Admin\", \"User\"),\r\n            Event_Status: \"Successful\"\r\n        }\r\n    ),\r\n    \r\n    Patch(\r\n        Wishlist,\r\n        Defaults(Wishlist),\r\n        {\r\n            Index: If(IsEmpty(Wishlist), 1, Max(Wishlist, Index) + 1),\r\n            Book_ID: id_data.Text,\r\n            Username: loggedInUser.username\r\n        }\r\n    );\r\n    Patch(\r\n        Library_logs,\r\n        Defaults(Library_logs),\r\n        {\r\n            Event_ID: Text(Max(Library_logs, Event_ID) + 1),\r\n            Event_Type: \"Wishlist\",\r\n            Description: \"Book added to wishlist\",\r\n            Event_Name: \"Add Wishlist Item\",\r\n            Event_Screen: App.ActiveScreen.Name,\r\n            Event_Level: \"3\",\r\n            Book_ID: id_data.Text,\r\n            Username: loggedInUser.username,\r\n            User_Role: If(loggedInUser.admin_access = \"Yes\", \"Admin\", \"User\"),\r\n            Event_Status: \"Successful\"\r\n        }\r\n    )\r\n);\r\n"
-              Text: |+
-                =If(
-                    IsBlank(LookUp(Wishlist, Book_ID = id_data.Text && Username = loggedInUser.username)),
-                    "Add to wishlist",
-                    "Remove from wishlist"
-                )
-              Fill: =RGBA(255, 0, 0, 1)
-              Height: =52
-              HoverFill: =ColorFade(RGBA(255, 0, 0, 1), -20%)
-              RadiusBottomLeft: =100
-              RadiusBottomRight: =100
-              RadiusTopLeft: =100
-              RadiusTopRight: =100
-              Width: =183
-              X: =1092
-              Y: =137
-        - Book_Fields:
-            Control: Group
-            Children:
-            - Book sumary_field:
-                Control: Label
-                Properties:
-                  OnSelect: =Select(Parent)
-                  Text: ="Book Summary:"
-                  X: =449
-                  Y: =511
-            - ISBN_field:
-                Control: Label
-                Properties:
-                  OnSelect: =Select(Parent)
-                  Text: ="ISBN:"
-                  X: =449
-                  Y: =431
-            - ID_field:
-                Control: Label
-                Properties:
-                  OnSelect: =Select(Parent)
-                  Text: ="Book ID:"
-                  X: =449
-                  Y: =374
-            - Lang_field:
-                Control: Label
-                Properties:
-                  OnSelect: =Select(Parent)
-                  Text: ="Language:"
-                  X: =449
-                  Y: =316
-            - Genre_field:
-                Control: Label
-                Properties:
-                  OnSelect: =Select(Parent)
-                  Text: ="Genre:"
-                  X: =449
-                  Y: =260
-            - Year_field:
-                Control: Label
-                Properties:
-                  OnSelect: =Select(Parent)
-                  Text: ="Publication Year:"
-                  Height: =59
-                  X: =449
-                  Y: =198
-            - Pages_field:
-                Control: Label
-                Properties:
-                  OnSelect: =Select(Parent)
-                  Text: ="Pages:"
-                  X: =449
-                  Y: =140
-            - Author_field:
-                Control: Label
-                Properties:
-                  OnSelect: =Select(Parent)
-                  Text: ="Author:"
-                  X: =449
-                  Y: =82
-            - Book Name_field:
-                Control: Label
-                Properties:
-                  OnSelect: =Select(Parent)
-                  Text: ="Book Name:"
-                  X: =449
-                  Y: =31
-        - IMG_Book:
-            Control: Image
-            Properties:
-              OnSelect: =Select(Parent)
-              Image: =ThisItem.Cover_URL
-              Height: =566
-              Width: =392
-              X: =28
-              Y: =21
-    - PageTitle_2:
-        Control: Component
-        ComponentName: PageTitle
-        Properties:
-          screenInfo: =App.ActiveScreen
-          Height: =50
-          Width: =200
-          X: =1166
+
+                  PressedBorderColor: =Self.Fill
+                  PressedColor: =Self.Fill
+                  PressedFill: =Self.Color
+                  RadiusBottomLeft: =100
+                  RadiusBottomRight: =100
+                  RadiusTopLeft: =100
+                  RadiusTopRight: =100
+                  Text: |+
+                    =If(
+                        !IsBlank(
+                            LookUp(Library_Reservations, Book_ID = selectedBookId && Username = currentUsername && 'Status (cre0e_status)' = "Reserved")
+                        ),
+                        "Reserved", 
+                        "Reserve a book" 
+                    )
+                  Width: =183
+                  X: =1092
+                  Y: =289
+      - Button2:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorFade(Self.Fill, -15%)
+            Color: =RGBA(255, 255, 255, 1)
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            Fill: =RGBA(56, 96, 178, 1)
+            Font: =Font.'Open Sans'
+            Height: =44
+            HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            OnSelect: =Navigate(Dashboard,ScreenTransition.Cover)
+            PressedBorderColor: =Self.Fill
+            PressedColor: =Self.Fill
+            PressedFill: =Self.Color
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Text: ="Back to dashboard"
+            Width: =209
+            X: =1132
+            Y: =701
+      - MenuLeftNav_3:
+          Control: CanvasComponent
+          ComponentName: MenuLeftNav
+          Properties:
+            AdminAccess: =varAdminAccess
+            ExpandMenu: =
+            HamburgerMenuColor: =Color.Blue
+            Height: =If(!MenuLeftNav_3.showMenuProp, 50, App.Height)
+            LoggedUser: =varLoggedUser
+            MenuBkgColor: =RGBA(220,220,220,1)
+            MenuColor: =Color.Purple
+            MenuItems: |
+              =Table(
+                  {
+                      MenuLabel: "Dashboard",
+                      MenuIcon: Icon.Home,
+                      MenuScreenNavigate: Dashboard,
+                      MenuID: 1,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Book Catalog",
+                      MenuIcon: Icon.Database,
+                      MenuScreenNavigate: 'Book Catalog',
+                      MenuID: 2,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Book Details",
+                      MenuIcon: Icon.ListScrollWatchlist,
+                      MenuScreenNavigate: 'Book Details',
+                      MenuID: 3,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Your Books",
+                      MenuIcon: Icon.Notebook,
+                      MenuScreenNavigate: 'Your Books',
+                      MenuID: 4,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Wishlist / Favorites",
+                      MenuIcon: Icon.Heart,
+                      MenuScreenNavigate: 'Wishlist / Favorites',
+                      MenuID: 5,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Book Reservations",
+                      MenuIcon: Icon.CalendarBlank,
+                      MenuScreenNavigate: 'Book Reservations',
+                      MenuID: 6,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Borrowing History",
+                      MenuIcon: Icon.History,
+                      MenuScreenNavigate: 'Borrowing History',
+                      MenuID: 7,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Library Ranking",
+                      MenuIcon: Icon.Globe,
+                      MenuScreenNavigate: 'Library Ranking',
+                      MenuID: 8,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "User Profile",
+                      MenuIcon: Icon.Person,
+                      MenuScreenNavigate: 'User Profile',
+                      MenuID: 9,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Admin Panel",
+                      MenuIcon: Icon.Manufacture,
+                      //MenuScreenNavigate: 'Admin Panel',
+                      MenuID: 10,
+                      VisibleSubMenu: true,
+                      SubMenu: Table(
+                          {
+                              MenuLabel: "Add Book",
+                              MenuIcon: Icon.AddDocument,
+                              MenuScreenNavigate: 'Add Book',
+                              MenuID: 1
+                          },
+                          {
+                              MenuLabel: "Edit Book",
+                              MenuIcon: Icon.ColorPicker,
+                              MenuScreenNavigate: 'Edit Book',
+                              MenuID: 2
+                          },
+                          {
+                              MenuLabel: "Delete Book",
+                              MenuIcon: Icon.ClearDrawing,
+                              MenuScreenNavigate: 'Delete Book',
+                              MenuID: 3
+                          },
+                          {
+                              MenuLabel: "Manage Users",
+                              MenuIcon: Icon.People,
+                              MenuScreenNavigate: 'Manage Users',
+                              MenuID: 4
+                          },
+                          {
+                              MenuLabel: "Manage Loans",
+                              MenuIcon: Icon.Currency,
+                              MenuScreenNavigate: 'Manage Loans',
+                              MenuID: 5
+                          },
+                          {
+                              MenuLabel: "Manage Reservations",
+                              MenuIcon: Icon.PhotosPictures,
+                              MenuScreenNavigate: 'Manage Reservations',
+                              MenuID: 6
+                          },
+                          {
+                              MenuLabel: "Library Settings",
+                              MenuIcon: Icon.Settings,
+                              MenuScreenNavigate: 'Library Settings',
+                              MenuID: 7
+                          },
+                          {
+                              MenuLabel: "Check Log",
+                              MenuIcon: Icon.Warning,
+                              MenuScreenNavigate: 'Check Log',
+                              MenuID: 8
+                          }
+                      )
+                  }
+              )
+            SetMenuWidth: =300
+            Width: =MenuLeftNav_3.MenuWidth
+      - Search_book_name:
+          Control: Classic/TextInput@2.3.2
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Default: =
+            Font: =Font.'Open Sans'
+            HintText: ="Enter Book Name"
+            HoverBorderColor: =RGBA(0, 18, 107, 1)
+            HoverFill: =RGBA(186, 202, 226, 1)
+            OnChange: |-
+              =UpdateContext({ SelectedItem: Blank() })
+            X: =468
+            Y: =10
+      - No_items_text_2:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Center
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Font: =Font.'Open Sans'
+            Height: =98
+            Size: =20
+            Text: ="No books found. Change your search"
+            Visible: |-
+              =If(Gallery1.AllItemsCount = 0,
+              true,
+              false)
+            Width: =668
+            X: =349
+            Y: =371
