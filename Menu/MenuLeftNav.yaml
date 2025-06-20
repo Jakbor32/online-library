@@ -1,371 +1,404 @@
-- MenuLeftNav:
-    Control: Component
+ComponentDefinitions:
+  MenuLeftNav:
+    DefinitionType: CanvasComponent
+    CustomProperties:
+      AdminAccess:
+        PropertyKind: Input
+        DisplayName: AdminAccess
+        Description: A custom property
+        DataType: Text
+        Default: =varAdminAccess
+      ExpandMenu:
+        PropertyKind: Input
+        DisplayName: Expand Menu
+        Description: A custom property
+        RaiseOnReset: true
+        DataType: Boolean
+        Default: =
+      HamburgerMenuColor:
+        PropertyKind: Input
+        DisplayName: HamburgerMenuColor
+        Description: A custom property
+        DataType: Color
+        Default: "=If(\r\n    First(Table1S).darkmode = \"ON\",\r\n   varFontColorWhite,\r\n   varBtnColorDark\r\n  \r\n)\r\n"
+      LoggedUser:
+        PropertyKind: Input
+        DisplayName: LoggedUser
+        Description: A custom property
+        DataType: Text
+        Default: =varLoggedUser
+      MenuBkgColor:
+        PropertyKind: Input
+        DisplayName: MenuBkgColor
+        Description: A custom property
+        DataType: Color
+        Default: |-
+          =If(
+              First(Table1S).darkmode = "ON",
+             varBgDarkMenu,
+             varBgColorWhite
+          )
+      MenuColor:
+        PropertyKind: Input
+        DisplayName: MenuColor
+        Description: A custom property
+        DataType: Color
+        Default: "=If(\r\n    First(Table1S).darkmode = \"ON\",\r\n   varFontColorWhite,\r\n   varFontColorDark\r\n   \r\n)"
+      MenuColorIcon:
+        PropertyKind: Input
+        DisplayName: MenuColorIcon
+        Description: MenuColorIcon
+        DataType: Color
+        Default: "=If(\r\n    First(Table1S).darkmode = \"ON\",\r\n   varFontColorWhite,\r\n   varFontColorDark\r\n   \r\n)"
+      MenuItems:
+        PropertyKind: Input
+        DisplayName: MenuItems
+        Description: A custom property
+        DataType: Table
+        Default: |
+          =Table(
+              {
+                  MenuLabel: "Dashboard",
+                  MenuIcon: Icon.Home,
+                  MenuScreenNavigate: Dashboard,
+                  MenuID: 1,
+                  SubMenu: Table()
+              },
+              {
+                  MenuLabel: "Book Catalog",
+                  MenuIcon: Icon.Database,
+                  MenuScreenNavigate: 'Book Catalog',
+                  MenuID: 2,
+                  SubMenu: Table()
+              },
+              {
+                  MenuLabel: "Book Details",
+                  MenuIcon: Icon.ListScrollWatchlist,
+                  MenuScreenNavigate: 'Book Details',
+                  MenuID: 3,
+                  SubMenu: Table()
+              },
+              {
+                  MenuLabel: "Your Books",
+                  MenuIcon: Icon.Notebook,
+                  MenuScreenNavigate: 'Your Books',
+                  MenuID: 4,
+                  SubMenu: Table()
+              },
+              {
+                  MenuLabel: "Wishlist / Favorites",
+                  MenuIcon: Icon.Heart,
+                  MenuScreenNavigate: 'Wishlist / Favorites',
+                  MenuID: 5,
+                  SubMenu: Table()
+              },
+              {
+                  MenuLabel: "Book Reservations",
+                  MenuIcon: Icon.CalendarBlank,
+                  MenuScreenNavigate: 'Book Reservations',
+                  MenuID: 6,
+                  SubMenu: Table()
+              },
+              {
+                  MenuLabel: "Borrowing History",
+                  MenuIcon: Icon.History,
+                  MenuScreenNavigate: 'Borrowing History',
+                  MenuID: 7,
+                  SubMenu: Table()
+              },
+              {
+                  MenuLabel: "Library Ranking",
+                  MenuIcon: Icon.Globe,
+                  MenuScreenNavigate: 'Library Ranking',
+                  MenuID: 8,
+                  SubMenu: Table()
+              },
+              {
+                  MenuLabel: "User Profile",
+                  MenuIcon: Icon.Person,
+                  MenuScreenNavigate: 'User Profile',
+                  MenuID: 9,
+                  SubMenu: Table()
+              },
+              {
+                  MenuLabel: "Admin Panel",
+                  MenuIcon: Icon.Manufacture,
+                  //MenuScreenNavigate: 'Admin Panel',
+                  MenuID: 10,
+                  VisibleSubMenu: true,
+                  SubMenu: Table(
+                      {
+                          MenuLabel: "Add Book",
+                          MenuIcon: Icon.AddDocument,
+                          MenuScreenNavigate: 'Add Book',
+                          MenuID: 1
+                      },
+                      {
+                          MenuLabel: "Edit Book",
+                          MenuIcon: Icon.ColorPicker,
+                          MenuScreenNavigate: 'Edit Book',
+                          MenuID: 2
+                      },
+                      {
+                          MenuLabel: "Delete Book",
+                          MenuIcon: Icon.ClearDrawing,
+                          MenuScreenNavigate: 'Delete Book',
+                          MenuID: 3
+                      },
+                      {
+                          MenuLabel: "Manage Users",
+                          MenuIcon: Icon.People,
+                          MenuScreenNavigate: 'Manage Users',
+                          MenuID: 4
+                      },
+                      {
+                          MenuLabel: "Manage Loans",
+                          MenuIcon: Icon.Currency,
+                          MenuScreenNavigate: 'Manage Loans',
+                          MenuID: 5
+                      },
+                      {
+                          MenuLabel: "Manage Reservations",
+                          MenuIcon: Icon.PhotosPictures,
+                          MenuScreenNavigate: 'Manage Reservations',
+                          MenuID: 6
+                      },
+                      {
+                          MenuLabel: "Library Settings",
+                          MenuIcon: Icon.Settings,
+                          MenuScreenNavigate: 'Library Settings',
+                          MenuID: 7
+                      },
+                      {
+                          MenuLabel: "Check Log",
+                          MenuIcon: Icon.Warning,
+                          MenuScreenNavigate: 'Check Log',
+                          MenuID: 8
+                      }
+                  )
+              }
+          )
+      MenuWidth:
+        PropertyKind: Output
+        DisplayName: MenuWidth
+        Description: A custom property
+        DataType: Number
+      SetMenuWidth:
+        PropertyKind: Input
+        DisplayName: SetMenuWidth
+        Description: A custom property
+        DataType: Number
+        Default: =300
+      showMenuProp:
+        PropertyKind: Output
+        DisplayName: showMenuProp
+        Description: A custom property
+        DataType: Text
     Properties:
-      AdminAccess: =varAdminAccess
-      HamburgerMenuColor: =Color.Blue
-      LoggedUser: =varLoggedUser
-      MenuBkgColor: =RGBA(220,220,220,1)
-      MenuColor: =Color.Purple
-      MenuItems: |
-        =Table(
-            {
-                MenuLabel: "Dashboard",
-                MenuIcon: Icon.Home,
-                MenuScreenNavigate: Dashboard,
-                MenuID: 1,
-                SubMenu: Table()
-            },
-            {
-                MenuLabel: "Book Catalog",
-                MenuIcon: Icon.Database,
-                MenuScreenNavigate: 'Book Catalog',
-                MenuID: 2,
-                SubMenu: Table()
-            },
-            {
-                MenuLabel: "Book Details",
-                MenuIcon: Icon.ListScrollWatchlist,
-                MenuScreenNavigate: 'Book Details',
-                MenuID: 3,
-                SubMenu: Table()
-            },
-            {
-                MenuLabel: "Your Books",
-                MenuIcon: Icon.Notebook,
-                MenuScreenNavigate: 'Your Books',
-                MenuID: 4,
-                SubMenu: Table()
-            },
-            {
-                MenuLabel: "Wishlist / Favorites",
-                MenuIcon: Icon.Heart,
-                MenuScreenNavigate: 'Wishlist / Favorites',
-                MenuID: 5,
-                SubMenu: Table()
-            },
-            {
-                MenuLabel: "Book Reservations",
-                MenuIcon: Icon.CalendarBlank,
-                MenuScreenNavigate: 'Book Reservations',
-                MenuID: 6,
-                SubMenu: Table()
-            },
-            {
-                MenuLabel: "Borrowing History",
-                MenuIcon: Icon.History,
-                MenuScreenNavigate: 'Borrowing History',
-                MenuID: 7,
-                SubMenu: Table()
-            },
-            {
-                MenuLabel: "Library Ranking",
-                MenuIcon: Icon.Globe,
-                MenuScreenNavigate: 'Library Ranking',
-                MenuID: 8,
-                SubMenu: Table()
-            },
-            {
-                MenuLabel: "User Profile",
-                MenuIcon: Icon.Person,
-                MenuScreenNavigate: 'User Profile',
-                MenuID: 9,
-                SubMenu: Table()
-            },
-            {
-                MenuLabel: "Admin Panel",
-                MenuIcon: Icon.Manufacture,
-                //MenuScreenNavigate: 'Admin Panel',
-                MenuID: 10,
-                VisibleSubMenu: true,
-                SubMenu: Table(
-                    {
-                        MenuLabel: "Add Book",
-                        MenuIcon: Icon.AddDocument,
-                        MenuScreenNavigate: 'Add Book',
-                        MenuID: 1
-                    },
-                    {
-                        MenuLabel: "Edit Book",
-                        MenuIcon: Icon.ColorPicker,
-                        MenuScreenNavigate: 'Edit Book',
-                        MenuID: 2
-                    },
-                    {
-                        MenuLabel: "Delete Book",
-                        MenuIcon: Icon.ClearDrawing,
-                        MenuScreenNavigate: 'Delete Book',
-                        MenuID: 3
-                    },
-                    {
-                        MenuLabel: "Manage Users",
-                        MenuIcon: Icon.People,
-                        MenuScreenNavigate: 'Manage Users',
-                        MenuID: 4
-                    },
-                    {
-                        MenuLabel: "Manage Loans",
-                        MenuIcon: Icon.Currency,
-                        MenuScreenNavigate: 'Manage Loans',
-                        MenuID: 5
-                    },
-                    {
-                        MenuLabel: "Manage Reservations",
-                        MenuIcon: Icon.PhotosPictures,
-                        MenuScreenNavigate: 'Manage Reservations',
-                        MenuID: 6
-                    },
-                    {
-                        MenuLabel: "Library Settings",
-                        MenuIcon: Icon.Settings,
-                        MenuScreenNavigate: 'Library Settings',
-                        MenuID: 7
-                    },
-                    {
-                        MenuLabel: "Check Log",
-                        MenuIcon: Icon.Warning,
-                        MenuScreenNavigate: 'Check Log',
-                        MenuID: 8
-                    }
-                )
-            }
-        )
-      SetMenuWidth: =300
       Height: =If(!MenuLeftNav.showMenuProp, 50, App.Height)
+      MenuWidth: =If(showMenu, MenuLeftNav.SetMenuWidth,icoHamburger_1.Width)
+      OnReset: |-
+        =Set(showMenu, MenuLeftNav.ExpandMenu);
+        Set(showSubMenu, !MenuLeftNav.ExpandMenu)
       Width: =MenuLeftNav.MenuWidth
+      showMenuProp: =showMenu
     Children:
-    - Icon1:
-        Control: Classic/Icon
-        Variant: Hamburger
-        Properties:
-          OnSelect: =Set(showMenu,!showMenu)
-          BorderColor: =RGBA(0, 0, 0, 1)
-          Height: =46
-          HoverColor: =ColorFade(Self.Color, 0%)
-          Icon: =Icon.Hamburger
-          PressedColor: =ColorFade(Self.Color, 0%)
-          Visible: =showMenu
-          Width: =54
-          X: =220
-          Y: =13
-    - galMenu_1:
-        Control: Gallery
-        Variant: variableTemplateHeightGallery
-        Properties:
-          Items: =Sort(MenuLeftNav.MenuItems,MenuID,SortOrder.Ascending)
-          Fill: =MenuLeftNav.MenuBkgColor
-          Height: =If(showMenu, App.Height, 50)
-          Layout: =Layout.Vertical
-          TemplateSize: =280
-          Visible: =showMenu
-          Width: =Parent.Width
-        Children:
-        - galSubMenu_1:
-            Control: Gallery
-            Variant: variableTemplateHeightGallery
-            Properties:
-              Items: =Sort(ThisItem.SubMenu,MenuID,SortOrder.Ascending)
-              Fill: =MenuLeftNav.MenuBkgColor
-              Height: =CountRows(ThisItem.SubMenu)*55
-              Layout: =Layout.Vertical
-              TemplateSize: =CountRows(ThisItem.SubMenu)*55
-              Visible: =showSubMenu
-              Width: =Parent.Width-20
-              X: =20
-              Y: =icoHamburger_1.Height
-            Children:
-            - btnClickSubMenu_1:
-                Control: Classic/Button
+      - icoHamburger_1:
+          Control: Classic/Icon@2.5.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =MenuLeftNav.HamburgerMenuColor
+            Height: =49
+            HoverColor: =Self.Color
+            Icon: =Icon.Hamburger
+            OnSelect: |-
+              =Set(showMenu,!showMenu);
+              Set(showSubMenu,false);
+            PaddingBottom: =5
+            PaddingLeft: =5
+            PaddingRight: =5
+            PaddingTop: =5
+            Visible: =!showMenu
+            Width: =59
+      - galMenu_1:
+          Control: Gallery@2.15.0
+          Variant: VariableHeight
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            DelayItemLoading: =false
+            Fill: =MenuLeftNav.MenuBkgColor
+            Height: =If(showMenu, App.Height, 50)
+            Items: =Sort(MenuLeftNav.MenuItems,MenuID,SortOrder.Ascending)
+            LoadingSpinner: =LoadingSpinner.None
+            Visible: =showMenu
+            Width: =Parent.Width
+          Children:
+            - rectShape_1:
+                Control: Rectangle@2.3.0
                 Properties:
-                  OnSelect: |-
-                    =Navigate(ThisItem.MenuScreenNavigate,ScreenTransition.Cover );
-                    Set(showMenu,false);
-                  Text: =""
-                  Fill: =Color.Transparent
-                  Height: =lblSubMenu_1.Height+lblSubMenu_1.Y
-                  HoverFill: =Color.Transparent
-                  PressedFill: =Color.Transparent
-                  Size: =24
-                  Width: =Parent.TemplateWidth
-            - lblSubMenu_1:
-                Control: Label
-                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Fill: =MenuLeftNav.MenuColor
+                  Height: =48
                   OnSelect: =Select(Parent)
-                  Text: =ThisItem.MenuLabel
-                  Color: =MenuLeftNav.MenuColor
-                  FontWeight: =FontWeight.Lighter
-                  Height: =27
-                  Size: =14
-                  Width: =Parent.TemplateWidth-icoSubMenu_1.Width-rectShapeSubMenu_1.Width
-                  X: =68
-                  Y: =7
-            - icoSubMenu_1:
-                Control: Classic/Icon
-                Variant: Add
+                  Visible: =ThisItem.MenuScreenNavigate = App.ActiveScreen
+                  Width: |+
+                    =If(
+                        !IsBlank(LookUp(MenuLeftNav.MenuItems, MenuLabel = App.ActiveScreen.Name, MenuID)),
+                        12,
+                        6 
+                    )
+            - icoMenu_1:
+                Control: Classic/Icon@2.5.0
                 Properties:
-                  OnSelect: =Select(Parent)
+                  BorderColor: =RGBA(0, 18, 107, 1)
                   Color: =MenuLeftNav.MenuColor
                   Height: =48
                   Icon: =ThisItem.MenuIcon
+                  OnSelect: =Select(Parent)
                   PaddingBottom: =10
                   PaddingLeft: =10
                   PaddingRight: =10
                   PaddingTop: =10
                   Width: =62
                   X: =6
-            - rectShapeSubMenu_1:
-                Control: Rectangle
+            - lblMenu_1:
+                Control: Label@2.5.1
                 Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Color: =MenuLeftNav.MenuColor
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Lighter
+                  Height: =41
                   OnSelect: =Select(Parent)
-                  Fill: =MenuLeftNav.MenuColor
-                  Height: =48
-                  Visible: =ThisItem.MenuScreenNavigate = App.ActiveScreen
-                  Width: =6
-        - btnClick_1:
-            Control: Classic/Button
-            Properties:
-              OnSelect: |+
-                =If(
-                    ThisItem.VisibleSubMenu = true,
-                    If(
-                    MenuLeftNav.AdminAccess = "Yes",
-                    Set(showSubMenu,!showSubMenu),
-                    Notify("Insufficient permissions to access the admin panel.", NotificationType.Error)
+                  Size: =14
+                  Text: =ThisItem.MenuLabel
+                  Width: =Parent.TemplateWidth-icoMenu_1.Width-rectShape_1.Width
+                  X: =68
+                  Y: =7
+            - btnClick_1:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: =ColorFade(Self.Fill, -15%)
+                  Color: =RGBA(255, 255, 255, 1)
+                  DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                  Fill: =Color.Transparent
+                  Font: =Font.'Open Sans'
+                  Height: =lblMenu_1.Height+lblMenu_1.Y
+                  HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                  HoverColor: =RGBA(255, 255, 255, 1)
+                  HoverFill: =Color.Transparent
+                  OnSelect: |+
+                    =If(
+                        ThisItem.VisibleSubMenu = true,
+                        If(
+                        MenuLeftNav.AdminAccess = "Yes",
+                        Set(showSubMenu,!showSubMenu),
+                        Notify("Insufficient permissions to access the admin panel.", NotificationType.Error)
 
-                )
-                );
-                Navigate(ThisItem.MenuScreenNavigate, ScreenTransition.Cover); 
-                Set(showMenu,false);
-              Text: =""
-              Fill: =Color.Transparent
-              Height: =lblMenu_1.Height+lblMenu_1.Y
-              HoverFill: =Color.Transparent
-              PressedFill: =Color.Transparent
-              Size: =24
-              Width: =Parent.TemplateWidth
-        - lblMenu_1:
-            Control: Label
-            Properties:
-              OnSelect: =Select(Parent)
-              Text: =ThisItem.MenuLabel
-              AutoHeight: =true
-              Color: =MenuLeftNav.MenuColor
-              FontWeight: =FontWeight.Lighter
-              Height: =41
-              Size: =14
-              Width: =Parent.TemplateWidth-icoMenu_1.Width-rectShape_1.Width
-              X: =68
-              Y: =7
-        - icoMenu_1:
-            Control: Classic/Icon
-            Variant: Add
-            Properties:
-              OnSelect: =Select(Parent)
-              Color: =MenuLeftNav.MenuColor
-              Height: =48
-              Icon: =ThisItem.MenuIcon
-              PaddingBottom: =10
-              PaddingLeft: =10
-              PaddingRight: =10
-              PaddingTop: =10
-              Width: =62
-              X: =6
-        - rectShape_1:
-            Control: Rectangle
-            Properties:
-              OnSelect: =Select(Parent)
-              Fill: =MenuLeftNav.MenuColor
-              Height: =48
-              Visible: =ThisItem.MenuScreenNavigate = App.ActiveScreen
-              Width: |+
-                =If(
-                    !IsBlank(LookUp(MenuLeftNav.MenuItems, MenuLabel = App.ActiveScreen.Name, MenuID)),
-                    12,
-                    6 
-                )
-    - icoHamburger_1:
-        Control: Classic/Icon
-        Variant: Hamburger
-        Properties:
-          OnSelect: |-
-            =Set(showMenu,!showMenu);
-            Set(showSubMenu,false);
-          Color: =MenuLeftNav.HamburgerMenuColor
-          Height: =49
-          Icon: =Icon.Hamburger
-          PaddingBottom: =5
-          PaddingLeft: =5
-          PaddingRight: =5
-          PaddingTop: =5
-          Visible: =!showMenu
-          Width: =59
-    CustomProperties:
-    - MenuItems:
-        Direction: Input
-        PropertyType: Data
-        DataType: Table
-        IsResettable: false
-        DisplayName: MenuItems
-        Description: A custom property
-    - ExpandMenu:
-        Direction: Input
-        PropertyType: Data
-        DataType: Boolean
-        IsResettable: true
-        DisplayName: Expand Menu
-        Description: A custom property
-    - MenuColor:
-        Direction: Input
-        PropertyType: Data
-        DataType: Color
-        IsResettable: false
-        DisplayName: MenuColor
-        Description: A custom property
-    - HamburgerMenuColor:
-        Direction: Input
-        PropertyType: Data
-        DataType: Color
-        IsResettable: false
-        DisplayName: HamburgerMenuColor
-        Description: A custom property
-    - MenuBkgColor:
-        Direction: Input
-        PropertyType: Data
-        DataType: Color
-        IsResettable: false
-        DisplayName: MenuBkgColor
-        Description: A custom property
-    - MenuWidth:
-        Direction: Output
-        PropertyType: Data
-        DataType: Number
-        IsResettable: false
-        DisplayName: MenuWidth
-        Description: A custom property
-    - SetMenuWidth:
-        Direction: Input
-        PropertyType: Data
-        DataType: Number
-        IsResettable: false
-        DisplayName: SetMenuWidth
-        Description: A custom property
-    - LoggedUser:
-        Direction: Input
-        PropertyType: Data
-        DataType: String
-        IsResettable: false
-        DisplayName: LoggedUser
-        Description: A custom property
-    - AdminAccess:
-        Direction: Input
-        PropertyType: Data
-        DataType: String
-        IsResettable: false
-        DisplayName: AdminAccess
-        Description: A custom property
-    - showMenuProp:
-        Direction: Output
-        PropertyType: Data
-        DataType: String
-        IsResettable: false
-        DisplayName: showMenuProp
-        Description: A custom property
+                    )
+                    );
+                    Navigate(ThisItem.MenuScreenNavigate, ScreenTransition.Cover); 
+                    Set(showMenu,false);
+                  PressedBorderColor: =Self.Fill
+                  PressedColor: =Self.Fill
+                  PressedFill: =Color.Transparent
+                  Size: =24
+                  Text: =""
+                  Width: =Parent.TemplateWidth
+            - galSubMenu_1:
+                Control: Gallery@2.15.0
+                Variant: VariableHeight
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  DelayItemLoading: =false
+                  Fill: =MenuLeftNav.MenuBkgColor
+                  Height: =CountRows(ThisItem.SubMenu)*55
+                  Items: =Sort(ThisItem.SubMenu,MenuID,SortOrder.Ascending)
+                  LoadingSpinner: =LoadingSpinner.None
+                  TemplateSize: =CountRows(ThisItem.SubMenu)*55
+                  Visible: =showSubMenu
+                  Width: =Parent.Width-20
+                  X: =20
+                  Y: =icoHamburger_1.Height
+                Children:
+                  - rectShapeSubMenu_1:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Fill: =MenuLeftNav.MenuColor
+                        Height: =48
+                        OnSelect: =Select(Parent)
+                        Visible: =ThisItem.MenuScreenNavigate = App.ActiveScreen
+                        Width: =6
+                  - icoSubMenu_1:
+                      Control: Classic/Icon@2.5.0
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =MenuLeftNav.MenuColor
+                        Height: =48
+                        Icon: =ThisItem.MenuIcon
+                        OnSelect: =Select(Parent)
+                        PaddingBottom: =10
+                        PaddingLeft: =10
+                        PaddingRight: =10
+                        PaddingTop: =10
+                        Width: =62
+                        X: =6
+                  - lblSubMenu_1:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =MenuLeftNav.MenuColor
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Lighter
+                        Height: =27
+                        OnSelect: =Select(Parent)
+                        Size: =14
+                        Text: =ThisItem.MenuLabel
+                        Width: =Parent.TemplateWidth-icoSubMenu_1.Width-rectShapeSubMenu_1.Width
+                        X: =68
+                        Y: =7
+                  - btnClickSubMenu_1:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        BorderColor: =ColorFade(Self.Fill, -15%)
+                        Color: =RGBA(255, 255, 255, 1)
+                        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                        Fill: =Color.Transparent
+                        Font: =Font.'Open Sans'
+                        Height: =lblSubMenu_1.Height+lblSubMenu_1.Y
+                        HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                        HoverColor: =RGBA(255, 255, 255, 1)
+                        HoverFill: =Color.Transparent
+                        OnSelect: |-
+                          =Navigate(ThisItem.MenuScreenNavigate,ScreenTransition.Cover );
+                          Set(showMenu,false);
+                        PressedBorderColor: =Self.Fill
+                        PressedColor: =Self.Fill
+                        PressedFill: =Color.Transparent
+                        Size: =24
+                        Text: =""
+                        Width: =Parent.TemplateWidth
+      - Icon1:
+          Control: Classic/Icon@2.5.0
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            Color: =MenuLeftNav.MenuColorIcon
+            Height: =46
+            HoverColor: =ColorFade(Self.Color, 0%)
+            Icon: =Icon.Hamburger
+            OnSelect: =Set(showMenu,!showMenu)
+            PressedColor: =ColorFade(Self.Color, 0%)
+            Visible: =showMenu
+            Width: =54
+            X: =220
+            Y: =13
+      - border_right:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Fill: =MenuLeftNav.MenuColor
+            Height: =768
+            Width: =3
+            X: =297
