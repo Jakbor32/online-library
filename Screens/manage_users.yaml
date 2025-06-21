@@ -1,1298 +1,1539 @@
-- Manage Users:
-    Control: Screen
+Screens:
+  Manage Users:
     Properties:
+      Fill: |+
+        =If(
+            First(Table1S).darkmode = "ON",
+           varBgColorDark,
+           varBgColorWhite
+        )
+      LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
       OnVisible: |-
         =UpdateContext({ IsHidden: true });
         UpdateContext({ SelectedRecordID: Blank() })
-      Fill: =RGBA(255, 255, 255, 1)
     Children:
-    - Create_new_user:
-        Control: Group
-        Children:
-        - Icon6:
-            Control: Classic/Icon
-            Variant: AddUser
-            Properties:
-              OnSelect: =Set(createUserBox,true)
-              Height: =51
-              Icon: =Icon.AddUser
-              Width: =51
-              X: =1273
-              Y: =80
-        - create_new_user_btn:
-            Control: Classic/Button
-            Properties:
-              OnSelect: =Set(createUserBox,true)
-              Text: ="Add User"
-              Height: =64
-              RadiusBottomLeft: =100
-              RadiusBottomRight: =100
-              RadiusTopLeft: =100
-              RadiusTopRight: =100
-              Width: =251
-              X: =1094
-              Y: =74
-    - CreateUserBox:
-        Control: GroupContainer
-        Variant: manualLayoutContainer
-        Properties:
-          Height: =768
-          Visible: =createUserBox
-          Width: =1366
-        Children:
-        - popup_bg_box_3:
-            Control: Rectangle
-            Properties:
-              Fill: =RGBA(0, 0, 0, 0.4)
-              Height: =768
-              Visible: =createUserBox
-              Width: =1366
-        - popup_box_3:
-            Control: Rectangle
-            Properties:
-              BorderColor: =RGBA(0, 134, 208, 1)
-              BorderThickness: =5
-              Fill: =RGBA(241, 244, 249, 1)
-              Height: =490
-              Visible: =createUserBox
-              Width: =689
-              X: =274
-              Y: =139
-        - main_container:
-            Control: GroupContainer
-            Variant: manualLayoutContainer
-            Properties:
-              DropShadow: =DropShadow.None
-              Height: =492
-              RadiusBottomLeft: =0
-              RadiusBottomRight: =0
-              RadiusTopLeft: =0
-              RadiusTopRight: =0
-              Width: =689
-              X: =274
-              Y: =137
-            Children:
-            - button_container:
-                Control: GroupContainer
-                Variant: verticalAutoLayoutContainer
+      - manage_users_main:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Height: =606
+            LayoutDirection: =LayoutDirection.Vertical
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =1366
+            Y: =162
+          Children:
+            - th_container:
+                Control: GroupContainer@1.3.0
+                Variant: ManualLayout
                 Properties:
                   DropShadow: =DropShadow.None
-                  Height: =188
-                  LayoutDirection: =LayoutDirection.Vertical
-                  LayoutMode: =LayoutMode.Auto
+                  LayoutMinHeight: =40
                   RadiusBottomLeft: =0
                   RadiusBottomRight: =0
                   RadiusTopLeft: =0
                   RadiusTopRight: =0
-                  Width: =275
-                  X: =414
-                  Y: =303
                 Children:
-                - save_container:
-                    Control: GroupContainer
-                    Variant: manualLayoutContainer
-                    Properties:
-                      DropShadow: =DropShadow.None
-                      RadiusBottomLeft: =0
-                      RadiusBottomRight: =0
-                      RadiusTopLeft: =0
-                      RadiusTopRight: =0
-                    Children:
-                    - btn_yes_3:
-                        Control: Classic/Button
-                        Properties:
-                          OnSelect: |+
-                            =Patch(
-                                login_data, 
-                                Defaults(login_data),
-                                {
-                                    username: username_input_2.Text,
-                                    password: password_input_2.Text, 
-                                    admin_access: If(admin_access_checkbox.Value, "Yes", "No")
-                                }
-                            );
-
-                            Notify("User account created successfully!", NotificationType.Success);
-                            Set(createUserBox, false);
-
-                            Patch(
-                                Library_logs,
-                                Defaults(Library_logs),
-                                {
-                                    Event_ID: Text(Max(Library_logs, Event_ID) + 1),
-                                    Event_Type: "User Management",
-                                    Description: "User account created",
-                                    Event_Name: "Create User",
-                                    Event_Screen: App.ActiveScreen.Name,
-                                    Event_Level: "3",
-                                    Username: loggedInUser.username,
-                                    User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
-                                    Event_Status: "Successful"
-                                }
-                            );
-                          Text: ="Save"
-                          Fill: =RGBA(168, 0, 0, 1)
-                          HoverFill: =Self.Fill
-                          Visible: =createUserBox
-                          X: =50
-                          Y: =40
-                - exit_container:
-                    Control: GroupContainer
-                    Variant: manualLayoutContainer
-                    Properties:
-                      DropShadow: =DropShadow.None
-                      RadiusBottomLeft: =0
-                      RadiusBottomRight: =0
-                      RadiusTopLeft: =0
-                      RadiusTopRight: =0
-                    Children:
-                    - btn_no_3:
-                        Control: Classic/Button
-                        Properties:
-                          OnSelect: =Set(createUserBox,false);
-                          Text: ="Exit"
-                          Visible: =createUserBox
-                          X: =50
-                          Y: =20
-            - userdata_container:
-                Control: GroupContainer
-                Variant: verticalAutoLayoutContainer
+                  - Rectangle3:
+                      Control: Rectangle@2.3.0
+                      Group: Login_data_bar
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        BorderThickness: =4
+                        Fill: =RGBA(56, 96, 178, 1)
+                        Height: =63
+                        Width: =App.Width
+                        Y: =3
+                  - Label2_1:
+                      Control: Label@2.5.1
+                      Group: Login_data_bar
+                      Properties:
+                        Align: =Align.Center
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =63
+                        Size: =16
+                        Text: |-
+                          ="Password
+                          "
+                        Width: =156
+                        X: =237
+                        Y: =3
+                  - Label2_2:
+                      Control: Label@2.5.1
+                      Group: Login_data_bar
+                      Properties:
+                        Align: =Align.Center
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =63
+                        Size: =16
+                        Text: |-
+                          ="Username
+                          "
+                        Width: =186
+                        X: =23
+                        Y: =3
+                  - Label2_3:
+                      Control: Label@2.5.1
+                      Group: Login_data_bar
+                      Properties:
+                        Align: =Align.Center
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =63
+                        Size: =16
+                        Text: ="Admin access"
+                        Width: =174
+                        X: =407
+                        Y: =3
+                  - Label2_4:
+                      Control: Label@2.5.1
+                      Group: Login_data_bar
+                      Properties:
+                        Align: =Align.Center
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =63
+                        Size: =16
+                        Text: ="Block / Edit / Delete User"
+                        Width: =307
+                        X: =1024
+                        Y: =3
+                  - Label2_5:
+                      Control: Label@2.5.1
+                      Group: Login_data_bar
+                      Properties:
+                        Align: =Align.Center
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =63
+                        Size: =16
+                        Text: ="Account created"
+                        Width: =226
+                        X: =581
+                        Y: =3
+                  - Label2_6:
+                      Control: Label@2.5.1
+                      Group: Login_data_bar
+                      Properties:
+                        Align: =Align.Center
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =63
+                        Size: =16
+                        Text: ="Account status"
+                        Width: =202
+                        X: =787
+                        Y: =3
+                  - separator_5:
+                      Control: Classic/Icon@2.5.0
+                      Group: Login_data_bar
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =RGBA(0, 18, 107, 1)
+                        Icon: =Icon.VerticalLine
+                        X: =203
+                        Y: =3
+                  - separator_4:
+                      Control: Classic/Icon@2.5.0
+                      Group: Login_data_bar
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =RGBA(0, 18, 107, 1)
+                        Icon: =Icon.VerticalLine
+                        X: =370
+                        Y: =2
+                  - separator_3:
+                      Control: Classic/Icon@2.5.0
+                      Group: Login_data_bar
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =RGBA(0, 18, 107, 1)
+                        Icon: =Icon.VerticalLine
+                        X: =552
+                        Y: =3
+                  - separator_2:
+                      Control: Classic/Icon@2.5.0
+                      Group: Login_data_bar
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =RGBA(0, 18, 107, 1)
+                        Icon: =Icon.VerticalLine
+                        X: =764
+                        Y: =3
+                  - separator_1:
+                      Control: Classic/Icon@2.5.0
+                      Group: Login_data_bar
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =RGBA(0, 18, 107, 1)
+                        Icon: =Icon.VerticalLine
+                        X: =947
+                        Y: =3
+            - manage_user_container:
+                Control: GroupContainer@1.3.0
+                Variant: ManualLayout
                 Properties:
                   DropShadow: =DropShadow.None
-                  Height: =234
-                  LayoutAlignItems: =LayoutAlignItems.Center
-                  LayoutDirection: =LayoutDirection.Vertical
-                  LayoutJustifyContent: =LayoutJustifyContent.Center
-                  LayoutMode: =LayoutMode.Auto
+                  FillPortions: =8
                   RadiusBottomLeft: =0
                   RadiusBottomRight: =0
                   RadiusTopLeft: =0
                   RadiusTopRight: =0
-                  Width: =689
-                  Y: =93
                 Children:
-                - username_box:
-                    Control: GroupContainer
-                    Variant: horizontalAutoLayoutContainer
-                    Properties:
-                      AlignInContainer: =AlignInContainer.SetByContainer
-                      DropShadow: =DropShadow.None
-                      LayoutMode: =LayoutMode.Auto
-                      RadiusBottomLeft: =0
-                      RadiusBottomRight: =0
-                      RadiusTopLeft: =0
-                      RadiusTopRight: =0
-                    Children:
-                    - label_box:
-                        Control: GroupContainer
-                        Variant: manualLayoutContainer
-                        Properties:
-                          DropShadow: =DropShadow.None
-                          LayoutMinWidth: =150
-                          RadiusBottomLeft: =0
-                          RadiusBottomRight: =0
-                          RadiusTopLeft: =0
-                          RadiusTopRight: =0
-                        Children:
-                        - label_username:
-                            Control: Label
+                  - Gallery3:
+                      Control: Gallery@2.15.0
+                      Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Height: =539
+                        Items: =login_data
+                        Width: =1366
+                      Children:
+                        - username_label:
+                            Control: Label@2.5.1
                             Properties:
-                              Text: |-
-                                ="Username: "
-                              Y: =50
-                    - input_box:
-                        Control: GroupContainer
-                        Variant: manualLayoutContainer
-                        Properties:
-                          DropShadow: =DropShadow.None
-                          FillPortions: =3
-                        Children:
-                        - username_input_2:
-                            Control: Classic/TextInput
-                            Properties:
-                              Default: =
-                              PaddingLeft: =20
-                              PaddingRight: =20
-                              RadiusBottomLeft: =100
-                              RadiusBottomRight: =100
-                              RadiusTopLeft: =100
-                              RadiusTopRight: =100
-                              X: =15
-                              Y: =50
-                - password_box:
-                    Control: GroupContainer
-                    Variant: horizontalAutoLayoutContainer
-                    Properties:
-                      AlignInContainer: =AlignInContainer.SetByContainer
-                      DropShadow: =DropShadow.None
-                      LayoutMode: =LayoutMode.Auto
-                      RadiusBottomLeft: =0
-                      RadiusBottomRight: =0
-                      RadiusTopLeft: =0
-                      RadiusTopRight: =0
-                    Children:
-                    - label_box_2:
-                        Control: GroupContainer
-                        Variant: manualLayoutContainer
-                        Properties:
-                          DropShadow: =DropShadow.None
-                          LayoutMinWidth: =150
-                          RadiusBottomLeft: =0
-                          RadiusBottomRight: =0
-                          RadiusTopLeft: =0
-                          RadiusTopRight: =0
-                        Children:
-                        - label_password:
-                            Control: Label
-                            Properties:
-                              Text: |-
-                                ="Password: "
-                              Y: =30
-                    - input_box_2:
-                        Control: GroupContainer
-                        Variant: manualLayoutContainer
-                        Properties:
-                          DropShadow: =DropShadow.None
-                          FillPortions: =3
-                          RadiusBottomLeft: =0
-                          RadiusBottomRight: =0
-                          RadiusTopLeft: =0
-                          RadiusTopRight: =0
-                        Children:
-                        - password_input_2:
-                            Control: Classic/TextInput
-                            Properties:
-                              Default: =
-                              Mode: =TextMode.Password
-                              PaddingLeft: =20
-                              PaddingRight: =20
-                              RadiusBottomLeft: =100
-                              RadiusBottomRight: =100
-                              RadiusTopLeft: =100
-                              RadiusTopRight: =100
-                              X: =15
-                              Y: =30
-                - adm_access_box:
-                    Control: GroupContainer
-                    Variant: horizontalAutoLayoutContainer
-                    Properties:
-                      AlignInContainer: =AlignInContainer.SetByContainer
-                      DropShadow: =DropShadow.None
-                      LayoutMode: =LayoutMode.Auto
-                      RadiusBottomLeft: =0
-                      RadiusBottomRight: =0
-                      RadiusTopLeft: =0
-                      RadiusTopRight: =0
-                    Children:
-                    - label_box_3:
-                        Control: GroupContainer
-                        Variant: manualLayoutContainer
-                        Properties:
-                          DropShadow: =DropShadow.None
-                          LayoutMinWidth: =150
-                          RadiusBottomLeft: =0
-                          RadiusBottomRight: =0
-                          RadiusTopLeft: =0
-                          RadiusTopRight: =0
-                        Children:
-                        - label_admin_access:
-                            Control: Label
-                            Properties:
-                              Text: |-
-                                ="Admin access: "
-                              Y: =20
-                    - input_box_3:
-                        Control: GroupContainer
-                        Variant: manualLayoutContainer
-                        Properties:
-                          DropShadow: =DropShadow.None
-                          FillPortions: =3
-                          RadiusBottomLeft: =0
-                          RadiusBottomRight: =0
-                          RadiusTopLeft: =0
-                          RadiusTopRight: =0
-                        Children:
-                        - admin_access_checkbox:
-                            Control: Classic/CheckBox
-                            Properties:
-                              Text: =admin_access_checkbox.Value
-                              X: =30
-                              Y: =20
-            - title_container:
-                Control: GroupContainer
-                Variant: manualLayoutContainer
-                Properties:
-                  DropShadow: =DropShadow.None
-                  Height: =74
-                  RadiusBottomLeft: =0
-                  RadiusBottomRight: =0
-                  RadiusTopLeft: =0
-                  RadiusTopRight: =0
-                  Width: =689
-                Children:
-                - Title_label:
-                    Control: Label
-                    Properties:
-                      Text: ="Create New User"
-                      Align: =Align.Center
-                      FontWeight: =FontWeight.Bold
-                      Height: =74
-                      Size: =20
-                      Width: =689
-    - EditBox:
-        Control: GroupContainer
-        Variant: manualLayoutContainer
-        Properties:
-          Height: =768
-          Visible: =makeEditBoxVisible
-          Width: =1366
-        Children:
-        - popup_bg_box_1:
-            Control: Rectangle
-            Properties:
-              Fill: =RGBA(0, 0, 0, 0.4)
-              Height: =768
-              Visible: =makeEditBoxVisible
-              Width: =1366
-        - popup_box_1:
-            Control: Rectangle
-            Properties:
-              BorderColor: =RGBA(0, 134, 208, 1)
-              BorderThickness: =5
-              Fill: =RGBA(241, 244, 249, 1)
-              Height: =451
-              Visible: =makeEditBoxVisible
-              Width: =749
-              X: =320
-              Y: =173
-        - main_container_2:
-            Control: GroupContainer
-            Variant: manualLayoutContainer
-            Properties:
-              Height: =451
-              Width: =749
-              X: =320
-              Y: =173
-            Children:
-            - buttons_options_container:
-                Control: GroupContainer
-                Variant: horizontalAutoLayoutContainer
-                Properties:
-                  DropShadow: =DropShadow.None
-                  Height: =158
-                  LayoutMode: =LayoutMode.Auto
-                  RadiusBottomLeft: =0
-                  RadiusBottomRight: =0
-                  RadiusTopLeft: =0
-                  RadiusTopRight: =0
-                  Width: =749
-                  Y: =293
-                Children:
-                - options_container:
-                    Control: GroupContainer
-                    Variant: verticalAutoLayoutContainer
-                    Properties:
-                      DropShadow: =DropShadow.None
-                      LayoutDirection: =LayoutDirection.Vertical
-                      LayoutMode: =LayoutMode.Auto
-                      RadiusBottomLeft: =0
-                      RadiusBottomRight: =0
-                      RadiusTopLeft: =0
-                      RadiusTopRight: =0
-                    Children:
-                    - admin_access_container_2:
-                        Control: GroupContainer
-                        Variant: manualLayoutContainer
-                        Properties:
-                          DropShadow: =DropShadow.None
-                          LayoutMinHeight: =60
-                          RadiusBottomLeft: =0
-                          RadiusBottomRight: =0
-                          RadiusTopLeft: =0
-                          RadiusTopRight: =0
-                        Children:
-                        - checkbox_admin_access:
-                            Control: Classic/CheckBox
-                            Properties:
-                              Default: |+
-                                =    If(
-                                        First(Filter(login_data, username = Gallery3.Selected.username)).admin_access = "Yes",
-                                        true,
-                                        false
-                                    )
-                              Text: ="Admin Access - "& checkbox_admin_access.Value
-                              Width: =222
-                              X: =50
-                              Y: =19
-                    - username_info_container:
-                        Control: GroupContainer
-                        Variant: manualLayoutContainer
-                        Properties:
-                          DropShadow: =DropShadow.None
-                          LayoutMinHeight: =60
-                          RadiusBottomLeft: =0
-                          RadiusBottomRight: =0
-                          RadiusTopLeft: =0
-                          RadiusTopRight: =0
-                        Children:
-                        - Label6:
-                            Control: Label
-                            Properties:
-                              Text: |-
-                                ="Username: "& Gallery3.Selected.username
                               Align: =Align.Center
-                              Height: =45
-                              Size: =16
-                              Width: =272
-                              X: =30
-                              Y: =20
-                - buttons_container:
-                    Control: GroupContainer
-                    Variant: verticalAutoLayoutContainer
-                    Properties:
-                      DropShadow: =DropShadow.None
-                      LayoutDirection: =LayoutDirection.Vertical
-                      LayoutMode: =LayoutMode.Auto
-                      RadiusBottomLeft: =0
-                      RadiusBottomRight: =0
-                      RadiusTopLeft: =0
-                      RadiusTopRight: =0
-                    Children:
-                    - save_box_2:
-                        Control: GroupContainer
-                        Variant: manualLayoutContainer
-                        Properties:
-                          AlignInContainer: =AlignInContainer.End
-                          DropShadow: =DropShadow.None
-                          LayoutMinHeight: =60
-                          RadiusBottomLeft: =0
-                          RadiusBottomRight: =0
-                          RadiusTopLeft: =0
-                          RadiusTopRight: =0
-                          Width: =300
-                        Children:
-                        - btn_yes_1:
-                            Control: Classic/Button
-                            Properties:
-                              OnSelect: "=Patch(\r\n    login_data,\r\n    First(Filter(login_data, username = Gallery3.Selected.username)),\r\n    {\r\n        admin_access: If(checkbox_admin_access.Value, \"Yes\", \"No\"),\r\n        username: If(editDataUsernamePassword && currentValueLabel = \"username\", input_username_password.Text, Gallery3.Selected.username),\r\n        password: If(editDataUsernamePassword && currentValueLabel = \"password\", input_username_password.Text, Gallery3.Selected.password)\r\n    }\r\n);\r\n\r\n    \r\n  If(\r\n    editDataUsernamePassword && currentValueLabel = \"username\" && input_username_password.Text <> Gallery3.Selected.username,\r\n    Notify(\"Username updated successfully\", NotificationType.Success),\r\n    \r\n    editDataUsernamePassword && currentValueLabel = \"password\" && input_username_password.Text <> Gallery3.Selected.password,\r\n    Notify(\"Password updated successfully\", NotificationType.Success),\r\n    \r\n    checkbox_admin_access.Value && Gallery3.Selected.admin_access <> \"Yes\",\r\n    Notify(\"Admin access granted\", NotificationType.Success),\r\n    \r\n    !checkbox_admin_access.Value && Gallery3.Selected.admin_access = \"Yes\",\r\n    Notify(\"Admin access revoked\", NotificationType.Success),\r\n    \r\n    Notify(\"No changes made\", NotificationType.Information)\r\n);\r\n\r\nPatch(\r\n    Library_logs,\r\n    Defaults(Library_logs),\r\n    {\r\n        Event_ID: Text(Max(Library_logs, Event_ID) + 1),\r\n        Event_Type: \"User Management\",\r\n        Description: \"User data updated\",\r\n        Event_Name: \"Update User Data\",\r\n        Event_Screen: App.ActiveScreen.Name,\r\n        Event_Level: \"3\",\r\n        Username: loggedInUser.username,\r\n        User_Role: If(loggedInUser.admin_access = \"Yes\", \"Admin\", \"User\"),\r\n        Event_Status: \"Successful\"\r\n    }\r\n);"
-                              Text: ="Save"
-                              Fill: =RGBA(168, 0, 0, 1)
-                              HoverFill: =Self.Fill
-                              Visible: =makeEditBoxVisible
-                              X: =100
-                              Y: =29
-                    - exit_box_2:
-                        Control: GroupContainer
-                        Variant: manualLayoutContainer
-                        Properties:
-                          AlignInContainer: =AlignInContainer.End
-                          DropShadow: =DropShadow.None
-                          LayoutMinHeight: =60
-                          RadiusBottomLeft: =0
-                          RadiusBottomRight: =0
-                          RadiusTopLeft: =0
-                          RadiusTopRight: =0
-                          Width: =300
-                        Children:
-                        - btn_no_1:
-                            Control: Classic/Button
-                            Properties:
-                              OnSelect: =Set(makeEditBoxVisible,false);
-                              Text: ="Exit"
-                              Visible: =makeEditBoxVisible
-                              X: =100
-                              Y: =19
-            - input_container_2:
-                Control: GroupContainer
-                Variant: horizontalAutoLayoutContainer
-                Properties:
-                  DropShadow: =DropShadow.None
-                  Height: =90
-                  LayoutMode: =LayoutMode.Auto
-                  RadiusBottomLeft: =0
-                  RadiusBottomRight: =0
-                  RadiusTopLeft: =0
-                  RadiusTopRight: =0
-                  Width: =746
-                  X: =3
-                  Y: =181
-                Children:
-                - label_type_username_password:
-                    Control: GroupContainer
-                    Variant: manualLayoutContainer
-                    Properties:
-                      DropShadow: =DropShadow.None
-                      LayoutMinWidth: =200
-                      RadiusBottomLeft: =0
-                      RadiusBottomRight: =0
-                      RadiusTopLeft: =0
-                      RadiusTopRight: =0
-                    Children:
-                    - currentValue_Label:
-                        Control: Label
-                        Properties:
-                          Text: ="Type new "& currentValueLabel
-                          Align: =Align.Center
-                          Visible: =editDataUsernamePassword
-                          Width: =213
-                          X: =36
-                          Y: =30
-                - input_type_username_password:
-                    Control: GroupContainer
-                    Variant: manualLayoutContainer
-                    Properties:
-                      DropShadow: =DropShadow.None
-                      FillPortions: =2
-                      RadiusBottomLeft: =0
-                      RadiusBottomRight: =0
-                      RadiusTopLeft: =0
-                      RadiusTopRight: =0
-                    Children:
-                    - input_username_password:
-                        Control: Classic/TextInput
-                        Properties:
-                          Default: =currentValue
-                          Visible: =editDataUsernamePassword
-                          Width: =343
-                          X: =40
-                          Y: =30
-            - button_container_2:
-                Control: GroupContainer
-                Variant: horizontalAutoLayoutContainer
-                Properties:
-                  DropShadow: =DropShadow.None
-                  Height: =88
-                  LayoutAlignItems: =LayoutAlignItems.Center
-                  LayoutJustifyContent: =LayoutJustifyContent.Center
-                  LayoutMode: =LayoutMode.Auto
-                  RadiusBottomLeft: =0
-                  RadiusBottomRight: =0
-                  RadiusTopLeft: =0
-                  RadiusTopRight: =0
-                  Width: =746
-                  X: =3
-                  Y: =93
-                Children:
-                - change_username_box:
-                    Control: GroupContainer
-                    Variant: manualLayoutContainer
-                    Properties:
-                      AlignInContainer: =AlignInContainer.SetByContainer
-                      DropShadow: =DropShadow.None
-                      Height: =90
-                      LayoutMinHeight: =90
-                      RadiusBottomLeft: =0
-                      RadiusBottomRight: =0
-                      RadiusTopLeft: =0
-                      RadiusTopRight: =0
-                    Children:
-                    - Change_username_btn:
-                        Control: Classic/Button
-                        Properties:
-                          OnSelect: |+
-                            =UpdateContext({currentValue: Gallery3.Selected.username, currentValueLabel: "username"});
-                            Set(editDataUsernamePassword, true);
-
-                            Patch(
-                                Library_logs,
-                                Defaults(Library_logs),
-                                {
-                                    Event_ID: Text(Max(Library_logs, Event_ID) + 1),
-                                    Event_Type: "User Management",
-                                    Description: "Editing data for user",
-                                    Event_Name: "Edit User Data",
-                                    Event_Screen: App.ActiveScreen.Name,
-                                    Event_Level: "3",
-                                    Username: loggedInUser.username,
-                                    User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
-                                    Event_Status: "Successful"
-                                }
-                            );
-                          Text: ="Change Username"
-                          Height: =49
-                          Width: =308
-                          X: =30
-                          Y: =20
-                - change_password_box:
-                    Control: GroupContainer
-                    Variant: manualLayoutContainer
-                    Properties:
-                      AlignInContainer: =AlignInContainer.SetByContainer
-                      DropShadow: =DropShadow.None
-                      Height: =90
-                      LayoutMinHeight: =90
-                      RadiusBottomLeft: =0
-                      RadiusBottomRight: =0
-                      RadiusTopLeft: =0
-                      RadiusTopRight: =0
-                    Children:
-                    - Change_password_btn:
-                        Control: Classic/Button
-                        Properties:
-                          OnSelect: |+
-                            =UpdateContext({currentValue: Gallery3.Selected.password, currentValueLabel: "password"});
-                            Set(editDataUsernamePassword, true);
-
-                            Patch(
-                                Library_logs,
-                                Defaults(Library_logs),
-                                {
-                                    Event_ID: Text(Max(Library_logs, Event_ID) + 1),
-                                    Event_Type: "User Management",
-                                    Description: "Editing password for user",
-                                    Event_Name: "Edit User Password",
-                                    Event_Screen: App.ActiveScreen.Name,
-                                    Event_Level: "3",
-                                    Username: loggedInUser.username,
-                                     User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
-                                    Event_Status: "Successful"
-                                }
-                            );
-                          Text: ="Change Password"
-                          Height: =49
-                          Width: =308
-                          X: =30
-                          Y: =20
-    - Popup:
-        Control: GroupContainer
-        Variant: manualLayoutContainer
-        Properties:
-          Height: =768
-          Visible: =makePopupVisible
-          Width: =1366
-        Children:
-        - popup_bg_box:
-            Control: Rectangle
-            Properties:
-              Fill: =RGBA(0, 0, 0, 0.4)
-              Height: =768
-              Visible: =makePopupVisible
-              Width: =1366
-        - popup_box:
-            Control: Rectangle
-            Properties:
-              BorderColor: =RGBA(0, 134, 208, 1)
-              BorderThickness: =5
-              Fill: =RGBA(241, 244, 249, 1)
-              Height: =324
-              Visible: =makePopupVisible
-              Width: =672
-              X: =347
-              Y: =222
-        - main_container_3:
-            Control: GroupContainer
-            Variant: manualLayoutContainer
-            Properties:
-              DropShadow: =DropShadow.None
-              Height: =321
-              RadiusBottomLeft: =0
-              RadiusBottomRight: =0
-              RadiusTopLeft: =0
-              RadiusTopRight: =0
-              Width: =672
-              X: =347
-              Y: =225
-            Children:
-            - button_container_3:
-                Control: GroupContainer
-                Variant: horizontalAutoLayoutContainer
-                Properties:
-                  DropShadow: =DropShadow.None
-                  Height: =80
-                  LayoutAlignItems: =LayoutAlignItems.Center
-                  LayoutGap: =30
-                  LayoutJustifyContent: =LayoutJustifyContent.Center
-                  LayoutMode: =LayoutMode.Auto
-                  RadiusBottomLeft: =0
-                  RadiusBottomRight: =0
-                  RadiusTopLeft: =0
-                  RadiusTopRight: =0
-                  Width: =672
-                  Y: =180
-                Children:
-                - btn_no:
-                    Control: Classic/Button
-                    Properties:
-                      OnSelect: =Set(makePopupVisible,false);
-                      Text: ="No"
-                      Visible: =makePopupVisible
-                      X: =480
-                      Y: =425
-                - btn_yes:
-                    Control: Classic/Button
-                    Properties:
-                      OnSelect: |+
-                        =Remove(
-                            login_data, 
-                            LookUp(login_data, username = Gallery3.Selected.username)
-                        );
-
-                        Notify("User successfully deleted!", NotificationType.Success);
-                        Set(makePopupVisible, false);
-
-                        Patch(
-                            Library_logs,
-                            Defaults(Library_logs),
-                            {
-                                Event_ID: Text(Max(Library_logs, Event_ID) + 1),
-                                Event_Type: "User Management",
-                                Description: "User successfully deleted",
-                                Event_Name: "Delete User",
-                                Event_Screen: App.ActiveScreen.Name,
-                                Event_Level: "1",
-                                Username: loggedInUser.username,
-                                User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
-                                Event_Status: "Successful"
-                            }
-                        );
-                      Text: ="Yes"
-                      Fill: =RGBA(168, 0, 0, 1)
-                      HoverFill: =Self.Fill
-                      Visible: =makePopupVisible
-                      X: =215
-                      Y: =425
-            - icons_container:
-                Control: GroupContainer
-                Variant: horizontalAutoLayoutContainer
-                Properties:
-                  DropShadow: =DropShadow.None
-                  Height: =120
-                  LayoutAlignItems: =LayoutAlignItems.Center
-                  LayoutJustifyContent: =LayoutJustifyContent.Center
-                  LayoutMode: =LayoutMode.Auto
-                  RadiusBottomLeft: =0
-                  RadiusBottomRight: =0
-                  RadiusTopLeft: =0
-                  RadiusTopRight: =0
-                  Width: =474
-                  X: =114
-                  Y: =60
-                Children:
-                - person_icon:
-                    Control: Classic/Icon
-                    Variant: Person
-                    Properties:
-                      Icon: =Icon.Person
-                      Visible: =makePopupVisible
-                      X: =559
-                      Y: =307
-                - arrow_right_icon:
-                    Control: Classic/Icon
-                    Variant: ArrowRight
-                    Properties:
-                      Icon: =Icon.ArrowRight
-                      Visible: =makePopupVisible
-                      X: =91
-                      Y: =307
-                - trash_icon:
-                    Control: Classic/Icon
-                    Variant: Trash
-                    Properties:
-                      Icon: =Icon.Trash
-                      Visible: =makePopupVisible
-                      X: =183
-                      Y: =307
-            - title_container_3:
-                Control: GroupContainer
-                Variant: manualLayoutContainer
-                Properties:
-                  DropShadow: =DropShadow.None
-                  Height: =60
-                  RadiusBottomLeft: =0
-                  RadiusBottomRight: =0
-                  RadiusTopLeft: =0
-                  RadiusTopRight: =0
-                  Width: =672
-                Children:
-                - HtmlText1:
-                    Control: HtmlViewer
-                    Properties:
-                      HtmlText: |+
-                        ="<div style='text-align:center;'>Are you sure you want to remove the user <span style='color:red;'>" & Gallery3.Selected.username & "</span>?</div>"
-                      Height: =45
-                      Size: =16
-                      Width: =672
-                      Y: =15
-    - MenuLeftNav_14:
-        Control: Component
-        ComponentName: MenuLeftNav
-        Properties:
-          AdminAccess: =varAdminAccess
-          HamburgerMenuColor: =Color.Blue
-          LoggedUser: =varLoggedUser
-          MenuBkgColor: =RGBA(220,220,220,1)
-          MenuColor: =Color.Purple
-          MenuItems: |
-            =Table(
-                {
-                    MenuLabel: "Dashboard",
-                    MenuIcon: Icon.Home,
-                    MenuScreenNavigate: Dashboard,
-                    MenuID: 1,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Book Catalog",
-                    MenuIcon: Icon.Database,
-                    MenuScreenNavigate: 'Book Catalog',
-                    MenuID: 2,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Book Details",
-                    MenuIcon: Icon.ListScrollWatchlist,
-                    MenuScreenNavigate: 'Book Details',
-                    MenuID: 3,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Your Books",
-                    MenuIcon: Icon.Notebook,
-                    MenuScreenNavigate: 'Your Books',
-                    MenuID: 4,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Wishlist / Favorites",
-                    MenuIcon: Icon.Heart,
-                    MenuScreenNavigate: 'Wishlist / Favorites',
-                    MenuID: 5,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Book Reservations",
-                    MenuIcon: Icon.CalendarBlank,
-                    MenuScreenNavigate: 'Book Reservations',
-                    MenuID: 6,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Borrowing History",
-                    MenuIcon: Icon.History,
-                    MenuScreenNavigate: 'Borrowing History',
-                    MenuID: 7,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Library Ranking",
-                    MenuIcon: Icon.Globe,
-                    MenuScreenNavigate: 'Library Ranking',
-                    MenuID: 8,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "User Profile",
-                    MenuIcon: Icon.Person,
-                    MenuScreenNavigate: 'User Profile',
-                    MenuID: 9,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Admin Panel",
-                    MenuIcon: Icon.Manufacture,
-                    //MenuScreenNavigate: 'Admin Panel',
-                    MenuID: 10,
-                    VisibleSubMenu: true,
-                    SubMenu: Table(
-                        {
-                            MenuLabel: "Add Book",
-                            MenuIcon: Icon.AddDocument,
-                            MenuScreenNavigate: 'Add Book',
-                            MenuID: 1
-                        },
-                        {
-                            MenuLabel: "Edit Book",
-                            MenuIcon: Icon.ColorPicker,
-                            MenuScreenNavigate: 'Edit Book',
-                            MenuID: 2
-                        },
-                        {
-                            MenuLabel: "Delete Book",
-                            MenuIcon: Icon.ClearDrawing,
-                            MenuScreenNavigate: 'Delete Book',
-                            MenuID: 3
-                        },
-                        {
-                            MenuLabel: "Manage Users",
-                            MenuIcon: Icon.People,
-                            MenuScreenNavigate: 'Manage Users',
-                            MenuID: 4
-                        },
-                        {
-                            MenuLabel: "Manage Loans",
-                            MenuIcon: Icon.Currency,
-                            MenuScreenNavigate: 'Manage Loans',
-                            MenuID: 5
-                        },
-                        {
-                            MenuLabel: "Manage Reservations",
-                            MenuIcon: Icon.PhotosPictures,
-                            MenuScreenNavigate: 'Manage Reservations',
-                            MenuID: 6
-                        },
-                        {
-                            MenuLabel: "Library Settings",
-                            MenuIcon: Icon.Settings,
-                            MenuScreenNavigate: 'Library Settings',
-                            MenuID: 7
-                        },
-                        {
-                            MenuLabel: "Check Log",
-                            MenuIcon: Icon.Warning,
-                            MenuScreenNavigate: 'Check Log',
-                            MenuID: 8
-                        }
-                    )
-                }
-            )
-          SetMenuWidth: =300
-          Fill: =RGBA(255, 255, 255, 1)
-          Height: =If(!MenuLeftNav_14.showMenuProp, 50, App.Height)
-          Width: =MenuLeftNav_14.MenuWidth
-    - PageTitle_3:
-        Control: Component
-        ComponentName: PageTitle
-        Properties:
-          screenInfo: =App.ActiveScreen
-          Height: =50
-          Width: =200
-          X: =1166
-    - manage_users_main:
-        Control: GroupContainer
-        Variant: verticalAutoLayoutContainer
-        Properties:
-          DropShadow: =DropShadow.None
-          Height: =606
-          LayoutDirection: =LayoutDirection.Vertical
-          LayoutMode: =LayoutMode.Auto
-          RadiusBottomLeft: =0
-          RadiusBottomRight: =0
-          RadiusTopLeft: =0
-          RadiusTopRight: =0
-          Width: =1366
-          Y: =162
-        Children:
-        - th_container:
-            Control: GroupContainer
-            Variant: manualLayoutContainer
-            Properties:
-              DropShadow: =DropShadow.None
-              LayoutMinHeight: =40
-              RadiusBottomLeft: =0
-              RadiusBottomRight: =0
-              RadiusTopLeft: =0
-              RadiusTopRight: =0
-            Children:
-            - Login_data_bar:
-                Control: Group
-                Children:
-                - separator_1:
-                    Control: Classic/Icon
-                    Variant: VerticalLine
-                    Properties:
-                      Icon: =Icon.VerticalLine
-                      X: =947
-                      Y: =3
-                - separator_2:
-                    Control: Classic/Icon
-                    Variant: VerticalLine
-                    Properties:
-                      Icon: =Icon.VerticalLine
-                      X: =764
-                      Y: =3
-                - separator_3:
-                    Control: Classic/Icon
-                    Variant: VerticalLine
-                    Properties:
-                      Icon: =Icon.VerticalLine
-                      X: =552
-                      Y: =3
-                - separator_4:
-                    Control: Classic/Icon
-                    Variant: VerticalLine
-                    Properties:
-                      Icon: =Icon.VerticalLine
-                      X: =370
-                      Y: =2
-                - separator_5:
-                    Control: Classic/Icon
-                    Variant: VerticalLine
-                    Properties:
-                      Icon: =Icon.VerticalLine
-                      X: =203
-                      Y: =3
-                - Label2_6:
-                    Control: Label
-                    Properties:
-                      Text: ="Account status"
-                      Align: =Align.Center
-                      Color: =RGBA(255, 255, 255, 1)
-                      Height: =63
-                      Size: =16
-                      Width: =202
-                      X: =787
-                      Y: =3
-                - Label2_5:
-                    Control: Label
-                    Properties:
-                      Text: ="Account created"
-                      Align: =Align.Center
-                      Color: =RGBA(255, 255, 255, 1)
-                      Height: =63
-                      Size: =16
-                      Width: =226
-                      X: =581
-                      Y: =3
-                - Label2_4:
-                    Control: Label
-                    Properties:
-                      Text: ="Block / Edit / Delete User"
-                      Align: =Align.Center
-                      Color: =RGBA(255, 255, 255, 1)
-                      Height: =63
-                      Size: =16
-                      Width: =307
-                      X: =1024
-                      Y: =3
-                - Label2_3:
-                    Control: Label
-                    Properties:
-                      Text: ="Admin access"
-                      Align: =Align.Center
-                      Color: =RGBA(255, 255, 255, 1)
-                      Height: =63
-                      Size: =16
-                      Width: =174
-                      X: =407
-                      Y: =3
-                - Label2_2:
-                    Control: Label
-                    Properties:
-                      Text: |-
-                        ="Username
-                        "
-                      Align: =Align.Center
-                      Color: =RGBA(255, 255, 255, 1)
-                      Height: =63
-                      Size: =16
-                      Width: =186
-                      X: =23
-                      Y: =3
-                - Label2_1:
-                    Control: Label
-                    Properties:
-                      Text: |-
-                        ="Password
-                        "
-                      Align: =Align.Center
-                      Color: =RGBA(255, 255, 255, 1)
-                      Height: =63
-                      Size: =16
-                      Width: =156
-                      X: =237
-                      Y: =3
-                - Rectangle3:
-                    Control: Rectangle
-                    Properties:
-                      BorderThickness: =4
-                      Height: =63
-                      Width: =App.Width
-                      Y: =3
-        - manage_user_container:
-            Control: GroupContainer
-            Variant: manualLayoutContainer
-            Properties:
-              DropShadow: =DropShadow.None
-              FillPortions: =8
-              RadiusBottomLeft: =0
-              RadiusBottomRight: =0
-              RadiusTopLeft: =0
-              RadiusTopRight: =0
-            Children:
-            - Gallery3:
-                Control: Gallery
-                Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
-                Properties:
-                  Items: =login_data
-                  DelayItemLoading: =true
-                  Height: =539
-                  Layout: =Layout.Vertical
-                  LoadingSpinner: =LoadingSpinner.Data
-                  TemplatePadding: =0
-                  TemplateSize: =104
-                  Width: =1366
-                Children:
-                - horizontal_separator:
-                    Control: Rectangle
-                    Properties:
-                      OnSelect: =Select(Parent)
-                      Height: =5
-                      Width: =App.Width
-                      Y: =99
-                - view_icon:
-                    Control: Classic/Icon
-                    Variant: View
-                    Properties:
-                      OnSelect: |+
-                        =If(SelectedRecordID = ThisItem.username, 
-                           UpdateContext({ SelectedRecordID: Blank() }), 
-                           UpdateContext({ SelectedRecordID: ThisItem.username }))
-                      Height: =21
-                      Icon: =Icon.View
-                      Width: =38
-                      X: =385
-                      Y: =37
-                - account_status_label:
-                    Control: Label
-                    Properties:
-                      OnSelect: =Select(Parent)
-                      Text: |+
-                        =If(ThisItem.Account_status, "Blocked", "Active")
-                      Align: =Align.Center
-                      Width: =88
-                      X: =839
-                      Y: =33
-                - account_created:
-                    Control: Label
-                    Properties:
-                      OnSelect: =Select(Parent)
-                      Text: =ThisItem.'Created On'
-                      Align: =Align.Center
-                      Width: =189
-                      X: =595
-                      Y: =33
-                - admin_access:
-                    Control: Label
-                    Properties:
-                      OnSelect: =Select(Parent)
-                      Text: |+
-                        =If(IsBlank(ThisItem.admin_access), "No", ThisItem.admin_access)
-                      Align: =Align.Center
-                      FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
-                      Height: =29
-                      PaddingBottom: =0
-                      PaddingLeft: =0
-                      PaddingRight: =0
-                      PaddingTop: =0
-                      VerticalAlign: =VerticalAlign.Top
-                      Width: =203
-                      X: =394
-                      Y: =33
-                - Block_user_btn:
-                    Control: Classic/Button
-                    Properties:
-                      OnSelect: |+
-                        =Patch(
-                            login_data,                          
-                            LookUp(login_data, username = ThisItem.username),  
-                            {
-                                Account_status: If(
-                                    ThisItem.Account_status = 'Account_status (login_data)'.Active,  
-                                    'Account_status (login_data)'.Blocked,                                
-                                    'Account_status (login_data)'.Active                                  
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: |+
+                                =If(
+                                    First(Table1S).darkmode = "ON",
+                                   varFontColorWhite,
+                                   varFontColorDark
                                 )
-                            }
-                        );
-                        Notify("Account status changed!", NotificationType.Success);
+                              Font: =Font.'Open Sans'
+                              FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                              Height: =29
+                              OnSelect: =Select(Parent)
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Size: =14
+                              Text: =ThisItem.username
+                              VerticalAlign: =VerticalAlign.Top
+                              Width: =203
+                              X: =45
+                              Y: =30
+                        - Separator1:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Fill: =RGBA(255, 255, 255, 1)
+                              Height: =8
+                              OnSelect: =Select(Parent)
+                              Width: =Parent.TemplateWidth
+                              Y: =Parent.TemplateHeight - Self.Height
+                        - person_icon_2:
+                            Control: Classic/Icon@2.5.0
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =RGBA(0, 18, 107, 1)
+                              Height: =55
+                              Icon: =Icon.Person
+                              OnSelect: =Select(Parent)
+                              Width: =53
+                              X: =20
+                              Y: =18
+                        - password_label:
+                            Control: Label@2.5.1
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: |+
+                                =If(
+                                    First(Table1S).darkmode = "ON",
+                                   varFontColorWhite,
+                                   varFontColorDark
+                                )
+                              Font: =Font.'Open Sans'
+                              OnSelect: =Select(Parent)
+                              Text: |+
+                                =If(username_label.Text = SelectedRecordID, ThisItem.password, "**********")
+                              X: =240
+                              Y: =28
+                        - Delete_user_btn:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorFade(Self.Fill, -15%)
+                              Color: =RGBA(255, 255, 255, 1)
+                              DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                              Fill: =RGBA(168, 0, 0, 1)
+                              Font: =Font.'Open Sans'
+                              Height: =31
+                              HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                              HoverColor: =RGBA(255, 255, 255, 1)
+                              HoverFill: =Self.Fill
+                              OnSelect: =Set(makePopupVisible,true);
+                              PressedBorderColor: =Self.Fill
+                              PressedColor: =Self.Fill
+                              PressedFill: =Self.Color
+                              Size: =12
+                              Text: ="Delete"
+                              Width: =83
+                              X: =1247
+                              Y: =37
+                        - Edit_user_btn:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorFade(Self.Fill, -15%)
+                              Color: =RGBA(255, 255, 255, 1)
+                              DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                              Fill: =RGBA(56, 96, 178, 1)
+                              Font: =Font.'Open Sans'
+                              Height: =31
+                              HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                              HoverColor: =RGBA(255, 255, 255, 1)
+                              HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                              OnSelect: |-
+                                =Set(makeEditBoxVisible,true);
+                                Set(editDataUsernamePassword, false);
+                              PressedBorderColor: =Self.Fill
+                              PressedColor: =Self.Fill
+                              PressedFill: =Self.Color
+                              Size: =12
+                              Text: ="Edit"
+                              Width: =83
+                              X: =1127
+                              Y: =37
+                        - Block_user_btn:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorFade(Self.Fill, -15%)
+                              Color: =RGBA(255, 255, 255, 1)
+                              DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                              Fill: |+
+                                =If(
+                                    account_status_label.Text = "Active", 
+                                    RGBA(0, 0, 0, 1),  
+                                    RGBA(0, 255, 0, 1)     
+                                )
 
-                        Patch(
-                            Library_logs,
-                            Defaults(Library_logs),
-                            {
-                                Event_ID: Text(Max(Library_logs, Event_ID) + 1),
-                                Event_Type: "User Management",
-                                Description: "Account status changed",
-                                Event_Name: "Change Account Status",
-                                Event_Screen: App.ActiveScreen.Name,
-                                Event_Level: "3",
-                                Username: ThisItem.username,
-                                User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
-                                Event_Status: "Successful"
-                            }
-                        );
-                      Text: |-
-                        =If(
-                            account_status_label.Text = "Active", 
-                            "Block",      
-                            "Unblock"    
-                        )
-                      Fill: |+
-                        =If(
-                            account_status_label.Text = "Active", 
-                            RGBA(0, 0, 0, 1),  
-                            RGBA(0, 255, 0, 1)     
-                        )
+                              Font: =Font.'Open Sans'
+                              Height: =31
+                              HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                              HoverColor: =RGBA(255, 255, 255, 1)
+                              HoverFill: =Self.Fill
+                              OnSelect: |+
+                                =Patch(
+                                    login_data,                          
+                                    LookUp(login_data, username = ThisItem.username),  
+                                    {
+                                        Account_status: If(
+                                            ThisItem.Account_status = 'Account_status (login_data)'.Active,  
+                                            'Account_status (login_data)'.Blocked,                                
+                                            'Account_status (login_data)'.Active                                  
+                                        )
+                                    }
+                                );
+                                Notify("Account status changed!", NotificationType.Success);
 
-                      Height: =31
-                      HoverFill: =Self.Fill
-                      Size: =12
-                      Width: =83
-                      X: =1004
-                      Y: =37
-                - Edit_user_btn:
-                    Control: Classic/Button
-                    Properties:
-                      OnSelect: |-
-                        =Set(makeEditBoxVisible,true);
-                        Set(editDataUsernamePassword, false);
-                      Text: ="Edit"
-                      Height: =31
-                      Size: =12
-                      Width: =83
-                      X: =1127
-                      Y: =37
-                - Delete_user_btn:
-                    Control: Classic/Button
-                    Properties:
-                      OnSelect: =Set(makePopupVisible,true);
-                      Text: ="Delete"
-                      Fill: =RGBA(168, 0, 0, 1)
-                      Height: =31
-                      HoverFill: =Self.Fill
-                      Size: =12
-                      Width: =83
-                      X: =1247
-                      Y: =37
-                - password_label:
-                    Control: Label
-                    Properties:
-                      OnSelect: =Select(Parent)
-                      Text: |+
-                        =If(username_label.Text = SelectedRecordID, ThisItem.password, "**********")
-                      Align: =Align.Center
-                      X: =240
-                      Y: =28
-                - person_icon_2:
-                    Control: Classic/Icon
-                    Variant: Person
-                    Properties:
-                      OnSelect: =Select(Parent)
-                      Height: =55
-                      Icon: =Icon.Person
-                      Width: =53
-                      X: =20
-                      Y: =18
-                - Separator1:
-                    Control: Rectangle
-                    Properties:
-                      OnSelect: =Select(Parent)
-                      Fill: =RGBA(255, 255, 255, 1)
-                      Height: =8
-                      Width: =Parent.TemplateWidth
-                      Y: =Parent.TemplateHeight - Self.Height
-                - username_label:
-                    Control: Label
-                    Properties:
-                      OnSelect: =Select(Parent)
-                      Text: =ThisItem.username
-                      Align: =Align.Center
-                      FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
-                      Height: =29
-                      PaddingBottom: =0
-                      PaddingLeft: =0
-                      PaddingRight: =0
-                      PaddingTop: =0
-                      VerticalAlign: =VerticalAlign.Top
-                      Width: =203
-                      X: =45
-                      Y: =30
+                                Patch(
+                                    Library_logs,
+                                    Defaults(Library_logs),
+                                    {
+                                        Event_ID: Text(Max(Library_logs, Event_ID) + 1),
+                                        Event_Type: "User Management",
+                                        Description: "Account status changed",
+                                        Event_Name: "Change Account Status",
+                                        Event_Screen: App.ActiveScreen.Name,
+                                        Event_Level: "3",
+                                        Username: ThisItem.username,
+                                        User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
+                                        Event_Status: "Successful"
+                                    }
+                                );
+                              PressedBorderColor: =Self.Fill
+                              PressedColor: =Self.Fill
+                              PressedFill: =Self.Color
+                              Size: =12
+                              Text: |-
+                                =If(
+                                    account_status_label.Text = "Active", 
+                                    "Block",      
+                                    "Unblock"    
+                                )
+                              Width: =83
+                              X: =1004
+                              Y: =37
+                        - admin_access:
+                            Control: Label@2.5.1
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: |+
+                                =If(
+                                    First(Table1S).darkmode = "ON",
+                                   varFontColorWhite,
+                                   varFontColorDark
+                                )
+                              Font: =Font.'Open Sans'
+                              FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                              Height: =29
+                              OnSelect: =Select(Parent)
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Size: =14
+                              Text: |+
+                                =If(IsBlank(ThisItem.admin_access), "No", ThisItem.admin_access)
+                              VerticalAlign: =VerticalAlign.Top
+                              Width: =203
+                              X: =394
+                              Y: =33
+                        - account_created:
+                            Control: Label@2.5.1
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: |+
+                                =If(
+                                    First(Table1S).darkmode = "ON",
+                                   varFontColorWhite,
+                                   varFontColorDark
+                                )
+                              Font: =Font.'Open Sans'
+                              OnSelect: =Select(Parent)
+                              Text: =ThisItem.'Created On'
+                              Width: =189
+                              X: =595
+                              Y: =33
+                        - account_status_label:
+                            Control: Label@2.5.1
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: |+
+                                =If(
+                                    First(Table1S).darkmode = "ON",
+                                   varFontColorWhite,
+                                   varFontColorDark
+                                )
+                              Font: =Font.'Open Sans'
+                              OnSelect: =Select(Parent)
+                              Text: |+
+                                =If(ThisItem.Account_status, "Blocked", "Active")
+                              Width: =88
+                              X: =839
+                              Y: =33
+                        - view_icon:
+                            Control: Classic/Icon@2.5.0
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =RGBA(0, 18, 107, 1)
+                              Height: =21
+                              Icon: =Icon.View
+                              OnSelect: |+
+                                =If(SelectedRecordID = ThisItem.username, 
+                                   UpdateContext({ SelectedRecordID: Blank() }), 
+                                   UpdateContext({ SelectedRecordID: ThisItem.username }))
+                              Width: =38
+                              X: =385
+                              Y: =37
+                        - horizontal_separator:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Fill: =RGBA(56, 96, 178, 1)
+                              Height: =5
+                              OnSelect: =Select(Parent)
+                              Width: =App.Width
+                              Y: =99
+      - create_new_user_btn:
+          Control: Classic/Button@2.2.0
+          Group: Create_new_user
+          Properties:
+            BorderColor: =ColorFade(Self.Fill, -15%)
+            Color: =RGBA(255, 255, 255, 1)
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            Fill: =RGBA(56, 96, 178, 1)
+            Font: =Font.'Open Sans'
+            Height: =64
+            HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            OnSelect: =Set(createUserBox,true)
+            PressedBorderColor: =Self.Fill
+            PressedColor: =Self.Fill
+            PressedFill: =Self.Color
+            RadiusBottomLeft: =100
+            RadiusBottomRight: =100
+            RadiusTopLeft: =100
+            RadiusTopRight: =100
+            Text: ="Add User"
+            Width: =251
+            X: =1094
+            Y: =74
+      - Icon6:
+          Control: Classic/Icon@2.5.0
+          Group: Create_new_user
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =RGBA(0, 18, 107, 1)
+            Height: =51
+            Icon: =Icon.AddUser
+            OnSelect: =Set(createUserBox,true)
+            Width: =51
+            X: =1273
+            Y: =80
+      - PageTitle_3:
+          Control: CanvasComponent
+          ComponentName: PageTitle
+          Properties:
+            Height: =50
+            Width: =200
+            X: =1166
+            screenInfo: =App.ActiveScreen
+      - MenuLeftNav_14:
+          Control: CanvasComponent
+          ComponentName: MenuLeftNav
+          Properties:
+            AdminAccess: =varAdminAccess
+            ExpandMenu: =
+            HamburgerMenuColor: "=If(\r\n    First(Table1S).darkmode = \"ON\",\r\n   varFontColorWhite,\r\n   varBtnColorDark\r\n  \r\n)\r\n"
+            Height: =If(!MenuLeftNav_14.showMenuProp, 50, App.Height)
+            LoggedUser: =varLoggedUser
+            MenuBkgColor: |-
+              =If(
+                  First(Table1S).darkmode = "ON",
+                 varBgDarkMenu,
+                 varBgColorWhite
+              )
+            MenuColor: "=If(\r\n    First(Table1S).darkmode = \"ON\",\r\n   varFontColorWhite,\r\n   varFontColorDark\r\n   \r\n)"
+            MenuColorIcon: "=If(\r\n    First(Table1S).darkmode = \"ON\",\r\n   varFontColorWhite,\r\n   varFontColorDark\r\n   \r\n)"
+            MenuItems: |
+              =Table(
+                  {
+                      MenuLabel: "Dashboard",
+                      MenuIcon: Icon.Home,
+                      MenuScreenNavigate: Dashboard,
+                      MenuID: 1,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Book Catalog",
+                      MenuIcon: Icon.Database,
+                      MenuScreenNavigate: 'Book Catalog',
+                      MenuID: 2,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Book Details",
+                      MenuIcon: Icon.ListScrollWatchlist,
+                      MenuScreenNavigate: 'Book Details',
+                      MenuID: 3,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Your Books",
+                      MenuIcon: Icon.Notebook,
+                      MenuScreenNavigate: 'Your Books',
+                      MenuID: 4,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Wishlist / Favorites",
+                      MenuIcon: Icon.Heart,
+                      MenuScreenNavigate: 'Wishlist / Favorites',
+                      MenuID: 5,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Book Reservations",
+                      MenuIcon: Icon.CalendarBlank,
+                      MenuScreenNavigate: 'Book Reservations',
+                      MenuID: 6,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Borrowing History",
+                      MenuIcon: Icon.History,
+                      MenuScreenNavigate: 'Borrowing History',
+                      MenuID: 7,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Library Ranking",
+                      MenuIcon: Icon.Globe,
+                      MenuScreenNavigate: 'Library Ranking',
+                      MenuID: 8,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "User Profile",
+                      MenuIcon: Icon.Person,
+                      MenuScreenNavigate: 'User Profile',
+                      MenuID: 9,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Admin Panel",
+                      MenuIcon: Icon.Manufacture,
+                      //MenuScreenNavigate: 'Admin Panel',
+                      MenuID: 10,
+                      VisibleSubMenu: true,
+                      SubMenu: Table(
+                          {
+                              MenuLabel: "Add Book",
+                              MenuIcon: Icon.AddDocument,
+                              MenuScreenNavigate: 'Add Book',
+                              MenuID: 1
+                          },
+                          {
+                              MenuLabel: "Edit Book",
+                              MenuIcon: Icon.ColorPicker,
+                              MenuScreenNavigate: 'Edit Book',
+                              MenuID: 2
+                          },
+                          {
+                              MenuLabel: "Delete Book",
+                              MenuIcon: Icon.ClearDrawing,
+                              MenuScreenNavigate: 'Delete Book',
+                              MenuID: 3
+                          },
+                          {
+                              MenuLabel: "Manage Users",
+                              MenuIcon: Icon.People,
+                              MenuScreenNavigate: 'Manage Users',
+                              MenuID: 4
+                          },
+                          {
+                              MenuLabel: "Manage Loans",
+                              MenuIcon: Icon.Currency,
+                              MenuScreenNavigate: 'Manage Loans',
+                              MenuID: 5
+                          },
+                          {
+                              MenuLabel: "Manage Reservations",
+                              MenuIcon: Icon.PhotosPictures,
+                              MenuScreenNavigate: 'Manage Reservations',
+                              MenuID: 6
+                          },
+                          {
+                              MenuLabel: "Library Settings",
+                              MenuIcon: Icon.Settings,
+                              MenuScreenNavigate: 'Library Settings',
+                              MenuID: 7
+                          },
+                          {
+                              MenuLabel: "Check Log",
+                              MenuIcon: Icon.Warning,
+                              MenuScreenNavigate: 'Check Log',
+                              MenuID: 8
+                          }
+                      )
+                  }
+              )
+            SetMenuWidth: =300
+            Width: =MenuLeftNav_14.MenuWidth
+      - Popup:
+          Control: GroupContainer@1.3.0
+          Variant: ManualLayout
+          Properties:
+            Height: =768
+            Visible: =makePopupVisible
+            Width: =1366
+          Children:
+            - popup_bg_box:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Fill: =RGBA(0, 0, 0, 0.4)
+                  Height: =768
+                  Visible: =makePopupVisible
+                  Width: =1366
+            - popup_box:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0, 134, 208, 1)
+                  BorderThickness: =5
+                  Fill: =RGBA(241, 244, 249, 1)
+                  Height: =324
+                  Visible: =makePopupVisible
+                  Width: =672
+                  X: =347
+                  Y: =222
+            - main_container_3:
+                Control: GroupContainer@1.3.0
+                Variant: ManualLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  Height: =321
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =672
+                  X: =347
+                  Y: =225
+                Children:
+                  - button_container_3:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Height: =80
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =30
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =672
+                        Y: =180
+                      Children:
+                        - btn_no:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorFade(Self.Fill, -15%)
+                              Color: =RGBA(255, 255, 255, 1)
+                              DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                              Fill: =RGBA(56, 96, 178, 1)
+                              Font: =Font.'Open Sans'
+                              HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                              HoverColor: =RGBA(255, 255, 255, 1)
+                              HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                              OnSelect: =Set(makePopupVisible,false);
+                              PressedBorderColor: =Self.Fill
+                              PressedColor: =Self.Fill
+                              PressedFill: =Self.Color
+                              Text: ="No"
+                              Visible: =makePopupVisible
+                              X: =480
+                              Y: =425
+                        - btn_yes:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorFade(Self.Fill, -15%)
+                              Color: =RGBA(255, 255, 255, 1)
+                              DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                              Fill: =RGBA(168, 0, 0, 1)
+                              Font: =Font.'Open Sans'
+                              HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                              HoverColor: =RGBA(255, 255, 255, 1)
+                              HoverFill: =Self.Fill
+                              OnSelect: |+
+                                =Remove(
+                                    login_data, 
+                                    LookUp(login_data, username = Gallery3.Selected.username)
+                                );
+
+                                Notify("User successfully deleted!", NotificationType.Success);
+                                Set(makePopupVisible, false);
+
+                                Patch(
+                                    Library_logs,
+                                    Defaults(Library_logs),
+                                    {
+                                        Event_ID: Text(Max(Library_logs, Event_ID) + 1),
+                                        Event_Type: "User Management",
+                                        Description: "User successfully deleted",
+                                        Event_Name: "Delete User",
+                                        Event_Screen: App.ActiveScreen.Name,
+                                        Event_Level: "1",
+                                        Username: loggedInUser.username,
+                                        User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
+                                        Event_Status: "Successful"
+                                    }
+                                );
+                              PressedBorderColor: =Self.Fill
+                              PressedColor: =Self.Fill
+                              PressedFill: =Self.Color
+                              Text: ="Yes"
+                              Visible: =makePopupVisible
+                              X: =215
+                              Y: =425
+                  - icons_container:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Height: =120
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =474
+                        X: =114
+                        Y: =60
+                      Children:
+                        - person_icon:
+                            Control: Classic/Icon@2.5.0
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =RGBA(0, 18, 107, 1)
+                              Icon: =Icon.Person
+                              Visible: =makePopupVisible
+                              X: =559
+                              Y: =307
+                        - arrow_right_icon:
+                            Control: Classic/Icon@2.5.0
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =RGBA(0, 18, 107, 1)
+                              Icon: =Icon.ArrowRight
+                              Visible: =makePopupVisible
+                              X: =91
+                              Y: =307
+                        - trash_icon:
+                            Control: Classic/Icon@2.5.0
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =RGBA(0, 18, 107, 1)
+                              Icon: =Icon.Trash
+                              Visible: =makePopupVisible
+                              X: =183
+                              Y: =307
+                  - title_container_3:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Height: =60
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =672
+                      Children:
+                        - HtmlText1:
+                            Control: HtmlViewer@2.1.0
+                            Properties:
+                              Font: =Font.'Open Sans'
+                              Height: =45
+                              HtmlText: |+
+                                ="<div style='text-align:center;'>Are you sure you want to remove the user <span style='color:red;'>" & Gallery3.Selected.username & "</span>?</div>"
+                              Size: =16
+                              Width: =672
+                              Y: =15
+      - EditBox:
+          Control: GroupContainer@1.3.0
+          Variant: ManualLayout
+          Properties:
+            Height: =768
+            Visible: =makeEditBoxVisible
+            Width: =1366
+          Children:
+            - popup_bg_box_1:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Fill: =RGBA(0, 0, 0, 0.4)
+                  Height: =768
+                  Visible: =makeEditBoxVisible
+                  Width: =1366
+            - popup_box_1:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0, 134, 208, 1)
+                  BorderThickness: =5
+                  Fill: =RGBA(241, 244, 249, 1)
+                  Height: =451
+                  Visible: =makeEditBoxVisible
+                  Width: =749
+                  X: =320
+                  Y: =173
+            - main_container_2:
+                Control: GroupContainer@1.3.0
+                Variant: ManualLayout
+                Properties:
+                  Height: =451
+                  Width: =749
+                  X: =320
+                  Y: =173
+                Children:
+                  - buttons_options_container:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Height: =158
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =749
+                        Y: =293
+                      Children:
+                        - options_container:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              LayoutDirection: =LayoutDirection.Vertical
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                            Children:
+                              - admin_access_container_2:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    LayoutMinHeight: =60
+                                    RadiusBottomLeft: =0
+                                    RadiusBottomRight: =0
+                                    RadiusTopLeft: =0
+                                    RadiusTopRight: =0
+                                  Children:
+                                    - checkbox_admin_access:
+                                        Control: Classic/CheckBox@2.1.0
+                                        Properties:
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          CheckboxBorderColor: =RGBA(0, 18, 107, 1)
+                                          CheckmarkFill: =RGBA(0, 0, 0, 1)
+                                          Default: |+
+                                            =    If(
+                                                    First(Filter(login_data, username = Gallery3.Selected.username)).admin_access = "Yes",
+                                                    true,
+                                                    false
+                                                )
+                                          Font: =Font.'Open Sans'
+                                          HoverColor: =RGBA(0, 18, 107, 1)
+                                          Text: ="Admin Access - "& checkbox_admin_access.Value
+                                          Width: =222
+                                          X: =50
+                                          Y: =19
+                              - username_info_container:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    LayoutMinHeight: =60
+                                    RadiusBottomLeft: =0
+                                    RadiusBottomRight: =0
+                                    RadiusTopLeft: =0
+                                    RadiusTopRight: =0
+                                  Children:
+                                    - Label6:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Align: =Align.Center
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          Font: =Font.'Open Sans'
+                                          Height: =45
+                                          Size: =16
+                                          Text: |-
+                                            ="Username: "& Gallery3.Selected.username
+                                          Width: =272
+                                          X: =30
+                                          Y: =20
+                        - buttons_container:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              LayoutDirection: =LayoutDirection.Vertical
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                            Children:
+                              - save_box_2:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.End
+                                    DropShadow: =DropShadow.None
+                                    LayoutMinHeight: =60
+                                    RadiusBottomLeft: =0
+                                    RadiusBottomRight: =0
+                                    RadiusTopLeft: =0
+                                    RadiusTopRight: =0
+                                    Width: =300
+                                  Children:
+                                    - btn_yes_1:
+                                        Control: Classic/Button@2.2.0
+                                        Properties:
+                                          BorderColor: =ColorFade(Self.Fill, -15%)
+                                          Color: =RGBA(255, 255, 255, 1)
+                                          DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                                          Fill: =RGBA(168, 0, 0, 1)
+                                          Font: =Font.'Open Sans'
+                                          HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                                          HoverColor: =RGBA(255, 255, 255, 1)
+                                          HoverFill: =Self.Fill
+                                          OnSelect: "=Patch(\r\n    login_data,\r\n    First(Filter(login_data, username = Gallery3.Selected.username)),\r\n    {\r\n        admin_access: If(checkbox_admin_access.Value, \"Yes\", \"No\"),\r\n        username: If(editDataUsernamePassword && currentValueLabel = \"username\", input_username_password.Text, Gallery3.Selected.username),\r\n        password: If(editDataUsernamePassword && currentValueLabel = \"password\", input_username_password.Text, Gallery3.Selected.password)\r\n    }\r\n);\r\n\r\n    \r\n  If(\r\n    editDataUsernamePassword && currentValueLabel = \"username\" && input_username_password.Text <> Gallery3.Selected.username,\r\n    Notify(\"Username updated successfully\", NotificationType.Success),\r\n    \r\n    editDataUsernamePassword && currentValueLabel = \"password\" && input_username_password.Text <> Gallery3.Selected.password,\r\n    Notify(\"Password updated successfully\", NotificationType.Success),\r\n    \r\n    checkbox_admin_access.Value && Gallery3.Selected.admin_access <> \"Yes\",\r\n    Notify(\"Admin access granted\", NotificationType.Success),\r\n    \r\n    !checkbox_admin_access.Value && Gallery3.Selected.admin_access = \"Yes\",\r\n    Notify(\"Admin access revoked\", NotificationType.Success),\r\n    \r\n    Notify(\"No changes made\", NotificationType.Information)\r\n);\r\n\r\nPatch(\r\n    Library_logs,\r\n    Defaults(Library_logs),\r\n    {\r\n        Event_ID: Text(Max(Library_logs, Event_ID) + 1),\r\n        Event_Type: \"User Management\",\r\n        Description: \"User data updated\",\r\n        Event_Name: \"Update User Data\",\r\n        Event_Screen: App.ActiveScreen.Name,\r\n        Event_Level: \"3\",\r\n        Username: loggedInUser.username,\r\n        User_Role: If(loggedInUser.admin_access = \"Yes\", \"Admin\", \"User\"),\r\n        Event_Status: \"Successful\"\r\n    }\r\n);"
+                                          PressedBorderColor: =Self.Fill
+                                          PressedColor: =Self.Fill
+                                          PressedFill: =Self.Color
+                                          Text: ="Save"
+                                          Visible: =makeEditBoxVisible
+                                          X: =100
+                                          Y: =29
+                              - exit_box_2:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.End
+                                    DropShadow: =DropShadow.None
+                                    LayoutMinHeight: =60
+                                    RadiusBottomLeft: =0
+                                    RadiusBottomRight: =0
+                                    RadiusTopLeft: =0
+                                    RadiusTopRight: =0
+                                    Width: =300
+                                  Children:
+                                    - btn_no_1:
+                                        Control: Classic/Button@2.2.0
+                                        Properties:
+                                          BorderColor: =ColorFade(Self.Fill, -15%)
+                                          Color: =RGBA(255, 255, 255, 1)
+                                          DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                                          Fill: =RGBA(56, 96, 178, 1)
+                                          Font: =Font.'Open Sans'
+                                          HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                                          HoverColor: =RGBA(255, 255, 255, 1)
+                                          HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                                          OnSelect: =Set(makeEditBoxVisible,false);
+                                          PressedBorderColor: =Self.Fill
+                                          PressedColor: =Self.Fill
+                                          PressedFill: =Self.Color
+                                          Text: ="Exit"
+                                          Visible: =makeEditBoxVisible
+                                          X: =100
+                                          Y: =19
+                  - input_container_2:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Height: =90
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =746
+                        X: =3
+                        Y: =181
+                      Children:
+                        - label_type_username_password:
+                            Control: GroupContainer@1.3.0
+                            Variant: ManualLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              LayoutMinWidth: =200
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                            Children:
+                              - currentValue_Label:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Font: =Font.'Open Sans'
+                                    Text: ="Type new "& currentValueLabel
+                                    Visible: =editDataUsernamePassword
+                                    Width: =213
+                                    X: =36
+                                    Y: =30
+                        - input_type_username_password:
+                            Control: GroupContainer@1.3.0
+                            Variant: ManualLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =2
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                            Children:
+                              - input_username_password:
+                                  Control: Classic/TextInput@2.3.2
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Default: =currentValue
+                                    Font: =Font.'Open Sans'
+                                    HoverBorderColor: =RGBA(0, 18, 107, 1)
+                                    HoverFill: =RGBA(186, 202, 226, 1)
+                                    Visible: =editDataUsernamePassword
+                                    Width: =343
+                                    X: =40
+                                    Y: =30
+                  - button_container_2:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Height: =88
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =746
+                        X: =3
+                        Y: =93
+                      Children:
+                        - change_username_box:
+                            Control: GroupContainer@1.3.0
+                            Variant: ManualLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.SetByContainer
+                              DropShadow: =DropShadow.None
+                              Height: =90
+                              LayoutMinHeight: =90
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                            Children:
+                              - Change_username_btn:
+                                  Control: Classic/Button@2.2.0
+                                  Properties:
+                                    BorderColor: =ColorFade(Self.Fill, -15%)
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                                    Fill: =RGBA(56, 96, 178, 1)
+                                    Font: =Font.'Open Sans'
+                                    Height: =49
+                                    HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                                    HoverColor: =RGBA(255, 255, 255, 1)
+                                    HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                                    OnSelect: |+
+                                      =UpdateContext({currentValue: Gallery3.Selected.username, currentValueLabel: "username"});
+                                      Set(editDataUsernamePassword, true);
+
+                                      Patch(
+                                          Library_logs,
+                                          Defaults(Library_logs),
+                                          {
+                                              Event_ID: Text(Max(Library_logs, Event_ID) + 1),
+                                              Event_Type: "User Management",
+                                              Description: "Editing data for user",
+                                              Event_Name: "Edit User Data",
+                                              Event_Screen: App.ActiveScreen.Name,
+                                              Event_Level: "3",
+                                              Username: loggedInUser.username,
+                                              User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
+                                              Event_Status: "Successful"
+                                          }
+                                      );
+                                    PressedBorderColor: =Self.Fill
+                                    PressedColor: =Self.Fill
+                                    PressedFill: =Self.Color
+                                    Text: ="Change Username"
+                                    Width: =308
+                                    X: =30
+                                    Y: =20
+                        - change_password_box:
+                            Control: GroupContainer@1.3.0
+                            Variant: ManualLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.SetByContainer
+                              DropShadow: =DropShadow.None
+                              Height: =90
+                              LayoutMinHeight: =90
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                            Children:
+                              - Change_password_btn:
+                                  Control: Classic/Button@2.2.0
+                                  Properties:
+                                    BorderColor: =ColorFade(Self.Fill, -15%)
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                                    Fill: =RGBA(56, 96, 178, 1)
+                                    Font: =Font.'Open Sans'
+                                    Height: =49
+                                    HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                                    HoverColor: =RGBA(255, 255, 255, 1)
+                                    HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                                    OnSelect: |+
+                                      =UpdateContext({currentValue: Gallery3.Selected.password, currentValueLabel: "password"});
+                                      Set(editDataUsernamePassword, true);
+
+                                      Patch(
+                                          Library_logs,
+                                          Defaults(Library_logs),
+                                          {
+                                              Event_ID: Text(Max(Library_logs, Event_ID) + 1),
+                                              Event_Type: "User Management",
+                                              Description: "Editing password for user",
+                                              Event_Name: "Edit User Password",
+                                              Event_Screen: App.ActiveScreen.Name,
+                                              Event_Level: "3",
+                                              Username: loggedInUser.username,
+                                               User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
+                                              Event_Status: "Successful"
+                                          }
+                                      );
+                                    PressedBorderColor: =Self.Fill
+                                    PressedColor: =Self.Fill
+                                    PressedFill: =Self.Color
+                                    Text: ="Change Password"
+                                    Width: =308
+                                    X: =30
+                                    Y: =20
+      - CreateUserBox:
+          Control: GroupContainer@1.3.0
+          Variant: ManualLayout
+          Properties:
+            Height: =768
+            Visible: =createUserBox
+            Width: =1366
+          Children:
+            - popup_bg_box_3:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Fill: =RGBA(0, 0, 0, 0.4)
+                  Height: =768
+                  Visible: =createUserBox
+                  Width: =1366
+            - popup_box_3:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0, 134, 208, 1)
+                  BorderThickness: =5
+                  Fill: =RGBA(241, 244, 249, 1)
+                  Height: =490
+                  Visible: =createUserBox
+                  Width: =689
+                  X: =274
+                  Y: =139
+            - main_container:
+                Control: GroupContainer@1.3.0
+                Variant: ManualLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  Height: =492
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =689
+                  X: =274
+                  Y: =137
+                Children:
+                  - button_container:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Height: =188
+                        LayoutDirection: =LayoutDirection.Vertical
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =275
+                        X: =414
+                        Y: =303
+                      Children:
+                        - save_container:
+                            Control: GroupContainer@1.3.0
+                            Variant: ManualLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                            Children:
+                              - btn_yes_3:
+                                  Control: Classic/Button@2.2.0
+                                  Properties:
+                                    BorderColor: =ColorFade(Self.Fill, -15%)
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                                    Fill: =RGBA(168, 0, 0, 1)
+                                    Font: =Font.'Open Sans'
+                                    HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                                    HoverColor: =RGBA(255, 255, 255, 1)
+                                    HoverFill: =Self.Fill
+                                    OnSelect: |+
+                                      =Patch(
+                                          login_data, 
+                                          Defaults(login_data),
+                                          {
+                                              username: username_input_2.Text,
+                                              password: password_input_2.Text, 
+                                              admin_access: If(admin_access_checkbox.Value, "Yes", "No")
+                                          }
+                                      );
+
+                                      Notify("User account created successfully!", NotificationType.Success);
+                                      Set(createUserBox, false);
+
+                                      Patch(
+                                          Library_logs,
+                                          Defaults(Library_logs),
+                                          {
+                                              Event_ID: Text(Max(Library_logs, Event_ID) + 1),
+                                              Event_Type: "User Management",
+                                              Description: "User account created",
+                                              Event_Name: "Create User",
+                                              Event_Screen: App.ActiveScreen.Name,
+                                              Event_Level: "3",
+                                              Username: loggedInUser.username,
+                                              User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
+                                              Event_Status: "Successful"
+                                          }
+                                      );
+                                    PressedBorderColor: =Self.Fill
+                                    PressedColor: =Self.Fill
+                                    PressedFill: =Self.Color
+                                    Text: ="Save"
+                                    Visible: =createUserBox
+                                    X: =50
+                                    Y: =40
+                        - exit_container:
+                            Control: GroupContainer@1.3.0
+                            Variant: ManualLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                            Children:
+                              - btn_no_3:
+                                  Control: Classic/Button@2.2.0
+                                  Properties:
+                                    BorderColor: =ColorFade(Self.Fill, -15%)
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                                    Fill: =RGBA(56, 96, 178, 1)
+                                    Font: =Font.'Open Sans'
+                                    HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                                    HoverColor: =RGBA(255, 255, 255, 1)
+                                    HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                                    OnSelect: =Set(createUserBox,false);
+                                    PressedBorderColor: =Self.Fill
+                                    PressedColor: =Self.Fill
+                                    PressedFill: =Self.Color
+                                    Text: ="Exit"
+                                    Visible: =createUserBox
+                                    X: =50
+                                    Y: =20
+                  - userdata_container:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Height: =234
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =689
+                        Y: =93
+                      Children:
+                        - username_box:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.SetByContainer
+                              DropShadow: =DropShadow.None
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                            Children:
+                              - label_box:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    LayoutMinWidth: =150
+                                    RadiusBottomLeft: =0
+                                    RadiusBottomRight: =0
+                                    RadiusTopLeft: =0
+                                    RadiusTopRight: =0
+                                  Children:
+                                    - label_username:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          Font: =Font.'Open Sans'
+                                          Text: |-
+                                            ="Username: "
+                                          Y: =50
+                              - input_box:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =3
+                                  Children:
+                                    - username_input_2:
+                                        Control: Classic/TextInput@2.3.2
+                                        Properties:
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          Default: =
+                                          Font: =Font.'Open Sans'
+                                          HoverBorderColor: =RGBA(0, 18, 107, 1)
+                                          HoverFill: =RGBA(186, 202, 226, 1)
+                                          PaddingLeft: =20
+                                          PaddingRight: =20
+                                          RadiusBottomLeft: =100
+                                          RadiusBottomRight: =100
+                                          RadiusTopLeft: =100
+                                          RadiusTopRight: =100
+                                          X: =15
+                                          Y: =50
+                        - password_box:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.SetByContainer
+                              DropShadow: =DropShadow.None
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                            Children:
+                              - label_box_2:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    LayoutMinWidth: =150
+                                    RadiusBottomLeft: =0
+                                    RadiusBottomRight: =0
+                                    RadiusTopLeft: =0
+                                    RadiusTopRight: =0
+                                  Children:
+                                    - label_password:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          Font: =Font.'Open Sans'
+                                          Text: |-
+                                            ="Password: "
+                                          Y: =30
+                              - input_box_2:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =3
+                                    RadiusBottomLeft: =0
+                                    RadiusBottomRight: =0
+                                    RadiusTopLeft: =0
+                                    RadiusTopRight: =0
+                                  Children:
+                                    - password_input_2:
+                                        Control: Classic/TextInput@2.3.2
+                                        Properties:
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          Default: =
+                                          Font: =Font.'Open Sans'
+                                          HoverBorderColor: =RGBA(0, 18, 107, 1)
+                                          HoverFill: =RGBA(186, 202, 226, 1)
+                                          Mode: =TextMode.Password
+                                          PaddingLeft: =20
+                                          PaddingRight: =20
+                                          RadiusBottomLeft: =100
+                                          RadiusBottomRight: =100
+                                          RadiusTopLeft: =100
+                                          RadiusTopRight: =100
+                                          X: =15
+                                          Y: =30
+                        - adm_access_box:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.SetByContainer
+                              DropShadow: =DropShadow.None
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                            Children:
+                              - label_box_3:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    LayoutMinWidth: =150
+                                    RadiusBottomLeft: =0
+                                    RadiusBottomRight: =0
+                                    RadiusTopLeft: =0
+                                    RadiusTopRight: =0
+                                  Children:
+                                    - label_admin_access:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          Font: =Font.'Open Sans'
+                                          Text: |-
+                                            ="Admin access: "
+                                          Y: =20
+                              - input_box_3:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =3
+                                    RadiusBottomLeft: =0
+                                    RadiusBottomRight: =0
+                                    RadiusTopLeft: =0
+                                    RadiusTopRight: =0
+                                  Children:
+                                    - admin_access_checkbox:
+                                        Control: Classic/CheckBox@2.1.0
+                                        Properties:
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          CheckboxBorderColor: =RGBA(0, 18, 107, 1)
+                                          CheckmarkFill: =RGBA(0, 0, 0, 1)
+                                          Font: =Font.'Open Sans'
+                                          HoverColor: =RGBA(0, 18, 107, 1)
+                                          Text: =admin_access_checkbox.Value
+                                          X: =30
+                                          Y: =20
+                  - title_container:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Height: =74
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Width: =689
+                      Children:
+                        - Title_label:
+                            Control: Label@2.5.1
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =74
+                              Size: =20
+                              Text: ="Create New User"
+                              Width: =689

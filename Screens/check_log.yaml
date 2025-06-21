@@ -1,667 +1,854 @@
-- Check Log:
-    Control: Screen
+Screens:
+  Check Log:
     Properties:
+      Fill: |+
+        =If(
+            First(Table1S).darkmode = "ON",
+           varBgColorDark,
+           varBgColorWhite
+        )
+      LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
       OnVisible: "=ClearCollect(LibraryLogs, Library_logs); \r\nSet(SelectedLogs, SortByColumns(LibraryLogs, \"createdon\", SortOrder.Descending)); "
     Children:
-    - MenuLeftNav_18:
-        Control: Component
-        ComponentName: MenuLeftNav
-        Properties:
-          AdminAccess: =varAdminAccess
-          HamburgerMenuColor: =Color.Blue
-          LoggedUser: =varLoggedUser
-          MenuBkgColor: =RGBA(220,220,220,1)
-          MenuColor: =Color.Purple
-          MenuItems: |
-            =Table(
-                {
-                    MenuLabel: "Dashboard",
-                    MenuIcon: Icon.Home,
-                    MenuScreenNavigate: Dashboard,
-                    MenuID: 1,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Book Catalog",
-                    MenuIcon: Icon.Database,
-                    MenuScreenNavigate: 'Book Catalog',
-                    MenuID: 2,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Book Details",
-                    MenuIcon: Icon.ListScrollWatchlist,
-                    MenuScreenNavigate: 'Book Details',
-                    MenuID: 3,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Your Books",
-                    MenuIcon: Icon.Notebook,
-                    MenuScreenNavigate: 'Your Books',
-                    MenuID: 4,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Wishlist / Favorites",
-                    MenuIcon: Icon.Heart,
-                    MenuScreenNavigate: 'Wishlist / Favorites',
-                    MenuID: 5,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Book Reservations",
-                    MenuIcon: Icon.CalendarBlank,
-                    MenuScreenNavigate: 'Book Reservations',
-                    MenuID: 6,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Borrowing History",
-                    MenuIcon: Icon.History,
-                    MenuScreenNavigate: 'Borrowing History',
-                    MenuID: 7,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Library Ranking",
-                    MenuIcon: Icon.Globe,
-                    MenuScreenNavigate: 'Library Ranking',
-                    MenuID: 8,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "User Profile",
-                    MenuIcon: Icon.Person,
-                    MenuScreenNavigate: 'User Profile',
-                    MenuID: 9,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Admin Panel",
-                    MenuIcon: Icon.Manufacture,
-                    //MenuScreenNavigate: 'Admin Panel',
-                    MenuID: 10,
-                    VisibleSubMenu: true,
-                    SubMenu: Table(
-                        {
-                            MenuLabel: "Add Book",
-                            MenuIcon: Icon.AddDocument,
-                            MenuScreenNavigate: 'Add Book',
-                            MenuID: 1
-                        },
-                        {
-                            MenuLabel: "Edit Book",
-                            MenuIcon: Icon.ColorPicker,
-                            MenuScreenNavigate: 'Edit Book',
-                            MenuID: 2
-                        },
-                        {
-                            MenuLabel: "Delete Book",
-                            MenuIcon: Icon.ClearDrawing,
-                            MenuScreenNavigate: 'Delete Book',
-                            MenuID: 3
-                        },
-                        {
-                            MenuLabel: "Manage Users",
-                            MenuIcon: Icon.People,
-                            MenuScreenNavigate: 'Manage Users',
-                            MenuID: 4
-                        },
-                        {
-                            MenuLabel: "Manage Loans",
-                            MenuIcon: Icon.Currency,
-                            MenuScreenNavigate: 'Manage Loans',
-                            MenuID: 5
-                        },
-                        {
-                            MenuLabel: "Manage Reservations",
-                            MenuIcon: Icon.PhotosPictures,
-                            MenuScreenNavigate: 'Manage Reservations',
-                            MenuID: 6
-                        },
-                        {
-                            MenuLabel: "Library Settings",
-                            MenuIcon: Icon.Settings,
-                            MenuScreenNavigate: 'Library Settings',
-                            MenuID: 7
-                        },
-                        {
-                            MenuLabel: "Check Log",
-                            MenuIcon: Icon.Warning,
-                            MenuScreenNavigate: 'Check Log',
-                            MenuID: 8
-                        }
-                    )
-                }
-            )
-          SetMenuWidth: =300
-          Height: =If(!MenuLeftNav_18.showMenuProp, 50, App.Height)
-          Width: =MenuLeftNav_18.MenuWidth
-    - Container2:
-        Control: GroupContainer
-        Variant: verticalAutoLayoutContainer
-        Properties:
-          DropShadow: =DropShadow.None
-          Height: =768
-          LayoutAlignItems: =LayoutAlignItems.Stretch
-          LayoutDirection: =LayoutDirection.Vertical
-          LayoutMode: =LayoutMode.Auto
-          RadiusBottomLeft: =0
-          RadiusBottomRight: =0
-          RadiusTopLeft: =0
-          RadiusTopRight: =0
-          Width: =1366
-        Children:
-        - Container3:
-            Control: GroupContainer
-            Variant: verticalAutoLayoutContainer
-            Properties:
-              AlignInContainer: =AlignInContainer.SetByContainer
-              DropShadow: =DropShadow.None
-              LayoutDirection: =LayoutDirection.Vertical
-              LayoutMode: =LayoutMode.Auto
-              RadiusBottomLeft: =0
-              RadiusBottomRight: =0
-              RadiusTopLeft: =0
-              RadiusTopRight: =0
-            Children:
-            - Container5:
-                Control: GroupContainer
-                Variant: horizontalAutoLayoutContainer
-                Properties:
-                  DropShadow: =DropShadow.None
-                  LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
-                  LayoutMinHeight: =60
-                  LayoutMode: =LayoutMode.Auto
-                  RadiusBottomLeft: =0
-                  RadiusBottomRight: =0
-                  RadiusTopLeft: =0
-                  RadiusTopRight: =0
-                Children:
-                - Container8:
-                    Control: GroupContainer
-                    Variant: horizontalAutoLayoutContainer
-                    Properties:
-                      AlignInContainer: =AlignInContainer.SetByContainer
-                      DropShadow: =DropShadow.None
-                      Height: =60
-                      LayoutGap: =50
-                      LayoutJustifyContent: =LayoutJustifyContent.End
-                      LayoutMode: =LayoutMode.Auto
-                      RadiusBottomLeft: =0
-                      RadiusBottomRight: =0
-                      RadiusTopLeft: =0
-                      RadiusTopRight: =0
-                    Children:
-                    - Icon5:
-                        Control: Classic/Icon
-                        Variant: Reload
-                        Properties:
-                          OnSelect: "=ClearCollect(LibraryLogs, Library_logs); \r\nSet(SelectedLogs, SortByColumns(LibraryLogs, \"createdon\", SortOrder.Descending)); "
-                          AlignInContainer: =AlignInContainer.End
-                          Height: =38
-                          Icon: =Icon.Reload
-                          Width: =39
-                          X: =1084
-                          Y: =25
-                    - PageTitle_11:
-                        Control: Component
-                        ComponentName: PageTitle
-                        Properties:
-                          screenInfo: =App.ActiveScreen
-                          Height: =50
-                          Width: =200
-                          X: =1166
-            - Container9:
-                Control: GroupContainer
-                Variant: manualLayoutContainer
-                Properties:
-                  DropShadow: =DropShadow.None
-                  FillPortions: =7
-                  RadiusBottomLeft: =0
-                  RadiusBottomRight: =0
-                  RadiusTopLeft: =0
-                  RadiusTopRight: =0
-                Children:
-                - Container10:
-                    Control: GroupContainer
-                    Variant: horizontalAutoLayoutContainer
-                    Properties:
-                      DropShadow: =DropShadow.None
-                      Height: =101
-                      LayoutAlignItems: =LayoutAlignItems.Center
-                      LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
-                      LayoutMode: =LayoutMode.Auto
-                      PaddingLeft: =30
-                      PaddingRight: |+
-                        =30
-                      RadiusBottomLeft: =0
-                      RadiusBottomRight: =0
-                      RadiusTopLeft: =0
-                      RadiusTopRight: =0
-                      Width: =1366
-                      Y: =30
-                    Children:
-                    - admin_logs:
-                        Control: Classic/Button
-                        Properties:
-                          OnSelect: |+
-                            =ClearCollect(LibraryLogs, Library_logs); 
-                            Set(SelectedLogs, SortByColumns(
-                                Filter(LibraryLogs, Event_Screen = "Manage Users" || Event_Screen = "Manage Loans"), 
-                                "createdon", 
-                                SortOrder.Descending
-                            ));
-                            UpdateContext({ showNoLogsMessage: IsEmpty(SelectedLogs) });
-                          Text: ="Admin logs"
-                          X: =40
-                          Y: =40
-                    - user_logs:
-                        Control: Classic/Button
-                        Properties:
-                          OnSelect: |-
-                            =ClearCollect(LibraryLogs, Library_logs); 
-                            Set(SelectedLogs, SortByColumns(Filter(LibraryLogs, Event_Screen = "User Profile"), "createdon", SortOrder.Descending));
-                            UpdateContext({ showNoLogsMessage: IsEmpty(SelectedLogs) });
-                          Text: ="Users logs"
-                          X: =20
-                          Y: =20
-                    - books_logs:
-                        Control: Classic/Button
-                        Properties:
-                          OnSelect: |-
-                            =ClearCollect(LibraryLogs, Library_logs); 
-                            Set(SelectedLogs, SortByColumns(Filter(LibraryLogs, Event_Screen in ["Book Details", "Wishlist / Favorites", "Add Book", "Edit Book", "Delete Book"]), "createdon", SortOrder.Descending));
-                            UpdateContext({ showNoLogsMessage: IsEmpty(SelectedLogs) });
-                          Text: ="Books logs"
-                          X: =40
-                          Y: =21
-                    - login_logs:
-                        Control: Classic/Button
-                        Properties:
-                          OnSelect: |+
-                            =ClearCollect(LibraryLogs, Library_logs); 
-                            Set(SelectedLogs, SortByColumns(Filter(LibraryLogs, Event_Screen in ["Register_page", "Login_page"]), 
-                            "createdon", SortOrder.Descending));
-                            UpdateContext({ showNoLogsMessage: IsEmpty(SelectedLogs) });
-                          Text: ="Login logs"
-                          X: =60
-                          Y: =21
-                    - other_logs:
-                        Control: Classic/Button
-                        Properties:
-                          OnSelect: |-
-                            =Set(SelectedLogs, Filter(LibraryLogs, false));
-                            UpdateContext({ showNoLogsMessage: IsEmpty(SelectedLogs) });
-                          Text: ="Other logs"
-                          X: =80
-                          Y: =21
-        - Container4:
-            Control: GroupContainer
-            Variant: verticalAutoLayoutContainer
-            Properties:
-              AlignInContainer: =AlignInContainer.SetByContainer
-              FillPortions: =3
-              LayoutAlignItems: =LayoutAlignItems.Stretch
-              LayoutDirection: =LayoutDirection.Vertical
-              LayoutJustifyContent: =LayoutJustifyContent.Center
-              LayoutMode: =LayoutMode.Auto
-            Children:
-            - Container12:
-                Control: GroupContainer
-                Variant: manualLayoutContainer
+      - Container2:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Height: =768
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =1366
+          Children:
+            - Container3:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
                 Properties:
                   AlignInContainer: =AlignInContainer.SetByContainer
                   DropShadow: =DropShadow.None
-                  LayoutMinHeight: =50
+                  LayoutDirection: =LayoutDirection.Vertical
                   RadiusBottomLeft: =0
                   RadiusBottomRight: =0
                   RadiusTopLeft: =0
                   RadiusTopRight: =0
                 Children:
-                - gallery_th:
-                    Control: Group
-                    Children:
-                    - book_id:
-                        Control: Label
-                        Properties:
-                          Text: ="Book ID"
-                          Align: =Align.Center
-                          Color: =RGBA(255, 255, 255, 1)
-                          FontWeight: =FontWeight.Semibold
-                          Height: =72
-                          Width: =156
-                          X: =591
-                    - status:
-                        Control: Label
-                        Properties:
-                          Text: ="Status"
-                          Align: =Align.Center
-                          Color: =RGBA(255, 255, 255, 1)
-                          FontWeight: =FontWeight.Semibold
-                          Height: =72
-                          Width: =156
-                          X: =1195
-                    - date:
-                        Control: Label
-                        Properties:
-                          Text: ="Date"
-                          Align: =Align.Center
-                          Color: =RGBA(255, 255, 255, 1)
-                          FontWeight: =FontWeight.Semibold
-                          Height: =72
-                          Width: =156
-                          X: =1051
-                    - level:
-                        Control: Label
-                        Properties:
-                          Text: ="Level"
-                          Align: =Align.Center
-                          Color: =RGBA(255, 255, 255, 1)
-                          FontWeight: =FontWeight.Semibold
-                          Height: =72
-                          Width: =156
-                          X: =931
-                    - event_desc:
-                        Control: Label
-                        Properties:
-                          Text: ="Description"
-                          Align: =Align.Center
-                          Color: =RGBA(255, 255, 255, 1)
-                          FontWeight: =FontWeight.Semibold
-                          Height: =72
-                          Width: =156
-                          X: =747
-                    - event_type:
-                        Control: Label
-                        Properties:
-                          Text: ="Type"
-                          Align: =Align.Center
-                          Color: =RGBA(255, 255, 255, 1)
-                          FontWeight: =FontWeight.Semibold
-                          Height: =72
-                          Width: =156
-                          X: =465
-                    - user_role:
-                        Control: Label
-                        Properties:
-                          Text: ="Role"
-                          Align: =Align.Center
-                          Color: =RGBA(255, 255, 255, 1)
-                          FontWeight: =FontWeight.Semibold
-                          Height: =72
-                          Width: =156
-                          X: =355
-                    - event_username:
-                        Control: Label
-                        Properties:
-                          Text: ="Username"
-                          Align: =Align.Center
-                          Color: =RGBA(255, 255, 255, 1)
-                          FontWeight: =FontWeight.Semibold
-                          Height: =72
-                          Width: =156
-                          X: =250
-                    - event_screen:
-                        Control: Label
-                        Properties:
-                          Text: ="Screen"
-                          Align: =Align.Center
-                          Color: =RGBA(255, 255, 255, 1)
-                          FontWeight: =FontWeight.Semibold
-                          Height: =72
-                          Width: =156
-                          X: =126
-                    - event_id:
-                        Control: Label
-                        Properties:
-                          Text: ="ID"
-                          Align: =Align.Center
-                          Color: =RGBA(255, 255, 255, 1)
-                          FontWeight: =FontWeight.Semibold
-                          Height: =72
-                          Width: =61
-                          X: =1
-                    - event_name:
-                        Control: Label
-                        Properties:
-                          Text: ="Name"
-                          Align: =Align.Center
-                          Color: =RGBA(255, 255, 255, 1)
-                          FontWeight: =FontWeight.Semibold
-                          Height: =72
-                          Width: =156
-                          X: =25
-                    - gallery_th_bg:
-                        Control: Rectangle
-                        Properties:
-                          Height: =72
-                          Width: =1365
-                          X: =1
-            - Container13:
-                Control: GroupContainer
-                Variant: manualLayoutContainer
+                  - Container5:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                        LayoutMinHeight: =60
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                      Children:
+                        - Container8:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.SetByContainer
+                              DropShadow: =DropShadow.None
+                              Height: =60
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =50
+                              LayoutJustifyContent: =LayoutJustifyContent.End
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                            Children:
+                              - Icon5:
+                                  Control: Classic/Icon@2.5.0
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.End
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Color: =RGBA(0, 18, 107, 1)
+                                    Height: =38
+                                    Icon: =Icon.Reload
+                                    OnSelect: "=ClearCollect(LibraryLogs, Library_logs); \r\nSet(SelectedLogs, SortByColumns(LibraryLogs, \"createdon\", SortOrder.Descending)); "
+                                    Width: =39
+                                    X: =1084
+                                    Y: =25
+                              - PageTitle_11:
+                                  Control: CanvasComponent
+                                  ComponentName: PageTitle
+                                  Properties:
+                                    Height: =50
+                                    Width: =200
+                                    X: =1166
+                                    screenInfo: =App.ActiveScreen
+                  - Container9:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =7
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                      Children:
+                        - Container10:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Height: =101
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                              PaddingLeft: =30
+                              PaddingRight: |+
+                                =30
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                              Width: =1366
+                              Y: =30
+                            Children:
+                              - admin_logs:
+                                  Control: Classic/Button@2.2.0
+                                  Properties:
+                                    BorderColor: =ColorFade(Self.Fill, -15%)
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                                    Fill: =RGBA(56, 96, 178, 1)
+                                    Font: =Font.'Open Sans'
+                                    HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                                    HoverColor: =RGBA(255, 255, 255, 1)
+                                    HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                                    OnSelect: |+
+                                      =ClearCollect(LibraryLogs, Library_logs); 
+                                      Set(SelectedLogs, SortByColumns(
+                                          Filter(LibraryLogs, Event_Screen = "Manage Users" || Event_Screen = "Manage Loans"), 
+                                          "createdon", 
+                                          SortOrder.Descending
+                                      ));
+                                      UpdateContext({ showNoLogsMessage: IsEmpty(SelectedLogs) });
+                                    PressedBorderColor: =Self.Fill
+                                    PressedColor: =Self.Fill
+                                    PressedFill: =Self.Color
+                                    Text: ="Admin logs"
+                                    X: =40
+                                    Y: =40
+                              - user_logs:
+                                  Control: Classic/Button@2.2.0
+                                  Properties:
+                                    BorderColor: =ColorFade(Self.Fill, -15%)
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                                    Fill: =RGBA(56, 96, 178, 1)
+                                    Font: =Font.'Open Sans'
+                                    HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                                    HoverColor: =RGBA(255, 255, 255, 1)
+                                    HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                                    OnSelect: |-
+                                      =ClearCollect(LibraryLogs, Library_logs); 
+                                      Set(SelectedLogs, SortByColumns(Filter(LibraryLogs, Event_Screen = "User Profile"), "createdon", SortOrder.Descending));
+                                      UpdateContext({ showNoLogsMessage: IsEmpty(SelectedLogs) });
+                                    PressedBorderColor: =Self.Fill
+                                    PressedColor: =Self.Fill
+                                    PressedFill: =Self.Color
+                                    Text: ="Users logs"
+                                    X: =20
+                                    Y: =20
+                              - books_logs:
+                                  Control: Classic/Button@2.2.0
+                                  Properties:
+                                    BorderColor: =ColorFade(Self.Fill, -15%)
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                                    Fill: =RGBA(56, 96, 178, 1)
+                                    Font: =Font.'Open Sans'
+                                    HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                                    HoverColor: =RGBA(255, 255, 255, 1)
+                                    HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                                    OnSelect: |-
+                                      =ClearCollect(LibraryLogs, Library_logs); 
+                                      Set(SelectedLogs, SortByColumns(Filter(LibraryLogs, Event_Screen in ["Book Details", "Wishlist / Favorites", "Add Book", "Edit Book", "Delete Book"]), "createdon", SortOrder.Descending));
+                                      UpdateContext({ showNoLogsMessage: IsEmpty(SelectedLogs) });
+                                    PressedBorderColor: =Self.Fill
+                                    PressedColor: =Self.Fill
+                                    PressedFill: =Self.Color
+                                    Text: ="Books logs"
+                                    X: =40
+                                    Y: =21
+                              - login_logs:
+                                  Control: Classic/Button@2.2.0
+                                  Properties:
+                                    BorderColor: =ColorFade(Self.Fill, -15%)
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                                    Fill: =RGBA(56, 96, 178, 1)
+                                    Font: =Font.'Open Sans'
+                                    HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                                    HoverColor: =RGBA(255, 255, 255, 1)
+                                    HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                                    OnSelect: |+
+                                      =ClearCollect(LibraryLogs, Library_logs); 
+                                      Set(SelectedLogs, SortByColumns(Filter(LibraryLogs, Event_Screen in ["Register_page", "Login_page"]), 
+                                      "createdon", SortOrder.Descending));
+                                      UpdateContext({ showNoLogsMessage: IsEmpty(SelectedLogs) });
+                                    PressedBorderColor: =Self.Fill
+                                    PressedColor: =Self.Fill
+                                    PressedFill: =Self.Color
+                                    Text: ="Login logs"
+                                    X: =60
+                                    Y: =21
+                              - other_logs:
+                                  Control: Classic/Button@2.2.0
+                                  Properties:
+                                    BorderColor: =ColorFade(Self.Fill, -15%)
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                                    Fill: =RGBA(56, 96, 178, 1)
+                                    Font: =Font.'Open Sans'
+                                    HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                                    HoverColor: =RGBA(255, 255, 255, 1)
+                                    HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                                    OnSelect: |-
+                                      =Set(SelectedLogs, Filter(LibraryLogs, false));
+                                      UpdateContext({ showNoLogsMessage: IsEmpty(SelectedLogs) });
+                                    PressedBorderColor: =Self.Fill
+                                    PressedColor: =Self.Fill
+                                    PressedFill: =Self.Color
+                                    Text: ="Other logs"
+                                    X: =80
+                                    Y: =21
+            - Container4:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
                 Properties:
                   AlignInContainer: =AlignInContainer.SetByContainer
-                  FillPortions: =7
+                  FillPortions: =3
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutJustifyContent: =LayoutJustifyContent.Center
                 Children:
-                - Gallery_container:
-                    Control: GroupContainer
-                    Variant: manualLayoutContainer
-                    Properties:
-                      Height: =504
-                      Width: =1366
-                    Children:
-                    - gallery_logs:
-                        Control: Gallery
-                        Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
-                        Properties:
-                          Items: |+
-                            =SelectedLogs
-                          DelayItemLoading: =true
-                          Height: =504
-                          Layout: =Layout.Vertical
-                          LoadingSpinner: =LoadingSpinner.Data
-                          TemplatePadding: =0
-                          TemplateSize: =65
-                          Width: =1366
-                        Children:
-                        - event_level_option:
-                            Control: Circle
+                  - Container12:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.SetByContainer
+                        DropShadow: =DropShadow.None
+                        LayoutMinHeight: =50
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                      Children:
+                        - gallery_th_bg:
+                            Control: Rectangle@2.3.0
+                            Group: gallery_th
                             Properties:
-                              OnSelect: =Select(Parent)
-                              Fill: |+
-                                =Switch(
-                                    Value(ThisItem.cre0e_event_level),
-                                    1, RGBA(255, 0, 0, 1),
-                                    2, RGBA(255, 165, 0, 1),
-                                    3, RGBA(255, 255, 0, 1),
-                                    RGBA(56, 96, 178, 1)     
-                                )
-                              Height: =20
-                              Width: =20
-                              X: =994
-                              Y: =27
-                        - gallery_divider:
-                            Control: Rectangle
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Fill: =RGBA(56, 96, 178, 1)
+                              Height: =72
+                              Width: =1365
+                              X: =1
+                        - event_name:
+                            Control: Label@2.5.1
+                            Group: gallery_th
                             Properties:
-                              OnSelect: =Select(Parent)
-                              Height: =2
-                              Width: =1334
-                              Y: =63
-                        - log_status:
-                            Control: Label
-                            Properties:
-                              OnSelect: =Select(Parent)
-                              Text: =ThisItem.cre0e_event_status
                               Align: =Align.Center
-                              FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
-                              Height: =21
-                              PaddingBottom: =0
-                              PaddingLeft: =0
-                              PaddingRight: =0
-                              PaddingTop: =0
-                              VerticalAlign: =VerticalAlign.Top
-                              Width: =101
-                              X: =1214
-                              Y: =27
-                        - log_date:
-                            Control: Label
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =RGBA(255, 255, 255, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =72
+                              Text: ="Name"
+                              Width: =156
+                              X: =25
+                        - event_id:
+                            Control: Label@2.5.1
+                            Group: gallery_th
                             Properties:
-                              OnSelect: =Select(Parent)
-                              Text: =ThisItem.createdon
                               Align: =Align.Center
-                              FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
-                              Height: =21
-                              PaddingBottom: =0
-                              PaddingLeft: =0
-                              PaddingRight: =0
-                              PaddingTop: =0
-                              VerticalAlign: =VerticalAlign.Top
-                              Width: =175
-                              X: =1026
-                              Y: =27
-                        - log_desc:
-                            Control: Label
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =RGBA(255, 255, 255, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =72
+                              Text: ="ID"
+                              Width: =61
+                              X: =1
+                        - event_screen:
+                            Control: Label@2.5.1
+                            Group: gallery_th
                             Properties:
-                              OnSelect: =Select(Parent)
-                              Text: =ThisItem.Description
                               Align: =Align.Center
-                              FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
-                              Height: =21
-                              PaddingBottom: =0
-                              PaddingLeft: =0
-                              PaddingRight: =0
-                              PaddingTop: =0
-                              VerticalAlign: =VerticalAlign.Top
-                              Width: =280
-                              X: =697
-                              Y: =27
-                        - log_book_id:
-                            Control: Label
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =RGBA(255, 255, 255, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =72
+                              Text: ="Screen"
+                              Width: =156
+                              X: =126
+                        - event_username:
+                            Control: Label@2.5.1
+                            Group: gallery_th
                             Properties:
-                              OnSelect: =Select(Parent)
-                              Text: |+
-                                =If(
-                                    IsBlank(ThisItem.cre0e_book_id), 
-                                    "N/A", 
-                                    ThisItem.cre0e_book_id 
-                                )
                               Align: =Align.Center
-                              FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
-                              Height: =Self.Size * 1.8
-                              PaddingBottom: =0
-                              PaddingLeft: =0
-                              PaddingRight: =0
-                              PaddingTop: =0
-                              VerticalAlign: =VerticalAlign.Top
-                              Width: =log_index.Width
-                              X: =645
-                              Y: =26
-                        - log_type:
-                            Control: Label
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =RGBA(255, 255, 255, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =72
+                              Text: ="Username"
+                              Width: =156
+                              X: =250
+                        - user_role:
+                            Control: Label@2.5.1
+                            Group: gallery_th
                             Properties:
-                              OnSelect: =Select(Parent)
-                              Text: =ThisItem.cre0e_event_type
                               Align: =Align.Center
-                              FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
-                              Height: =21
-                              PaddingBottom: =0
-                              PaddingLeft: =0
-                              PaddingRight: =0
-                              PaddingTop: =0
-                              VerticalAlign: =VerticalAlign.Top
-                              Width: =191
-                              X: =454
-                              Y: =27
-                        - log_user_role:
-                            Control: Label
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =RGBA(255, 255, 255, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =72
+                              Text: ="Role"
+                              Width: =156
+                              X: =355
+                        - event_type:
+                            Control: Label@2.5.1
+                            Group: gallery_th
                             Properties:
-                              OnSelect: =Select(Parent)
-                              Text: =ThisItem.cre0e_user_role
                               Align: =Align.Center
-                              FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
-                              Height: =21
-                              PaddingBottom: =0
-                              PaddingLeft: =0
-                              PaddingRight: =0
-                              PaddingTop: =0
-                              VerticalAlign: =VerticalAlign.Top
-                              Width: =88
-                              X: =380
-                              Y: =27
-                        - log_username:
-                            Control: Label
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =RGBA(255, 255, 255, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =72
+                              Text: ="Type"
+                              Width: =156
+                              X: =465
+                        - event_desc:
+                            Control: Label@2.5.1
+                            Group: gallery_th
                             Properties:
-                              OnSelect: =Select(Parent)
-                              Text: =ThisItem.cre0e_username
                               Align: =Align.Center
-                              FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
-                              Height: =21
-                              PaddingBottom: =0
-                              PaddingLeft: =0
-                              PaddingRight: =0
-                              PaddingTop: =0
-                              VerticalAlign: =VerticalAlign.Top
-                              Width: =93
-                              X: =287
-                              Y: =27
-                        - log_screen:
-                            Control: Label
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =RGBA(255, 255, 255, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =72
+                              Text: ="Description"
+                              Width: =156
+                              X: =747
+                        - level:
+                            Control: Label@2.5.1
+                            Group: gallery_th
                             Properties:
-                              OnSelect: =Select(Parent)
-                              Text: =ThisItem.cre0e_event_screen
-                              Align: =Align.Center
-                              FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
-                              Height: =21
-                              PaddingBottom: =0
-                              PaddingLeft: =0
-                              PaddingRight: =0
-                              PaddingTop: =0
-                              VerticalAlign: =VerticalAlign.Top
-                              Width: =130
-                              X: =157
-                              Y: =27
-                        - log_name:
-                            Control: Label
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =RGBA(255, 255, 255, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =72
+                              PaddingLeft: =20
+                              Text: ="Level"
+                              Width: =156
+                              X: =931
+                        - date:
+                            Control: Label@2.5.1
+                            Group: gallery_th
                             Properties:
-                              OnSelect: =Select(Parent)
-                              Text: =ThisItem.cre0e_event_name
                               Align: =Align.Center
-                              FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
-                              Height: =21
-                              PaddingBottom: =0
-                              PaddingLeft: =0
-                              PaddingRight: =0
-                              PaddingTop: =0
-                              VerticalAlign: =VerticalAlign.Top
-                              Width: =105
-                              X: =52
-                              Y: =27
-                        - log_index:
-                            Control: Label
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =RGBA(255, 255, 255, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =72
+                              Text: ="Date"
+                              Width: =156
+                              X: =1051
+                        - status:
+                            Control: Label@2.5.1
+                            Group: gallery_th
                             Properties:
-                              OnSelect: =Select(Parent)
-                              Text: =ThisItem.cre0e_event_id
                               Align: =Align.Center
-                              FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
-                              Height: =21
-                              PaddingBottom: =0
-                              PaddingLeft: =0
-                              PaddingRight: =0
-                              PaddingTop: =0
-                              VerticalAlign: =VerticalAlign.Top
-                              Width: =52
-                              Y: =27
-                    - noLogsLabel:
-                        Control: Label
-                        Properties:
-                          Text: |+
-                            ="No logs available."
-                          Align: =Align.Center
-                          Height: =503
-                          Size: =30
-                          Visible: =showNoLogsMessage
-                          Width: =1334
-                          Y: =55
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =RGBA(255, 255, 255, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =72
+                              Text: ="Status"
+                              Width: =156
+                              X: =1195
+                        - book_id:
+                            Control: Label@2.5.1
+                            Group: gallery_th
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =RGBA(255, 255, 255, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =72
+                              Text: ="Book ID"
+                              Width: =156
+                              X: =591
+                  - Container13:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.SetByContainer
+                        FillPortions: =7
+                      Children:
+                        - Gallery_container:
+                            Control: GroupContainer@1.3.0
+                            Variant: ManualLayout
+                            Properties:
+                              Height: =504
+                              Width: =1366
+                            Children:
+                              - gallery_logs:
+                                  Control: Gallery@2.15.0
+                                  Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Height: =504
+                                    Items: |+
+                                      =SelectedLogs
+                                    TemplateSize: =65
+                                    Width: =1366
+                                  Children:
+                                    - log_index:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Align: =Align.Center
+                                          BorderColor: =RGBA(0, 0, 0, 1)
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                                          Height: =21
+                                          OnSelect: =Select(Parent)
+                                          PaddingBottom: =0
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          Size: =14
+                                          Text: =ThisItem.cre0e_event_id
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Width: =52
+                                          Y: =27
+                                    - log_name:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Align: =Align.Center
+                                          BorderColor: =RGBA(0, 0, 0, 1)
+                                          Color: |+
+                                            =If(
+                                                First(Table1S).darkmode = "ON",
+                                               varFontColorWhite,
+                                               varFontColorDark
+                                            )
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                                          Height: =21
+                                          OnSelect: =Select(Parent)
+                                          PaddingBottom: =0
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          Size: =12
+                                          Text: =ThisItem.cre0e_event_name
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Width: =105
+                                          X: =52
+                                          Y: =27
+                                    - log_screen:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Align: =Align.Center
+                                          BorderColor: =RGBA(0, 0, 0, 1)
+                                          Color: |+
+                                            =If(
+                                                First(Table1S).darkmode = "ON",
+                                               varFontColorWhite,
+                                               varFontColorDark
+                                            )
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                                          Height: =21
+                                          OnSelect: =Select(Parent)
+                                          PaddingBottom: =0
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          Size: =12
+                                          Text: =ThisItem.cre0e_event_screen
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Width: =130
+                                          X: =157
+                                          Y: =27
+                                    - log_username:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Align: =Align.Center
+                                          BorderColor: =RGBA(0, 0, 0, 1)
+                                          Color: |+
+                                            =If(
+                                                First(Table1S).darkmode = "ON",
+                                               varFontColorWhite,
+                                               varFontColorDark
+                                            )
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                                          Height: =21
+                                          OnSelect: =Select(Parent)
+                                          PaddingBottom: =0
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          Size: =12
+                                          Text: =ThisItem.cre0e_username
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Width: =93
+                                          X: =287
+                                          Y: =27
+                                    - log_user_role:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Align: =Align.Center
+                                          BorderColor: =RGBA(0, 0, 0, 1)
+                                          Color: |+
+                                            =If(
+                                                First(Table1S).darkmode = "ON",
+                                               varFontColorWhite,
+                                               varFontColorDark
+                                            )
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                                          Height: =21
+                                          OnSelect: =Select(Parent)
+                                          PaddingBottom: =0
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          Size: =12
+                                          Text: =ThisItem.cre0e_user_role
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Width: =88
+                                          X: =380
+                                          Y: =27
+                                    - log_type:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Align: =Align.Center
+                                          BorderColor: =RGBA(0, 0, 0, 1)
+                                          Color: |+
+                                            =If(
+                                                First(Table1S).darkmode = "ON",
+                                               varFontColorWhite,
+                                               varFontColorDark
+                                            )
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                                          Height: =21
+                                          OnSelect: =Select(Parent)
+                                          PaddingBottom: =0
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          Size: =12
+                                          Text: =ThisItem.cre0e_event_type
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Width: =191
+                                          X: =454
+                                          Y: =27
+                                    - log_book_id:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Align: =Align.Center
+                                          BorderColor: =RGBA(0, 0, 0, 1)
+                                          Color: |+
+                                            =If(
+                                                First(Table1S).darkmode = "ON",
+                                               varFontColorWhite,
+                                               varFontColorDark
+                                            )
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                                          Height: =Self.Size * 1.8
+                                          OnSelect: =Select(Parent)
+                                          PaddingBottom: =0
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          Size: =12
+                                          Text: |+
+                                            =If(
+                                                IsBlank(ThisItem.cre0e_book_id), 
+                                                "N/A", 
+                                                ThisItem.cre0e_book_id 
+                                            )
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Width: =log_index.Width
+                                          X: =645
+                                          Y: =26
+                                    - log_desc:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Align: =Align.Center
+                                          BorderColor: =RGBA(0, 0, 0, 1)
+                                          Color: |+
+                                            =If(
+                                                First(Table1S).darkmode = "ON",
+                                               varFontColorWhite,
+                                               varFontColorDark
+                                            )
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                                          Height: =21
+                                          OnSelect: =Select(Parent)
+                                          PaddingBottom: =0
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          Size: =12
+                                          Text: =ThisItem.Description
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Width: =280
+                                          X: =697
+                                          Y: =27
+                                    - log_date:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Align: =Align.Center
+                                          BorderColor: =RGBA(0, 0, 0, 1)
+                                          Color: |+
+                                            =If(
+                                                First(Table1S).darkmode = "ON",
+                                               varFontColorWhite,
+                                               varFontColorDark
+                                            )
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                                          Height: =21
+                                          OnSelect: =Select(Parent)
+                                          PaddingBottom: =0
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          Size: =12
+                                          Text: =ThisItem.createdon
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Width: =175
+                                          X: =1026
+                                          Y: =27
+                                    - log_status:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          Align: =Align.Center
+                                          BorderColor: =RGBA(0, 0, 0, 1)
+                                          Color: |+
+                                            =If(
+                                                First(Table1S).darkmode = "ON",
+                                               varFontColorWhite,
+                                               varFontColorDark
+                                            )
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                                          Height: =21
+                                          OnSelect: =Select(Parent)
+                                          PaddingBottom: =0
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          Size: =12
+                                          Text: =ThisItem.cre0e_event_status
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Width: =101
+                                          X: =1214
+                                          Y: =27
+                                    - gallery_divider:
+                                        Control: Rectangle@2.3.0
+                                        Properties:
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          Fill: =RGBA(56, 96, 178, 1)
+                                          Height: =2
+                                          OnSelect: =Select(Parent)
+                                          Width: =1334
+                                          Y: =63
+                                    - event_level_option:
+                                        Control: Circle@2.3.0
+                                        Properties:
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          Fill: |+
+                                            =Switch(
+                                                Value(ThisItem.cre0e_event_level),
+                                                1, RGBA(255, 0, 0, 1),
+                                                2, RGBA(255, 165, 0, 1),
+                                                3, RGBA(255, 255, 0, 1),
+                                                RGBA(56, 96, 178, 1)     
+                                            )
+                                          Height: =20
+                                          OnSelect: =Select(Parent)
+                                          Width: =20
+                                          X: =959
+                                          Y: =27
+                              - noLogsLabel:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Font: =Font.'Open Sans'
+                                    Height: =503
+                                    Size: =30
+                                    Text: |+
+                                      ="No logs available."
+                                    Visible: =showNoLogsMessage
+                                    Width: =1334
+                                    Y: =55
+      - MenuLeftNav_18:
+          Control: CanvasComponent
+          ComponentName: MenuLeftNav
+          Properties:
+            AdminAccess: =varAdminAccess
+            ExpandMenu: =
+            HamburgerMenuColor: "=If(\r\n    First(Table1S).darkmode = \"ON\",\r\n   varFontColorWhite,\r\n   varBtnColorDark\r\n  \r\n)\r\n"
+            Height: =If(!MenuLeftNav_18.showMenuProp, 50, App.Height)
+            LoggedUser: =varLoggedUser
+            MenuBkgColor: |-
+              =If(
+                  First(Table1S).darkmode = "ON",
+                 varBgDarkMenu,
+                 varBgColorWhite
+              )
+            MenuColor: "=If(\r\n    First(Table1S).darkmode = \"ON\",\r\n   varFontColorWhite,\r\n   varFontColorDark\r\n   \r\n)"
+            MenuColorIcon: "=If(\r\n    First(Table1S).darkmode = \"ON\",\r\n   varFontColorWhite,\r\n   varFontColorDark\r\n   \r\n)"
+            MenuItems: |
+              =Table(
+                  {
+                      MenuLabel: "Dashboard",
+                      MenuIcon: Icon.Home,
+                      MenuScreenNavigate: Dashboard,
+                      MenuID: 1,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Book Catalog",
+                      MenuIcon: Icon.Database,
+                      MenuScreenNavigate: 'Book Catalog',
+                      MenuID: 2,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Book Details",
+                      MenuIcon: Icon.ListScrollWatchlist,
+                      MenuScreenNavigate: 'Book Details',
+                      MenuID: 3,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Your Books",
+                      MenuIcon: Icon.Notebook,
+                      MenuScreenNavigate: 'Your Books',
+                      MenuID: 4,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Wishlist / Favorites",
+                      MenuIcon: Icon.Heart,
+                      MenuScreenNavigate: 'Wishlist / Favorites',
+                      MenuID: 5,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Book Reservations",
+                      MenuIcon: Icon.CalendarBlank,
+                      MenuScreenNavigate: 'Book Reservations',
+                      MenuID: 6,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Borrowing History",
+                      MenuIcon: Icon.History,
+                      MenuScreenNavigate: 'Borrowing History',
+                      MenuID: 7,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Library Ranking",
+                      MenuIcon: Icon.Globe,
+                      MenuScreenNavigate: 'Library Ranking',
+                      MenuID: 8,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "User Profile",
+                      MenuIcon: Icon.Person,
+                      MenuScreenNavigate: 'User Profile',
+                      MenuID: 9,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Admin Panel",
+                      MenuIcon: Icon.Manufacture,
+                      //MenuScreenNavigate: 'Admin Panel',
+                      MenuID: 10,
+                      VisibleSubMenu: true,
+                      SubMenu: Table(
+                          {
+                              MenuLabel: "Add Book",
+                              MenuIcon: Icon.AddDocument,
+                              MenuScreenNavigate: 'Add Book',
+                              MenuID: 1
+                          },
+                          {
+                              MenuLabel: "Edit Book",
+                              MenuIcon: Icon.ColorPicker,
+                              MenuScreenNavigate: 'Edit Book',
+                              MenuID: 2
+                          },
+                          {
+                              MenuLabel: "Delete Book",
+                              MenuIcon: Icon.ClearDrawing,
+                              MenuScreenNavigate: 'Delete Book',
+                              MenuID: 3
+                          },
+                          {
+                              MenuLabel: "Manage Users",
+                              MenuIcon: Icon.People,
+                              MenuScreenNavigate: 'Manage Users',
+                              MenuID: 4
+                          },
+                          {
+                              MenuLabel: "Manage Loans",
+                              MenuIcon: Icon.Currency,
+                              MenuScreenNavigate: 'Manage Loans',
+                              MenuID: 5
+                          },
+                          {
+                              MenuLabel: "Manage Reservations",
+                              MenuIcon: Icon.PhotosPictures,
+                              MenuScreenNavigate: 'Manage Reservations',
+                              MenuID: 6
+                          },
+                          {
+                              MenuLabel: "Library Settings",
+                              MenuIcon: Icon.Settings,
+                              MenuScreenNavigate: 'Library Settings',
+                              MenuID: 7
+                          },
+                          {
+                              MenuLabel: "Check Log",
+                              MenuIcon: Icon.Warning,
+                              MenuScreenNavigate: 'Check Log',
+                              MenuID: 8
+                          }
+                      )
+                  }
+              )
+            SetMenuWidth: =300
+            Width: =MenuLeftNav_18.MenuWidth

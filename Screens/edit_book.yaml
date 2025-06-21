@@ -1,1062 +1,1324 @@
-- Edit Book:
-    Control: Screen
+Screens:
+  Edit Book:
     Properties:
-      Fill: =RGBA(237, 237, 237, 1)
+      Fill: |+
+        =If(
+            First(Table1S).darkmode = "ON",
+           varBgColorDark,
+           varBgColorWhite
+        )
+      LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
     Children:
-    - Popup_2:
-        Control: GroupContainer
-        Variant: manualLayoutContainer
-        Properties:
-          Height: =768
-          Visible: =showPopupEditBox
-          Width: =1366
-        Children:
-        - popup_bg_box_4:
-            Control: Rectangle
-            Properties:
-              Fill: =RGBA(0, 0, 0, 0.4)
-              Height: =768
-              Visible: =showPopupEditBox
-              Width: =1366
-        - popup_box_4:
-            Control: Rectangle
-            Properties:
-              BorderColor: =RGBA(0, 134, 208, 1)
-              BorderThickness: =5
-              Fill: =RGBA(241, 244, 249, 1)
-              Height: =324
-              Visible: =showPopupEditBox
-              Width: =672
-              X: =347
-              Y: =222
-        - popup_container:
-            Control: GroupContainer
-            Variant: verticalAutoLayoutContainer
-            Properties:
-              Height: =321
-              LayoutDirection: =LayoutDirection.Vertical
-              LayoutMode: =LayoutMode.Auto
-              Width: =672
-              X: =347
-              Y: =225
-            Children:
-            - HtmlText1_2:
-                Control: HtmlViewer
+      - Gallery5:
+          Control: Gallery@2.15.0
+          Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Fill: =RGBA(166, 166, 166, 1)
+            FocusedBorderThickness: =0
+            Height: =447
+            Items: |+
+              =If(
+                  IsBlank(TextInput2.Text), 
+                  Sheet1s, 
+                  LookUp(Sheet1s, Value(Index) = Value(TextInput2.Text))
+              )
+            TemplateFill: |-
+              =If(
+                  ThisItem.IsSelected, 
+                  RGBA(128, 128, 128, 1), 
+                  RGBA(166, 166, 166, 1)   
+              )
+            TemplateSize: =40
+            Width: =185
+            Y: =320
+          Children:
+            - Index_Field_2:
+                Control: Label@2.5.1
                 Properties:
-                  HtmlText: ="<div style='text-align:center;'>Are you sure you want to edit this book?</div>"
-                  Height: =45
-                  Size: =16
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: |+
+                    =If(
+                        First(Table1S).darkmode = "ON",
+                       varFontColorWhite,
+                       varFontColorDark
+                    )
+                  Font: =Font.'Open Sans'
+                  FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                  Height: =20
+                  OnSelect: =Select(Parent)
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =14
+                  Text: =ThisItem.Index
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =32
+                  X: =23
+                  Y: =9
+            - Separator2:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Fill: =RGBA(255, 255, 255, 1)
+                  Height: =2
+                  OnSelect: =Select(Parent)
+                  Width: =Parent.TemplateWidth
+                  Y: =Parent.TemplateHeight - Self.Height
+            - Select_Icon:
+                Control: Classic/Icon@2.5.0
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Color: =RGBA(0, 18, 107, 1)
+                  Height: =22
+                  Icon: =Icon.NextArrow
+                  OnSelect: =Select(Parent)
+                  Width: =40
+                  X: =122
+                  Y: =7
+      - TextInput2:
+          Control: Classic/TextInput@2.3.2
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Default: =
+            Font: =Font.'Open Sans'
+            Format: =TextFormat.Number
+            HintText: ="Enter Book ID"
+            HoverBorderColor: =RGBA(0, 18, 107, 1)
+            HoverFill: =RGBA(186, 202, 226, 1)
+            X: =496
+            Y: =32
+      - PageTitle_6:
+          Control: CanvasComponent
+          ComponentName: PageTitle
+          Properties:
+            Height: =50
+            Width: =200
+            X: =1166
+            screenInfo: =App.ActiveScreen
+      - Save_Edit_Book:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorFade(Self.Fill, -15%)
+            Color: =RGBA(255, 255, 255, 1)
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            Fill: =RGBA(56, 96, 178, 1)
+            Font: =Font.'Open Sans'
+            HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            OnSelect: =Set(showPopupEditBox,true)
+            PressedBorderColor: =Self.Fill
+            PressedColor: =Self.Fill
+            PressedFill: =Self.Color
+            Text: ="Save"
+            X: =1112
+            Y: =696
+      - main_form_container:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            Height: =514
+            LayoutDirection: =LayoutDirection.Horizontal
+            Width: =1121
+            X: =210
+            Y: =145
+          Children:
+            - Form1:
+                Control: Form@2.4.4
+                Variant: Classic
+                Layout: Vertical
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  DataSource: =Filter(Sheet1s, Index = Gallery5.Selected.Index)
+                  DefaultMode: =FormMode.New
+                  Height: =593
+                  NumberOfColumns: =2
+                  Width: =1121
+                  X: =237
+                  Y: =171
+                Children:
+                  - Index_DataCard1:
+                      Control: TypedDataCard@1.0.7
+                      Variant: ClassicTextualEdit
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        DataField: ="cre0e_index"
+                        Default: =ThisItem.Index
+                        DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_index)
+                        MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_index)
+                        Required: =false
+                        Update: =DataCardValue4.Text
+                        Width: =560
+                        X: =0
+                        Y: =0
+                      Children:
+                        - DataCardKey4:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldName
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: |+
+                                =If(
+                                    First(Table1S).darkmode = "ON",
+                                   varFontColorWhite,
+                                   varFontColorDark
+                                )
+                              Font: =Font.'Open Sans'
+                              Height: =34
+                              Text: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              Wrap: =false
+                              X: =30
+                              Y: =10
+                        - DataCardValue4:
+                            Control: Classic/TextInput@2.3.2
+                            MetadataKey: FieldValue
+                            Properties:
+                              BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                              Default: =Gallery5.Selected.Index
+                              DelayOutput: =true
+                              DisplayMode: =DisplayMode.Disabled
+                              Font: =Font.'Open Sans'
+                              HoverBorderColor: =RGBA(0, 18, 107, 1)
+                              HoverFill: =RGBA(186, 202, 226, 1)
+                              MaxLength: =Parent.MaxLength
+                              PaddingLeft: =5
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                              Tooltip: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardKey4.Y + DataCardKey4.Height + 5
+                        - ErrorMessage4:
+                            Control: Label@2.5.1
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: =RGBA(168, 0, 0, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =10
+                              Live: =Live.Assertive
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Size: =14
+                              Text: =Parent.Error
+                              Visible: =Parent.DisplayMode=DisplayMode.Edit
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardValue4.Y + DataCardValue4.Height
+                        - StarVisible4:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: =RGBA(0, 18, 107, 1)
+                              Font: =Font.'Open Sans'
+                              Height: =DataCardKey4.Height
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Wrap: =false
+                              Y: =DataCardKey4.Y
+                  - Title_DataCard1:
+                      Control: TypedDataCard@1.0.7
+                      Variant: ClassicTextualEdit
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        DataField: ="cre0e_title"
+                        Default: =ThisItem.Title
+                        DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_title)
+                        MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_title)
+                        Required: =false
+                        Update: =DataCardValue10.Text
+                        Width: =560
+                        X: =1
+                        Y: =0
+                      Children:
+                        - DataCardKey10:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldName
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: |+
+                                =If(
+                                    First(Table1S).darkmode = "ON",
+                                   varFontColorWhite,
+                                   varFontColorDark
+                                )
+                              Font: =Font.'Open Sans'
+                              Height: =34
+                              Text: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              Wrap: =false
+                              X: =30
+                              Y: =10
+                        - DataCardValue10:
+                            Control: Classic/TextInput@2.3.2
+                            MetadataKey: FieldValue
+                            Properties:
+                              BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                              Default: =Gallery5.Selected.Title
+                              DelayOutput: =true
+                              DisplayMode: =Parent.DisplayMode
+                              Font: =Font.'Open Sans'
+                              HoverBorderColor: =RGBA(0, 18, 107, 1)
+                              HoverFill: =RGBA(186, 202, 226, 1)
+                              MaxLength: =Parent.MaxLength
+                              PaddingLeft: =5
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                              Tooltip: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardKey10.Y + DataCardKey10.Height + 5
+                        - ErrorMessage10:
+                            Control: Label@2.5.1
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: =RGBA(168, 0, 0, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =10
+                              Live: =Live.Assertive
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Size: =14
+                              Text: =Parent.Error
+                              Visible: =Parent.DisplayMode=DisplayMode.Edit
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardValue10.Y + DataCardValue10.Height
+                        - StarVisible10:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: =RGBA(0, 18, 107, 1)
+                              Font: =Font.'Open Sans'
+                              Height: =DataCardKey10.Height
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Wrap: =false
+                              Y: =DataCardKey10.Y
+                  - Author_DataCard1:
+                      Control: TypedDataCard@1.0.7
+                      Variant: ClassicTextualEdit
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        DataField: ="cre0e_author"
+                        Default: =ThisItem.Author
+                        DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_author)
+                        MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_author)
+                        Required: =false
+                        Update: =DataCardValue1.Text
+                        Width: =560
+                        X: =0
+                        Y: =1
+                      Children:
+                        - DataCardKey1:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldName
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: |+
+                                =If(
+                                    First(Table1S).darkmode = "ON",
+                                   varFontColorWhite,
+                                   varFontColorDark
+                                )
+                              Font: =Font.'Open Sans'
+                              Height: =34
+                              Text: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              Wrap: =false
+                              X: =30
+                              Y: =10
+                        - DataCardValue1:
+                            Control: Classic/TextInput@2.3.2
+                            MetadataKey: FieldValue
+                            Properties:
+                              BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                              Default: =Gallery5.Selected.Author
+                              DelayOutput: =true
+                              DisplayMode: =Parent.DisplayMode
+                              Font: =Font.'Open Sans'
+                              HoverBorderColor: =RGBA(0, 18, 107, 1)
+                              HoverFill: =RGBA(186, 202, 226, 1)
+                              MaxLength: =Parent.MaxLength
+                              PaddingLeft: =5
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                              Tooltip: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardKey1.Y + DataCardKey1.Height + 5
+                        - ErrorMessage1:
+                            Control: Label@2.5.1
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: =RGBA(168, 0, 0, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =10
+                              Live: =Live.Assertive
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Size: =14
+                              Text: =Parent.Error
+                              Visible: =Parent.DisplayMode=DisplayMode.Edit
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardValue1.Y + DataCardValue1.Height
+                        - StarVisible1:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: =RGBA(0, 18, 107, 1)
+                              Font: =Font.'Open Sans'
+                              Height: =DataCardKey1.Height
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Wrap: =false
+                              Y: =DataCardKey1.Y
+                  - Genre_DataCard1:
+                      Control: TypedDataCard@1.0.7
+                      Variant: ClassicTextualEdit
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        DataField: ="cre0e_genre"
+                        Default: =ThisItem.Genre
+                        DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_genre)
+                        MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_genre)
+                        Required: =false
+                        Width: =560
+                        X: =1
+                        Y: =1
+                      Children:
+                        - DataCardKey3:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldName
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: |+
+                                =If(
+                                    First(Table1S).darkmode = "ON",
+                                   varFontColorWhite,
+                                   varFontColorDark
+                                )
+                              Font: =Font.'Open Sans'
+                              Height: =34
+                              Text: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              Wrap: =false
+                              X: =30
+                              Y: =10
+                        - ErrorMessage3:
+                            Control: Label@2.5.1
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: =RGBA(168, 0, 0, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =10
+                              Live: =Live.Assertive
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Size: =14
+                              Text: =Parent.Error
+                              Visible: =Parent.DisplayMode=DisplayMode.Edit
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =
+                        - StarVisible3:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: =RGBA(0, 18, 107, 1)
+                              Font: =Font.'Open Sans'
+                              Height: =DataCardKey3.Height
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Wrap: =false
+                              Y: =DataCardKey3.Y
+                        - ComboBox1:
+                            Control: Classic/ComboBox@2.4.0
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              ChevronBackground: =RGBA(56, 96, 178, 1)
+                              ChevronFill: =RGBA(255, 255, 255, 1)
+                              ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                              ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                              DefaultSelectedItems: |+
+                                =Distinct(Filter(Sheet1s, Genre = Gallery5.Selected.Genre), Genre)
+                              DisplayFields: =["Value"]
+                              Font: =Font.'Open Sans'
+                              HoverFill: =RGBA(186, 202, 226, 1)
+                              Items: =Distinct(Sheet1s, Genre)
+                              PressedColor: =RGBA(255, 255, 255, 1)
+                              PressedFill: =RGBA(0, 18, 107, 1)
+                              SearchFields: =["Value"]
+                              SelectMultiple: =false
+                              SelectionColor: =RGBA(255, 255, 255, 1)
+                              SelectionFill: =RGBA(56, 96, 178, 1)
+                              Width: =500
+                              X: =30
+                              Y: =40
+                  - ISBN_DataCard1:
+                      Control: TypedDataCard@1.0.7
+                      Variant: ClassicTextualEdit
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        DataField: ="cre0e_isbn"
+                        Default: =ThisItem.ISBN
+                        DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_isbn)
+                        MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_isbn)
+                        Required: =false
+                        Update: =DataCardValue5.Text
+                        Width: =560
+                        X: =0
+                        Y: =2
+                      Children:
+                        - DataCardKey5:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldName
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: |+
+                                =If(
+                                    First(Table1S).darkmode = "ON",
+                                   varFontColorWhite,
+                                   varFontColorDark
+                                )
+                              Font: =Font.'Open Sans'
+                              Height: =34
+                              Text: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              Wrap: =false
+                              X: =30
+                              Y: =10
+                        - DataCardValue5:
+                            Control: Classic/TextInput@2.3.2
+                            MetadataKey: FieldValue
+                            Properties:
+                              BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                              Default: =Gallery5.Selected.ISBN
+                              DelayOutput: =true
+                              DisplayMode: =Parent.DisplayMode
+                              Font: =Font.'Open Sans'
+                              HoverBorderColor: =RGBA(0, 18, 107, 1)
+                              HoverFill: =RGBA(186, 202, 226, 1)
+                              MaxLength: =Parent.MaxLength
+                              PaddingLeft: =5
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                              Tooltip: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardKey5.Y + DataCardKey5.Height + 5
+                        - ErrorMessage5:
+                            Control: Label@2.5.1
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: =RGBA(168, 0, 0, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =10
+                              Live: =Live.Assertive
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Size: =14
+                              Text: =Parent.Error
+                              Visible: =Parent.DisplayMode=DisplayMode.Edit
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardValue5.Y + DataCardValue5.Height
+                        - StarVisible5:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: =RGBA(0, 18, 107, 1)
+                              Font: =Font.'Open Sans'
+                              Height: =DataCardKey5.Height
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Wrap: =false
+                              Y: =DataCardKey5.Y
+                  - Publication_Year_DataCard1:
+                      Control: TypedDataCard@1.0.7
+                      Variant: ClassicTextualEdit
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        DataField: ="cre0e_publication_year"
+                        Default: =ThisItem.Publication_Year
+                        DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_publication_year)
+                        MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_publication_year)
+                        Required: =false
+                        Width: =560
+                        X: =1
+                        Y: =2
+                      Children:
+                        - DataCardKey8:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldName
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: |+
+                                =If(
+                                    First(Table1S).darkmode = "ON",
+                                   varFontColorWhite,
+                                   varFontColorDark
+                                )
+                              Font: =Font.'Open Sans'
+                              Height: =34
+                              Text: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              Wrap: =false
+                              X: =30
+                              Y: =10
+                        - ErrorMessage8:
+                            Control: Label@2.5.1
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: =RGBA(168, 0, 0, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =10
+                              Live: =Live.Assertive
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Size: =14
+                              Text: =Parent.Error
+                              Visible: =Parent.DisplayMode=DisplayMode.Edit
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =
+                        - StarVisible8:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: =RGBA(0, 18, 107, 1)
+                              Font: =Font.'Open Sans'
+                              Height: =DataCardKey8.Height
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Wrap: =false
+                              Y: =DataCardKey8.Y
+                        - TextInput3:
+                            Control: Classic/TextInput@2.3.2
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Default: =Gallery5.Selected.Publication_Year
+                              Font: =Font.'Open Sans'
+                              HoverBorderColor: =RGBA(0, 18, 107, 1)
+                              HoverFill: =RGBA(186, 202, 226, 1)
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                              Width: =500
+                              X: =30
+                              Y: =40
+                  - Language_DataCard1:
+                      Control: TypedDataCard@1.0.7
+                      Variant: ClassicTextualEdit
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        DataField: ="cre0e_language"
+                        Default: =ThisItem.Language
+                        DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_language)
+                        MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_language)
+                        Required: =false
+                        Width: =560
+                        X: =0
+                        Y: =3
+                      Children:
+                        - DataCardKey6:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldName
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: |+
+                                =If(
+                                    First(Table1S).darkmode = "ON",
+                                   varFontColorWhite,
+                                   varFontColorDark
+                                )
+                              Font: =Font.'Open Sans'
+                              Height: =34
+                              Text: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              Wrap: =false
+                              X: =30
+                              Y: =10
+                        - ErrorMessage6:
+                            Control: Label@2.5.1
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: =RGBA(168, 0, 0, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =10
+                              Live: =Live.Assertive
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Size: =14
+                              Text: =Parent.Error
+                              Visible: =Parent.DisplayMode=DisplayMode.Edit
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =
+                        - StarVisible6:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: =RGBA(0, 18, 107, 1)
+                              Font: =Font.'Open Sans'
+                              Height: =DataCardKey6.Height
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Wrap: =false
+                              Y: =DataCardKey6.Y
+                        - ComboBox3:
+                            Control: Classic/ComboBox@2.4.0
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              ChevronBackground: =RGBA(56, 96, 178, 1)
+                              ChevronFill: =RGBA(255, 255, 255, 1)
+                              ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                              ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                              DefaultSelectedItems: |+
+                                =Distinct(Filter(Sheet1s, Language = Gallery5.Selected.Language),Language)
+                              DisplayFields: =["Value"]
+                              Font: =Font.'Open Sans'
+                              HoverFill: =RGBA(186, 202, 226, 1)
+                              IsSearchable: =false
+                              Items: =Distinct(Sheet1s,Language)
+                              PressedColor: =RGBA(255, 255, 255, 1)
+                              PressedFill: =RGBA(0, 18, 107, 1)
+                              SearchFields: =["Value"]
+                              SelectMultiple: =false
+                              SelectionColor: =RGBA(255, 255, 255, 1)
+                              SelectionFill: =RGBA(56, 96, 178, 1)
+                              Width: =500
+                              X: =30
+                              Y: =40
+                  - Cover_URL_DataCard1:
+                      Control: TypedDataCard@1.0.7
+                      Variant: ClassicTextualEdit
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        DataField: ="cre0e_cover_url"
+                        Default: =ThisItem.Cover_URL
+                        DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_cover_url)
+                        MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_cover_url)
+                        Required: =false
+                        Update: =DataCardValue2.Text
+                        Width: =560
+                        X: =1
+                        Y: =3
+                      Children:
+                        - DataCardKey2:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldName
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: |+
+                                =If(
+                                    First(Table1S).darkmode = "ON",
+                                   varFontColorWhite,
+                                   varFontColorDark
+                                )
+                              Font: =Font.'Open Sans'
+                              Height: =34
+                              Text: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              Wrap: =false
+                              X: =30
+                              Y: =10
+                        - DataCardValue2:
+                            Control: Classic/TextInput@2.3.2
+                            MetadataKey: FieldValue
+                            Properties:
+                              BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                              Default: =Gallery5.Selected.Cover_URL
+                              DelayOutput: =true
+                              DisplayMode: =Parent.DisplayMode
+                              Font: =Font.'Open Sans'
+                              HoverBorderColor: =RGBA(0, 18, 107, 1)
+                              HoverFill: =RGBA(186, 202, 226, 1)
+                              MaxLength: =Parent.MaxLength
+                              PaddingLeft: =5
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                              Tooltip: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardKey2.Y + DataCardKey2.Height + 5
+                        - ErrorMessage2:
+                            Control: Label@2.5.1
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: =RGBA(168, 0, 0, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =10
+                              Live: =Live.Assertive
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Size: =14
+                              Text: =Parent.Error
+                              Visible: =Parent.DisplayMode=DisplayMode.Edit
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardValue2.Y + DataCardValue2.Height
+                        - StarVisible2:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: =RGBA(0, 18, 107, 1)
+                              Font: =Font.'Open Sans'
+                              Height: =DataCardKey2.Height
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Wrap: =false
+                              Y: =DataCardKey2.Y
+                  - Number_of_Pages_DataCard1:
+                      Control: TypedDataCard@1.0.7
+                      Variant: ClassicTextualEdit
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        DataField: ="cre0e_number_of_pages"
+                        Default: =ThisItem.Number_of_Pages
+                        DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_number_of_pages)
+                        MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_number_of_pages)
+                        Required: =false
+                        Update: =DataCardValue7.Text
+                        Width: =560
+                        X: =0
+                        Y: =4
+                      Children:
+                        - DataCardKey7:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldName
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: |+
+                                =If(
+                                    First(Table1S).darkmode = "ON",
+                                   varFontColorWhite,
+                                   varFontColorDark
+                                )
+                              Font: =Font.'Open Sans'
+                              Height: =34
+                              Text: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              Wrap: =false
+                              X: =30
+                              Y: =10
+                        - DataCardValue7:
+                            Control: Classic/TextInput@2.3.2
+                            MetadataKey: FieldValue
+                            Properties:
+                              BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                              Default: =Gallery5.Selected.Number_of_Pages
+                              DelayOutput: =true
+                              DisplayMode: =Parent.DisplayMode
+                              Font: =Font.'Open Sans'
+                              HoverBorderColor: =RGBA(0, 18, 107, 1)
+                              HoverFill: =RGBA(186, 202, 226, 1)
+                              MaxLength: =Parent.MaxLength
+                              PaddingLeft: =5
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                              Tooltip: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardKey7.Y + DataCardKey7.Height + 5
+                        - ErrorMessage7:
+                            Control: Label@2.5.1
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: =RGBA(168, 0, 0, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =10
+                              Live: =Live.Assertive
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Size: =14
+                              Text: =Parent.Error
+                              Visible: =Parent.DisplayMode=DisplayMode.Edit
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardValue7.Y + DataCardValue7.Height
+                        - StarVisible7:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: =RGBA(0, 18, 107, 1)
+                              Font: =Font.'Open Sans'
+                              Height: =DataCardKey7.Height
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Wrap: =false
+                              Y: =DataCardKey7.Y
+                  - Summary_DataCard1:
+                      Control: TypedDataCard@1.0.7
+                      Variant: ClassicTextualEdit
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        DataField: ="cre0e_summary"
+                        Default: =ThisItem.Summary
+                        DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_summary)
+                        MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_summary)
+                        Required: =false
+                        Update: =DataCardValue9.Text
+                        Width: =560
+                        X: =1
+                        Y: =4
+                      Children:
+                        - DataCardKey9:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldName
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: |+
+                                =If(
+                                    First(Table1S).darkmode = "ON",
+                                   varFontColorWhite,
+                                   varFontColorDark
+                                )
+                              Font: =Font.'Open Sans'
+                              Height: =34
+                              Text: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              Wrap: =false
+                              X: =30
+                              Y: =10
+                        - DataCardValue9:
+                            Control: Classic/TextInput@2.3.2
+                            MetadataKey: FieldValue
+                            Properties:
+                              BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                              Default: =Gallery5.Selected.Summary
+                              DelayOutput: =true
+                              DisplayMode: =Parent.DisplayMode
+                              Font: =Font.'Open Sans'
+                              HoverBorderColor: =RGBA(0, 18, 107, 1)
+                              HoverFill: =RGBA(186, 202, 226, 1)
+                              MaxLength: =Parent.MaxLength
+                              PaddingLeft: =5
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                              Tooltip: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardKey9.Y + DataCardKey9.Height + 5
+                        - ErrorMessage9:
+                            Control: Label@2.5.1
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: =RGBA(168, 0, 0, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =10
+                              Live: =Live.Assertive
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Size: =14
+                              Text: =Parent.Error
+                              Visible: =Parent.DisplayMode=DisplayMode.Edit
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardValue9.Y + DataCardValue9.Height
+                        - StarVisible9:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 0, 0, 1)
+                              Color: =RGBA(0, 18, 107, 1)
+                              Font: =Font.'Open Sans'
+                              Height: =DataCardKey9.Height
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Wrap: =false
+                              Y: =DataCardKey9.Y
+      - MenuLeftNav_12:
+          Control: CanvasComponent
+          ComponentName: MenuLeftNav
+          Properties:
+            AdminAccess: =varAdminAccess
+            ExpandMenu: =
+            HamburgerMenuColor: "=If(\r\n    First(Table1S).darkmode = \"ON\",\r\n   varFontColorWhite,\r\n   varBtnColorDark\r\n  \r\n)\r\n"
+            Height: =If(!MenuLeftNav_12.showMenuProp, 50, App.Height)
+            LoggedUser: =varLoggedUser
+            MenuBkgColor: |-
+              =If(
+                  First(Table1S).darkmode = "ON",
+                 varBgDarkMenu,
+                 varBgColorWhite
+              )
+            MenuColor: "=If(\r\n    First(Table1S).darkmode = \"ON\",\r\n   varFontColorWhite,\r\n   varFontColorDark\r\n   \r\n)"
+            MenuColorIcon: "=If(\r\n    First(Table1S).darkmode = \"ON\",\r\n   varFontColorWhite,\r\n   varFontColorDark\r\n   \r\n)"
+            MenuItems: |
+              =Table(
+                  {
+                      MenuLabel: "Dashboard",
+                      MenuIcon: Icon.Home,
+                      MenuScreenNavigate: Dashboard,
+                      MenuID: 1,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Book Catalog",
+                      MenuIcon: Icon.Database,
+                      MenuScreenNavigate: 'Book Catalog',
+                      MenuID: 2,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Book Details",
+                      MenuIcon: Icon.ListScrollWatchlist,
+                      MenuScreenNavigate: 'Book Details',
+                      MenuID: 3,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Your Books",
+                      MenuIcon: Icon.Notebook,
+                      MenuScreenNavigate: 'Your Books',
+                      MenuID: 4,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Wishlist / Favorites",
+                      MenuIcon: Icon.Heart,
+                      MenuScreenNavigate: 'Wishlist / Favorites',
+                      MenuID: 5,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Book Reservations",
+                      MenuIcon: Icon.CalendarBlank,
+                      MenuScreenNavigate: 'Book Reservations',
+                      MenuID: 6,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Borrowing History",
+                      MenuIcon: Icon.History,
+                      MenuScreenNavigate: 'Borrowing History',
+                      MenuID: 7,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Library Ranking",
+                      MenuIcon: Icon.Globe,
+                      MenuScreenNavigate: 'Library Ranking',
+                      MenuID: 8,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "User Profile",
+                      MenuIcon: Icon.Person,
+                      MenuScreenNavigate: 'User Profile',
+                      MenuID: 9,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Admin Panel",
+                      MenuIcon: Icon.Manufacture,
+                      //MenuScreenNavigate: 'Admin Panel',
+                      MenuID: 10,
+                      VisibleSubMenu: true,
+                      SubMenu: Table(
+                          {
+                              MenuLabel: "Add Book",
+                              MenuIcon: Icon.AddDocument,
+                              MenuScreenNavigate: 'Add Book',
+                              MenuID: 1
+                          },
+                          {
+                              MenuLabel: "Edit Book",
+                              MenuIcon: Icon.ColorPicker,
+                              MenuScreenNavigate: 'Edit Book',
+                              MenuID: 2
+                          },
+                          {
+                              MenuLabel: "Delete Book",
+                              MenuIcon: Icon.ClearDrawing,
+                              MenuScreenNavigate: 'Delete Book',
+                              MenuID: 3
+                          },
+                          {
+                              MenuLabel: "Manage Users",
+                              MenuIcon: Icon.People,
+                              MenuScreenNavigate: 'Manage Users',
+                              MenuID: 4
+                          },
+                          {
+                              MenuLabel: "Manage Loans",
+                              MenuIcon: Icon.Currency,
+                              MenuScreenNavigate: 'Manage Loans',
+                              MenuID: 5
+                          },
+                          {
+                              MenuLabel: "Manage Reservations",
+                              MenuIcon: Icon.PhotosPictures,
+                              MenuScreenNavigate: 'Manage Reservations',
+                              MenuID: 6
+                          },
+                          {
+                              MenuLabel: "Library Settings",
+                              MenuIcon: Icon.Settings,
+                              MenuScreenNavigate: 'Library Settings',
+                              MenuID: 7
+                          },
+                          {
+                              MenuLabel: "Check Log",
+                              MenuIcon: Icon.Warning,
+                              MenuScreenNavigate: 'Check Log',
+                              MenuID: 8
+                          }
+                      )
+                  }
+              )
+            SetMenuWidth: =300
+            Width: =MenuLeftNav_12.MenuWidth
+      - Popup_2:
+          Control: GroupContainer@1.3.0
+          Variant: ManualLayout
+          Properties:
+            Height: =768
+            Visible: =showPopupEditBox
+            Width: =1366
+          Children:
+            - popup_bg_box_4:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Fill: =RGBA(0, 0, 0, 0.4)
+                  Height: =768
+                  Visible: =showPopupEditBox
+                  Width: =1366
+            - popup_box_4:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0, 134, 208, 1)
+                  BorderThickness: =5
+                  Fill: =RGBA(241, 244, 249, 1)
+                  Height: =324
+                  Visible: =showPopupEditBox
                   Width: =672
                   X: =347
-                  Y: =240
-            - trash_icon_2:
-                Control: Classic/Icon
-                Variant: Trash
+                  Y: =222
+            - popup_container:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
                 Properties:
-                  AlignInContainer: =AlignInContainer.Center
-                  Icon: =Icon.Edit
-                  Visible: =showPopupEditBox
-                  X: =293
-                  Y: =68
-            - buttons_container_4:
-                Control: GroupContainer
-                Variant: horizontalAutoLayoutContainer
-                Properties:
-                  Height: =91
-                  LayoutGap: =50
-                  LayoutJustifyContent: =LayoutJustifyContent.Center
-                  LayoutMode: =LayoutMode.Auto
-                  Width: =419
-                  X: =118
-                  Y: =155
+                  Height: =321
+                  LayoutDirection: =LayoutDirection.Vertical
+                  Width: =672
+                  X: =347
+                  Y: =225
                 Children:
-                - btn_no_4:
-                    Control: Classic/Button
-                    Properties:
-                      OnSelect: =Set(showPopupEditBox,false);
-                      Text: ="No"
-                      AlignInContainer: =AlignInContainer.Center
-                      Visible: =showPopupEditBox
-                      X: =480
-                      Y: =425
-                - btn_yes_4:
-                    Control: Classic/Button
-                    Properties:
-                      OnSelect: |+
-                        =Patch(
-                            Sheet1s, 
-                            LookUp(Sheet1s, Index = DataCardValue4.Text), 
-                            {
-                                Title: DataCardValue10.Text,
-                                Author: DataCardValue1.Text,
-                                Genre: ComboBox1.Selected.Value,
-                                ISBN: DataCardValue5.Text,
-                                Publication_Year: TextInput3.Text,
-                                Language: ComboBox3.Selected.Value,
-                                Cover_URL: DataCardValue2.Text,
-                                Number_of_Pages: DataCardValue7.Text,
-                                Summary: DataCardValue9.Text
-                            }
-                        );
+                  - HtmlText1_2:
+                      Control: HtmlViewer@2.1.0
+                      Properties:
+                        Font: =Font.'Open Sans'
+                        Height: =45
+                        HtmlText: ="<div style='text-align:center;'>Are you sure you want to edit this book?</div>"
+                        Size: =16
+                        Width: =672
+                        X: =347
+                        Y: =240
+                  - trash_icon_2:
+                      Control: Classic/Icon@2.5.0
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =RGBA(0, 18, 107, 1)
+                        Icon: =Icon.Edit
+                        Visible: =showPopupEditBox
+                        X: =293
+                        Y: =68
+                  - buttons_container_4:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        Height: =91
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =50
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        Width: =419
+                        X: =118
+                        Y: =155
+                      Children:
+                        - btn_no_4:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              BorderColor: =ColorFade(Self.Fill, -15%)
+                              Color: =RGBA(255, 255, 255, 1)
+                              DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                              Fill: =RGBA(56, 96, 178, 1)
+                              Font: =Font.'Open Sans'
+                              HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                              HoverColor: =RGBA(255, 255, 255, 1)
+                              HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                              OnSelect: =Set(showPopupEditBox,false);
+                              PressedBorderColor: =Self.Fill
+                              PressedColor: =Self.Fill
+                              PressedFill: =Self.Color
+                              Text: ="No"
+                              Visible: =showPopupEditBox
+                              X: =480
+                              Y: =425
+                        - btn_yes_4:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              BorderColor: =ColorFade(Self.Fill, -15%)
+                              Color: =RGBA(255, 255, 255, 1)
+                              DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                              Fill: =RGBA(168, 0, 0, 1)
+                              Font: =Font.'Open Sans'
+                              HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                              HoverColor: =RGBA(255, 255, 255, 1)
+                              HoverFill: =Self.Fill
+                              OnSelect: |+
+                                =Patch(
+                                    Sheet1s, 
+                                    LookUp(Sheet1s, Index = DataCardValue4.Text), 
+                                    {
+                                        Title: DataCardValue10.Text,
+                                        Author: DataCardValue1.Text,
+                                        Genre: ComboBox1.Selected.Value,
+                                        ISBN: DataCardValue5.Text,
+                                        Publication_Year: TextInput3.Text,
+                                        Language: ComboBox3.Selected.Value,
+                                        Cover_URL: DataCardValue2.Text,
+                                        Number_of_Pages: DataCardValue7.Text,
+                                        Summary: DataCardValue9.Text
+                                    }
+                                );
 
-                        Notify("Book successfully updated!", NotificationType.Success);
+                                Notify("Book successfully updated!", NotificationType.Success);
 
-                        Patch(
-                            Library_logs,
-                            Defaults(Library_logs),
-                            {
-                                Event_ID: Text(Max(Library_logs, Event_ID) + 1),
-                                Event_Type: "Book Management",
-                                Description: "Book successfully updated",
-                                Event_Name: "Update Book",
-                                Event_Screen: App.ActiveScreen.Name,
-                                Event_Level: "3",
-                                Book_ID: DataCardValue4.Text,
-                                Username: loggedInUser.username,
-                                User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
-                                Event_Status: "Successful"
-                            }
-                        );
+                                Patch(
+                                    Library_logs,
+                                    Defaults(Library_logs),
+                                    {
+                                        Event_ID: Text(Max(Library_logs, Event_ID) + 1),
+                                        Event_Type: "Book Management",
+                                        Description: "Book successfully updated",
+                                        Event_Name: "Update Book",
+                                        Event_Screen: App.ActiveScreen.Name,
+                                        Event_Level: "3",
+                                        Book_ID: DataCardValue4.Text,
+                                        Username: loggedInUser.username,
+                                        User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
+                                        Event_Status: "Successful"
+                                    }
+                                );
 
-                        Set(showPopupEditBox, false);
-                      Text: ="Yes"
-                      AlignInContainer: =AlignInContainer.Center
-                      Fill: =RGBA(168, 0, 0, 1)
-                      HoverFill: =Self.Fill
-                      Visible: =showPopupEditBox
-                      X: =215
-                      Y: =425
-    - MenuLeftNav_12:
-        Control: Component
-        ComponentName: MenuLeftNav
-        Properties:
-          AdminAccess: =varAdminAccess
-          HamburgerMenuColor: =Color.Blue
-          LoggedUser: =varLoggedUser
-          MenuBkgColor: =RGBA(220,220,220,1)
-          MenuColor: =Color.Purple
-          MenuItems: |
-            =Table(
-                {
-                    MenuLabel: "Dashboard",
-                    MenuIcon: Icon.Home,
-                    MenuScreenNavigate: Dashboard,
-                    MenuID: 1,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Book Catalog",
-                    MenuIcon: Icon.Database,
-                    MenuScreenNavigate: 'Book Catalog',
-                    MenuID: 2,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Book Details",
-                    MenuIcon: Icon.ListScrollWatchlist,
-                    MenuScreenNavigate: 'Book Details',
-                    MenuID: 3,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Your Books",
-                    MenuIcon: Icon.Notebook,
-                    MenuScreenNavigate: 'Your Books',
-                    MenuID: 4,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Wishlist / Favorites",
-                    MenuIcon: Icon.Heart,
-                    MenuScreenNavigate: 'Wishlist / Favorites',
-                    MenuID: 5,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Book Reservations",
-                    MenuIcon: Icon.CalendarBlank,
-                    MenuScreenNavigate: 'Book Reservations',
-                    MenuID: 6,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Borrowing History",
-                    MenuIcon: Icon.History,
-                    MenuScreenNavigate: 'Borrowing History',
-                    MenuID: 7,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Library Ranking",
-                    MenuIcon: Icon.Globe,
-                    MenuScreenNavigate: 'Library Ranking',
-                    MenuID: 8,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "User Profile",
-                    MenuIcon: Icon.Person,
-                    MenuScreenNavigate: 'User Profile',
-                    MenuID: 9,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Admin Panel",
-                    MenuIcon: Icon.Manufacture,
-                    //MenuScreenNavigate: 'Admin Panel',
-                    MenuID: 10,
-                    VisibleSubMenu: true,
-                    SubMenu: Table(
-                        {
-                            MenuLabel: "Add Book",
-                            MenuIcon: Icon.AddDocument,
-                            MenuScreenNavigate: 'Add Book',
-                            MenuID: 1
-                        },
-                        {
-                            MenuLabel: "Edit Book",
-                            MenuIcon: Icon.ColorPicker,
-                            MenuScreenNavigate: 'Edit Book',
-                            MenuID: 2
-                        },
-                        {
-                            MenuLabel: "Delete Book",
-                            MenuIcon: Icon.ClearDrawing,
-                            MenuScreenNavigate: 'Delete Book',
-                            MenuID: 3
-                        },
-                        {
-                            MenuLabel: "Manage Users",
-                            MenuIcon: Icon.People,
-                            MenuScreenNavigate: 'Manage Users',
-                            MenuID: 4
-                        },
-                        {
-                            MenuLabel: "Manage Loans",
-                            MenuIcon: Icon.Currency,
-                            MenuScreenNavigate: 'Manage Loans',
-                            MenuID: 5
-                        },
-                        {
-                            MenuLabel: "Manage Reservations",
-                            MenuIcon: Icon.PhotosPictures,
-                            MenuScreenNavigate: 'Manage Reservations',
-                            MenuID: 6
-                        },
-                        {
-                            MenuLabel: "Library Settings",
-                            MenuIcon: Icon.Settings,
-                            MenuScreenNavigate: 'Library Settings',
-                            MenuID: 7
-                        },
-                        {
-                            MenuLabel: "Check Log",
-                            MenuIcon: Icon.Warning,
-                            MenuScreenNavigate: 'Check Log',
-                            MenuID: 8
-                        }
-                    )
-                }
-            )
-          SetMenuWidth: =300
-          Height: =If(!MenuLeftNav_12.showMenuProp, 50, App.Height)
-          Width: =MenuLeftNav_12.MenuWidth
-    - main_form_container:
-        Control: GroupContainer
-        Variant: horizontalAutoLayoutContainer
-        Properties:
-          Height: =514
-          LayoutMode: =LayoutMode.Auto
-          Width: =1121
-          X: =210
-          Y: =145
-        Children:
-        - Form1:
-            Control: Form
-            Layout: vertical
-            Properties:
-              DataSource: =Filter(Sheet1s, Index = Gallery5.Selected.Index)
-              DefaultMode: =FormMode.New
-              Height: =593
-              Width: =1121
-              X: =237
-              Y: =171
-            Children:
-            - Index_DataCard1:
-                Control: TypedDataCard
-                Variant: textualEditCard
-                Layout: vertical
-                Properties:
-                  DataField: ="cre0e_index"
-                  Default: =ThisItem.Index
-                  DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_index)
-                  MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_index)
-                  Update: =DataCardValue4.Text
-                  DisplayMode: =Parent.DisplayMode
-                  Height: =50
-                  Width: =560
-                Children:
-                - StarVisible4:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Text: ="*"
-                      Align: =Align.Center
-                      Height: =DataCardKey4.Height
-                      Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
-                      Width: =30
-                      Wrap: =false
-                      Y: =DataCardKey4.Y
-                - ErrorMessage4:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Live: =Live.Assertive
-                      Text: =Parent.Error
-                      AutoHeight: =true
-                      Height: =10
-                      PaddingBottom: =0
-                      PaddingLeft: =0
-                      PaddingRight: =0
-                      PaddingTop: =0
-                      Visible: =Parent.DisplayMode=DisplayMode.Edit
-                      Width: =Parent.Width - 60
-                      X: =30
-                      Y: =DataCardValue4.Y + DataCardValue4.Height
-                - DataCardValue4:
-                    Control: Classic/TextInput
-                    Layout: vertical
-                    Properties:
-                      Default: =Gallery5.Selected.Index
-                      DelayOutput: =true
-                      MaxLength: =Parent.MaxLength
-                      Tooltip: =Parent.DisplayName
-                      BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
-                      DisplayMode: =DisplayMode.Disabled
-                      PaddingLeft: =5
-                      RadiusBottomLeft: =0
-                      RadiusBottomRight: =0
-                      RadiusTopLeft: =0
-                      RadiusTopRight: =0
-                      Width: =Parent.Width - 60
-                      X: =30
-                      Y: =DataCardKey4.Y + DataCardKey4.Height + 5
-                - DataCardKey4:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Text: =Parent.DisplayName
-                      AutoHeight: =true
-                      Height: =34
-                      Width: =Parent.Width - 60
-                      Wrap: =false
-                      X: =30
-                      Y: =10
-            - Title_DataCard1:
-                Control: TypedDataCard
-                Variant: textualEditCard
-                Layout: vertical
-                Properties:
-                  DataField: ="cre0e_title"
-                  Default: =ThisItem.Title
-                  DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_title)
-                  MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_title)
-                  Update: =DataCardValue10.Text
-                  DisplayMode: =Parent.DisplayMode
-                  Height: =50
-                  Width: =560
-                  X: =1
-                Children:
-                - StarVisible10:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Text: ="*"
-                      Align: =Align.Center
-                      Height: =DataCardKey10.Height
-                      Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
-                      Width: =30
-                      Wrap: =false
-                      Y: =DataCardKey10.Y
-                - ErrorMessage10:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Live: =Live.Assertive
-                      Text: =Parent.Error
-                      AutoHeight: =true
-                      Height: =10
-                      PaddingBottom: =0
-                      PaddingLeft: =0
-                      PaddingRight: =0
-                      PaddingTop: =0
-                      Visible: =Parent.DisplayMode=DisplayMode.Edit
-                      Width: =Parent.Width - 60
-                      X: =30
-                      Y: =DataCardValue10.Y + DataCardValue10.Height
-                - DataCardValue10:
-                    Control: Classic/TextInput
-                    Layout: vertical
-                    Properties:
-                      Default: =Gallery5.Selected.Title
-                      DelayOutput: =true
-                      MaxLength: =Parent.MaxLength
-                      Tooltip: =Parent.DisplayName
-                      BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
-                      DisplayMode: =Parent.DisplayMode
-                      PaddingLeft: =5
-                      RadiusBottomLeft: =0
-                      RadiusBottomRight: =0
-                      RadiusTopLeft: =0
-                      RadiusTopRight: =0
-                      Width: =Parent.Width - 60
-                      X: =30
-                      Y: =DataCardKey10.Y + DataCardKey10.Height + 5
-                - DataCardKey10:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Text: =Parent.DisplayName
-                      AutoHeight: =true
-                      Height: =34
-                      Width: =Parent.Width - 60
-                      Wrap: =false
-                      X: =30
-                      Y: =10
-            - Author_DataCard1:
-                Control: TypedDataCard
-                Variant: textualEditCard
-                Layout: vertical
-                Properties:
-                  DataField: ="cre0e_author"
-                  Default: =ThisItem.Author
-                  DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_author)
-                  MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_author)
-                  Update: =DataCardValue1.Text
-                  DisplayMode: =Parent.DisplayMode
-                  Height: =50
-                  Width: =560
-                  Y: =1
-                Children:
-                - StarVisible1:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Text: ="*"
-                      Align: =Align.Center
-                      Height: =DataCardKey1.Height
-                      Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
-                      Width: =30
-                      Wrap: =false
-                      Y: =DataCardKey1.Y
-                - ErrorMessage1:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Live: =Live.Assertive
-                      Text: =Parent.Error
-                      AutoHeight: =true
-                      Height: =10
-                      PaddingBottom: =0
-                      PaddingLeft: =0
-                      PaddingRight: =0
-                      PaddingTop: =0
-                      Visible: =Parent.DisplayMode=DisplayMode.Edit
-                      Width: =Parent.Width - 60
-                      X: =30
-                      Y: =DataCardValue1.Y + DataCardValue1.Height
-                - DataCardValue1:
-                    Control: Classic/TextInput
-                    Layout: vertical
-                    Properties:
-                      Default: =Gallery5.Selected.Author
-                      DelayOutput: =true
-                      MaxLength: =Parent.MaxLength
-                      Tooltip: =Parent.DisplayName
-                      BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
-                      DisplayMode: =Parent.DisplayMode
-                      PaddingLeft: =5
-                      RadiusBottomLeft: =0
-                      RadiusBottomRight: =0
-                      RadiusTopLeft: =0
-                      RadiusTopRight: =0
-                      Width: =Parent.Width - 60
-                      X: =30
-                      Y: =DataCardKey1.Y + DataCardKey1.Height + 5
-                - DataCardKey1:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Text: =Parent.DisplayName
-                      AutoHeight: =true
-                      Height: =34
-                      Width: =Parent.Width - 60
-                      Wrap: =false
-                      X: =30
-                      Y: =10
-            - Genre_DataCard1:
-                Control: TypedDataCard
-                Variant: textualEditCard
-                Layout: vertical
-                Properties:
-                  DataField: ="cre0e_genre"
-                  Default: =ThisItem.Genre
-                  DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_genre)
-                  MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_genre)
-                  Update: =
-                  DisplayMode: =Parent.DisplayMode
-                  Height: =50
-                  Width: =560
-                  X: =1
-                  Y: =1
-                Children:
-                - ComboBox1:
-                    Control: Classic/ComboBox
-                    Properties:
-                      DefaultSelectedItems: |+
-                        =Distinct(Filter(Sheet1s, Genre = Gallery5.Selected.Genre), Genre)
-                      DisplayFields: =["Value"]
-                      Items: =Distinct(Sheet1s, Genre)
-                      SearchFields: =["Value"]
-                      SelectMultiple: =false
-                      Width: =500
-                      X: =30
-                      Y: =40
-                - StarVisible3:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Text: ="*"
-                      Align: =Align.Center
-                      Height: =DataCardKey3.Height
-                      Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
-                      Width: =30
-                      Wrap: =false
-                      Y: =DataCardKey3.Y
-                - ErrorMessage3:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Live: =Live.Assertive
-                      Text: =Parent.Error
-                      AutoHeight: =true
-                      Height: =10
-                      PaddingBottom: =0
-                      PaddingLeft: =0
-                      PaddingRight: =0
-                      PaddingTop: =0
-                      Visible: =Parent.DisplayMode=DisplayMode.Edit
-                      Width: =Parent.Width - 60
-                      X: =30
-                      Y: =
-                - DataCardKey3:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Text: =Parent.DisplayName
-                      AutoHeight: =true
-                      Height: =34
-                      Width: =Parent.Width - 60
-                      Wrap: =false
-                      X: =30
-                      Y: =10
-            - ISBN_DataCard1:
-                Control: TypedDataCard
-                Variant: textualEditCard
-                Layout: vertical
-                Properties:
-                  DataField: ="cre0e_isbn"
-                  Default: =ThisItem.ISBN
-                  DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_isbn)
-                  MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_isbn)
-                  Update: =DataCardValue5.Text
-                  DisplayMode: =Parent.DisplayMode
-                  Height: =50
-                  Width: =560
-                  Y: =2
-                Children:
-                - StarVisible5:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Text: ="*"
-                      Align: =Align.Center
-                      Height: =DataCardKey5.Height
-                      Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
-                      Width: =30
-                      Wrap: =false
-                      Y: =DataCardKey5.Y
-                - ErrorMessage5:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Live: =Live.Assertive
-                      Text: =Parent.Error
-                      AutoHeight: =true
-                      Height: =10
-                      PaddingBottom: =0
-                      PaddingLeft: =0
-                      PaddingRight: =0
-                      PaddingTop: =0
-                      Visible: =Parent.DisplayMode=DisplayMode.Edit
-                      Width: =Parent.Width - 60
-                      X: =30
-                      Y: =DataCardValue5.Y + DataCardValue5.Height
-                - DataCardValue5:
-                    Control: Classic/TextInput
-                    Layout: vertical
-                    Properties:
-                      Default: =Gallery5.Selected.ISBN
-                      DelayOutput: =true
-                      MaxLength: =Parent.MaxLength
-                      Tooltip: =Parent.DisplayName
-                      BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
-                      DisplayMode: =Parent.DisplayMode
-                      PaddingLeft: =5
-                      RadiusBottomLeft: =0
-                      RadiusBottomRight: =0
-                      RadiusTopLeft: =0
-                      RadiusTopRight: =0
-                      Width: =Parent.Width - 60
-                      X: =30
-                      Y: =DataCardKey5.Y + DataCardKey5.Height + 5
-                - DataCardKey5:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Text: =Parent.DisplayName
-                      AutoHeight: =true
-                      Height: =34
-                      Width: =Parent.Width - 60
-                      Wrap: =false
-                      X: =30
-                      Y: =10
-            - Publication_Year_DataCard1:
-                Control: TypedDataCard
-                Variant: textualEditCard
-                Layout: vertical
-                Properties:
-                  DataField: ="cre0e_publication_year"
-                  Default: =ThisItem.Publication_Year
-                  DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_publication_year)
-                  MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_publication_year)
-                  Update: =
-                  DisplayMode: =Parent.DisplayMode
-                  Height: =50
-                  Width: =560
-                  X: =1
-                  Y: =2
-                Children:
-                - TextInput3:
-                    Control: Classic/TextInput
-                    Properties:
-                      Default: =Gallery5.Selected.Publication_Year
-                      RadiusBottomLeft: =0
-                      RadiusBottomRight: =0
-                      RadiusTopLeft: =0
-                      RadiusTopRight: =0
-                      Width: =500
-                      X: =30
-                      Y: =40
-                - StarVisible8:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Text: ="*"
-                      Align: =Align.Center
-                      Height: =DataCardKey8.Height
-                      Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
-                      Width: =30
-                      Wrap: =false
-                      Y: =DataCardKey8.Y
-                - ErrorMessage8:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Live: =Live.Assertive
-                      Text: =Parent.Error
-                      AutoHeight: =true
-                      Height: =10
-                      PaddingBottom: =0
-                      PaddingLeft: =0
-                      PaddingRight: =0
-                      PaddingTop: =0
-                      Visible: =Parent.DisplayMode=DisplayMode.Edit
-                      Width: =Parent.Width - 60
-                      X: =30
-                      Y: =
-                - DataCardKey8:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Text: =Parent.DisplayName
-                      AutoHeight: =true
-                      Height: =34
-                      Width: =Parent.Width - 60
-                      Wrap: =false
-                      X: =30
-                      Y: =10
-            - Language_DataCard1:
-                Control: TypedDataCard
-                Variant: textualEditCard
-                Layout: vertical
-                Properties:
-                  DataField: ="cre0e_language"
-                  Default: =ThisItem.Language
-                  DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_language)
-                  MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_language)
-                  Update: =
-                  DisplayMode: =Parent.DisplayMode
-                  Height: =50
-                  Width: =560
-                  Y: =3
-                Children:
-                - ComboBox3:
-                    Control: Classic/ComboBox
-                    Properties:
-                      DefaultSelectedItems: |+
-                        =Distinct(Filter(Sheet1s, Language = Gallery5.Selected.Language),Language)
-                      DisplayFields: =["Value"]
-                      IsSearchable: =false
-                      Items: =Distinct(Sheet1s,Language)
-                      SearchFields: =["Value"]
-                      SelectMultiple: =false
-                      Width: =500
-                      X: =30
-                      Y: =40
-                - StarVisible6:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Text: ="*"
-                      Align: =Align.Center
-                      Height: =DataCardKey6.Height
-                      Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
-                      Width: =30
-                      Wrap: =false
-                      Y: =DataCardKey6.Y
-                - ErrorMessage6:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Live: =Live.Assertive
-                      Text: =Parent.Error
-                      AutoHeight: =true
-                      Height: =10
-                      PaddingBottom: =0
-                      PaddingLeft: =0
-                      PaddingRight: =0
-                      PaddingTop: =0
-                      Visible: =Parent.DisplayMode=DisplayMode.Edit
-                      Width: =Parent.Width - 60
-                      X: =30
-                      Y: =
-                - DataCardKey6:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Text: =Parent.DisplayName
-                      AutoHeight: =true
-                      Height: =34
-                      Width: =Parent.Width - 60
-                      Wrap: =false
-                      X: =30
-                      Y: =10
-            - Cover_URL_DataCard1:
-                Control: TypedDataCard
-                Variant: textualEditCard
-                Layout: vertical
-                Properties:
-                  DataField: ="cre0e_cover_url"
-                  Default: =ThisItem.Cover_URL
-                  DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_cover_url)
-                  MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_cover_url)
-                  Update: =DataCardValue2.Text
-                  DisplayMode: =Parent.DisplayMode
-                  Height: =50
-                  Width: =560
-                  X: =1
-                  Y: =3
-                Children:
-                - StarVisible2:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Text: ="*"
-                      Align: =Align.Center
-                      Height: =DataCardKey2.Height
-                      Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
-                      Width: =30
-                      Wrap: =false
-                      Y: =DataCardKey2.Y
-                - ErrorMessage2:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Live: =Live.Assertive
-                      Text: =Parent.Error
-                      AutoHeight: =true
-                      Height: =10
-                      PaddingBottom: =0
-                      PaddingLeft: =0
-                      PaddingRight: =0
-                      PaddingTop: =0
-                      Visible: =Parent.DisplayMode=DisplayMode.Edit
-                      Width: =Parent.Width - 60
-                      X: =30
-                      Y: =DataCardValue2.Y + DataCardValue2.Height
-                - DataCardValue2:
-                    Control: Classic/TextInput
-                    Layout: vertical
-                    Properties:
-                      Default: =Gallery5.Selected.Cover_URL
-                      DelayOutput: =true
-                      MaxLength: =Parent.MaxLength
-                      Tooltip: =Parent.DisplayName
-                      BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
-                      DisplayMode: =Parent.DisplayMode
-                      PaddingLeft: =5
-                      RadiusBottomLeft: =0
-                      RadiusBottomRight: =0
-                      RadiusTopLeft: =0
-                      RadiusTopRight: =0
-                      Width: =Parent.Width - 60
-                      X: =30
-                      Y: =DataCardKey2.Y + DataCardKey2.Height + 5
-                - DataCardKey2:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Text: =Parent.DisplayName
-                      AutoHeight: =true
-                      Height: =34
-                      Width: =Parent.Width - 60
-                      Wrap: =false
-                      X: =30
-                      Y: =10
-            - Number_of_Pages_DataCard1:
-                Control: TypedDataCard
-                Variant: textualEditCard
-                Layout: vertical
-                Properties:
-                  DataField: ="cre0e_number_of_pages"
-                  Default: =ThisItem.Number_of_Pages
-                  DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_number_of_pages)
-                  MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_number_of_pages)
-                  Update: =DataCardValue7.Text
-                  DisplayMode: =Parent.DisplayMode
-                  Height: =50
-                  Width: =560
-                  Y: =4
-                Children:
-                - StarVisible7:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Text: ="*"
-                      Align: =Align.Center
-                      Height: =DataCardKey7.Height
-                      Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
-                      Width: =30
-                      Wrap: =false
-                      Y: =DataCardKey7.Y
-                - ErrorMessage7:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Live: =Live.Assertive
-                      Text: =Parent.Error
-                      AutoHeight: =true
-                      Height: =10
-                      PaddingBottom: =0
-                      PaddingLeft: =0
-                      PaddingRight: =0
-                      PaddingTop: =0
-                      Visible: =Parent.DisplayMode=DisplayMode.Edit
-                      Width: =Parent.Width - 60
-                      X: =30
-                      Y: =DataCardValue7.Y + DataCardValue7.Height
-                - DataCardValue7:
-                    Control: Classic/TextInput
-                    Layout: vertical
-                    Properties:
-                      Default: =Gallery5.Selected.Number_of_Pages
-                      DelayOutput: =true
-                      MaxLength: =Parent.MaxLength
-                      Tooltip: =Parent.DisplayName
-                      BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
-                      DisplayMode: =Parent.DisplayMode
-                      PaddingLeft: =5
-                      RadiusBottomLeft: =0
-                      RadiusBottomRight: =0
-                      RadiusTopLeft: =0
-                      RadiusTopRight: =0
-                      Width: =Parent.Width - 60
-                      X: =30
-                      Y: =DataCardKey7.Y + DataCardKey7.Height + 5
-                - DataCardKey7:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Text: =Parent.DisplayName
-                      AutoHeight: =true
-                      Height: =34
-                      Width: =Parent.Width - 60
-                      Wrap: =false
-                      X: =30
-                      Y: =10
-            - Summary_DataCard1:
-                Control: TypedDataCard
-                Variant: textualEditCard
-                Layout: vertical
-                Properties:
-                  DataField: ="cre0e_summary"
-                  Default: =ThisItem.Summary
-                  DisplayName: =DataSourceInfo([@Sheet1s],DataSourceInfo.DisplayName,cre0e_summary)
-                  MaxLength: =DataSourceInfo([@Sheet1s], DataSourceInfo.MaxLength, cre0e_summary)
-                  Update: =DataCardValue9.Text
-                  DisplayMode: =Parent.DisplayMode
-                  Height: =50
-                  Width: =560
-                  X: =1
-                  Y: =4
-                Children:
-                - StarVisible9:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Text: ="*"
-                      Align: =Align.Center
-                      Height: =DataCardKey9.Height
-                      Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
-                      Width: =30
-                      Wrap: =false
-                      Y: =DataCardKey9.Y
-                - ErrorMessage9:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Live: =Live.Assertive
-                      Text: =Parent.Error
-                      AutoHeight: =true
-                      Height: =10
-                      PaddingBottom: =0
-                      PaddingLeft: =0
-                      PaddingRight: =0
-                      PaddingTop: =0
-                      Visible: =Parent.DisplayMode=DisplayMode.Edit
-                      Width: =Parent.Width - 60
-                      X: =30
-                      Y: =DataCardValue9.Y + DataCardValue9.Height
-                - DataCardValue9:
-                    Control: Classic/TextInput
-                    Layout: vertical
-                    Properties:
-                      Default: =Gallery5.Selected.Summary
-                      DelayOutput: =true
-                      MaxLength: =Parent.MaxLength
-                      Tooltip: =Parent.DisplayName
-                      BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
-                      DisplayMode: =Parent.DisplayMode
-                      PaddingLeft: =5
-                      RadiusBottomLeft: =0
-                      RadiusBottomRight: =0
-                      RadiusTopLeft: =0
-                      RadiusTopRight: =0
-                      Width: =Parent.Width - 60
-                      X: =30
-                      Y: =DataCardKey9.Y + DataCardKey9.Height + 5
-                - DataCardKey9:
-                    Control: Label
-                    Layout: vertical
-                    Properties:
-                      Text: =Parent.DisplayName
-                      AutoHeight: =true
-                      Height: =34
-                      Width: =Parent.Width - 60
-                      Wrap: =false
-                      X: =30
-                      Y: =10
-    - Save_Edit_Book:
-        Control: Classic/Button
-        Properties:
-          OnSelect: =Set(showPopupEditBox,true)
-          Text: ="Save"
-          X: =1112
-          Y: =696
-    - PageTitle_6:
-        Control: Component
-        ComponentName: PageTitle
-        Properties:
-          screenInfo: =App.ActiveScreen
-          Height: =50
-          Width: =200
-          X: =1166
-    - TextInput2:
-        Control: Classic/TextInput
-        Properties:
-          Default: =
-          HintText: ="Enter Book ID"
-          Format: =TextFormat.Number
-          X: =496
-          Y: =32
-    - Gallery5:
-        Control: Gallery
-        Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
-        Properties:
-          Items: |+
-            =If(
-                IsBlank(TextInput2.Text), 
-                Sheet1s, 
-                LookUp(Sheet1s, Value(Index) = Value(TextInput2.Text))
-            )
-          DelayItemLoading: =true
-          Fill: =RGBA(166, 166, 166, 1)
-          FocusedBorderThickness: =0
-          Height: =447
-          Layout: =Layout.Vertical
-          LoadingSpinner: =LoadingSpinner.Data
-          TemplateFill: |-
-            =If(
-                ThisItem.IsSelected, 
-                RGBA(128, 128, 128, 1), 
-                RGBA(166, 166, 166, 1)   
-            )
-          TemplatePadding: =0
-          TemplateSize: =40
-          Width: =185
-          Y: =320
-        Children:
-        - Select_Icon:
-            Control: Classic/Icon
-            Variant: NextArrow
-            Properties:
-              OnSelect: =Select(Parent)
-              Height: =22
-              Icon: =Icon.NextArrow
-              Width: =40
-              X: =122
-              Y: =7
-        - Separator2:
-            Control: Rectangle
-            Properties:
-              OnSelect: =Select(Parent)
-              Fill: =RGBA(255, 255, 255, 1)
-              Height: =2
-              Width: =Parent.TemplateWidth
-              Y: =Parent.TemplateHeight - Self.Height
-        - Index_Field_2:
-            Control: Label
-            Properties:
-              OnSelect: =Select(Parent)
-              Text: =ThisItem.Index
-              FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
-              Height: =20
-              PaddingBottom: =0
-              PaddingLeft: =0
-              PaddingRight: =0
-              PaddingTop: =0
-              VerticalAlign: =VerticalAlign.Top
-              Width: =32
-              X: =23
-              Y: =9
+                                Set(showPopupEditBox, false);
+                              PressedBorderColor: =Self.Fill
+                              PressedColor: =Self.Fill
+                              PressedFill: =Self.Color
+                              Text: ="Yes"
+                              Visible: =showPopupEditBox
+                              X: =215
+                              Y: =425

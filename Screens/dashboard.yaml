@@ -1,226 +1,258 @@
-- Dashboard:
-    Control: Screen
+Screens:
+  Dashboard:
     Properties:
+      LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
       OnVisible: |+
         =
     Children:
-    - MenuLeftNav_1:
-        Control: Component
-        ComponentName: MenuLeftNav
-        Properties:
-          AdminAccess: =varAdminAccess
-          ExpandMenu: =true
-          HamburgerMenuColor: =Color.Blue
-          LoggedUser: =varLoggedUser
-          MenuBkgColor: =RGBA(220,220,220,1)
-          MenuColor: =Color.Purple
-          MenuItems: |
-            =Table(
-                {
-                    MenuLabel: "Dashboard",
-                    MenuIcon: Icon.Home,
-                    MenuScreenNavigate: Dashboard,
-                    MenuID: 1,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Book Catalog",
-                    MenuIcon: Icon.Database,
-                    MenuScreenNavigate: 'Book Catalog',
-                    MenuID: 2,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Book Details",
-                    MenuIcon: Icon.ListScrollWatchlist,
-                    MenuScreenNavigate: 'Book Details',
-                    MenuID: 3,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Your Books",
-                    MenuIcon: Icon.Notebook,
-                    MenuScreenNavigate: 'Your Books',
-                    MenuID: 4,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Wishlist / Favorites",
-                    MenuIcon: Icon.Heart,
-                    MenuScreenNavigate: 'Wishlist / Favorites',
-                    MenuID: 5,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Book Reservations",
-                    MenuIcon: Icon.CalendarBlank,
-                    MenuScreenNavigate: 'Book Reservations',
-                    MenuID: 6,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Borrowing History",
-                    MenuIcon: Icon.History,
-                    MenuScreenNavigate: 'Borrowing History',
-                    MenuID: 7,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Library Ranking",
-                    MenuIcon: Icon.Globe,
-                    MenuScreenNavigate: 'Library Ranking',
-                    MenuID: 8,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "User Profile",
-                    MenuIcon: Icon.Person,
-                    MenuScreenNavigate: 'User Profile',
-                    MenuID: 9,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Admin Panel",
-                    MenuIcon: Icon.Manufacture,
-                    //MenuScreenNavigate: 'Admin Panel',
-                    MenuID: 10,
-                    VisibleSubMenu: true,
-                    SubMenu: Table(
-                        {
-                            MenuLabel: "Add Book",
-                            MenuIcon: Icon.AddDocument,
-                            MenuScreenNavigate: 'Add Book',
-                            MenuID: 1
-                        },
-                        {
-                            MenuLabel: "Edit Book",
-                            MenuIcon: Icon.ColorPicker,
-                            MenuScreenNavigate: 'Edit Book',
-                            MenuID: 2
-                        },
-                        {
-                            MenuLabel: "Delete Book",
-                            MenuIcon: Icon.ClearDrawing,
-                            MenuScreenNavigate: 'Delete Book',
-                            MenuID: 3
-                        },
-                        {
-                            MenuLabel: "Manage Users",
-                            MenuIcon: Icon.People,
-                            MenuScreenNavigate: 'Manage Users',
-                            MenuID: 4
-                        },
-                        {
-                            MenuLabel: "Manage Loans",
-                            MenuIcon: Icon.Currency,
-                            MenuScreenNavigate: 'Manage Loans',
-                            MenuID: 5
-                        },
-                        {
-                            MenuLabel: "Manage Reservations",
-                            MenuIcon: Icon.PhotosPictures,
-                            MenuScreenNavigate: 'Manage Reservations',
-                            MenuID: 6
-                        },
-                        {
-                            MenuLabel: "Library Settings",
-                            MenuIcon: Icon.Settings,
-                            MenuScreenNavigate: 'Library Settings',
-                            MenuID: 7
-                        },
-                        {
-                            MenuLabel: "Check Log",
-                            MenuIcon: Icon.Warning,
-                            MenuScreenNavigate: 'Check Log',
-                            MenuID: 8
-                        }
+      - Vertical_Container_Dashboard:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            Height: =768
+            LayoutDirection: =LayoutDirection.Vertical
+            Width: =1366
+          Children:
+            - Menu_Title_Container:
+                Control: GroupContainer@1.3.0
+                Variant: ManualLayout
+                Properties:
+                  Fill: |+
+                    =If(
+                        First(Table1S).darkmode = "ON",
+                       varBgColorDark,
+                       varBgColorWhite
                     )
-                }
-            )
-          SetMenuWidth: =300
-          Height: =If(!MenuLeftNav_1.showMenuProp, 50, App.Height)
-          Width: =MenuLeftNav_1.MenuWidth
-    - Vertical_Container_Dashboard:
-        Control: GroupContainer
-        Variant: verticalAutoLayoutContainer
-        Properties:
-          Height: =768
-          LayoutDirection: =LayoutDirection.Vertical
-          LayoutMode: =LayoutMode.Auto
-          Width: =1366
-        Children:
-        - Menu_Title_Container:
-            Control: GroupContainer
-            Variant: manualLayoutContainer
-            Properties:
-              LayoutMinHeight: =60
-            Children:
-            - PageTitle_1:
-                Control: Component
-                ComponentName: PageTitle
-                Properties:
-                  screenInfo: =App.ActiveScreen
-                  Height: =50
-                  Width: =200
-                  X: =1166
-        - Main_Section_Container:
-            Control: GroupContainer
-            Variant: manualLayoutContainer
-            Properties:
-              BorderColor: =RGBA(0, 0, 0, 0)
-              DropShadow: =DropShadow.None
-              FillPortions: =10
-              RadiusBottomLeft: =0
-              RadiusBottomRight: =0
-              RadiusTopLeft: =0
-              RadiusTopRight: =0
-            Children:
-            - Gallery2:
-                Control: Gallery
-                Variant: BrowseLayout_Horizontal_TwoTextOneImageVariant_ver5.0
-                Properties:
-                  Items: =Sheet1s
-                  WrapCount: =3
-                  DelayItemLoading: =true
-                  Height: =690
-                  LoadingSpinner: =LoadingSpinner.Data
-                  NavigationStep: =5
-                  TemplatePadding: =0
-                  TemplateSize: =239
-                  Transition: =Transition.Push
-                  Width: =1366
-                  Y: =8
+                  LayoutMinHeight: =60
                 Children:
-                - Button5:
-                    Control: Classic/Button
-                    Properties:
-                      OnSelect: |-
-                        =Navigate('Book Details', ScreenTransition.Fade, {SelectedItem: ThisItem})
-                      Text: =
-                      Fill: =RGBA(0, 0, 0, 0)
-                      Height: =227
-                      HoverFill: =RGBA(0, 0, 0, 0)
-                      PressedFill: =RGBA(0, 0, 0, 0)
-                      Width: =239
-                - Label4:
-                    Control: Label
-                    Properties:
-                      OnSelect: =Select(Parent)
-                      Text: =ThisItem.Title
-                      Align: =Align.Center
-                      Height: =42
-                      Width: =239
-                      Y: =185
-                - Image2:
-                    Control: Image
-                    Properties:
-                      OnSelect: =Select(Parent)
-                      Image: =ThisItem.Cover_URL
-                      Height: =185
-                      ImagePosition: =ImagePosition.Fill
-                      RadiusBottomLeft: =8
-                      RadiusBottomRight: =8
-                      RadiusTopLeft: =8
-                      RadiusTopRight: =8
-                      Width: =135
-                      X: =51
+                  - PageTitle_1:
+                      Control: CanvasComponent
+                      ComponentName: PageTitle
+                      Properties:
+                        Height: =50
+                        Width: =200
+                        X: =1166
+                        screenInfo: =App.ActiveScreen
+            - Main_Section_Container:
+                Control: GroupContainer@1.3.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  DropShadow: =DropShadow.None
+                  FillPortions: =10
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                Children:
+                  - Gallery2:
+                      Control: Gallery@2.15.0
+                      Variant: BrowseLayout_Horizontal_TwoTextOneImageVariant_ver5.0
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Fill: |+
+                          =If(
+                              First(Table1S).darkmode = "ON",
+                             varBgColorDark,
+                             varBgColorWhite
+                          )
+                        Height: =698
+                        Items: =Sheet1s
+                        NavigationStep: =5
+                        TemplateSize: =239
+                        Transition: =Transition.Push
+                        Width: =1366
+                        WrapCount: =3
+                      Children:
+                        - Image2:
+                            Control: Image@2.2.3
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Height: =185
+                              Image: =ThisItem.Cover_URL
+                              ImagePosition: =ImagePosition.Fill
+                              OnSelect: =Select(Parent)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Width: =135
+                              X: =51
+                        - Label4:
+                            Control: Label@2.5.1
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: |+
+                                =If(
+                                    First(Table1S).darkmode = "ON",
+                                   varFontColorWhite,
+                                   varFontColorDark
+                                )
+                              Font: =Font.'Open Sans'
+                              Height: =42
+                              OnSelect: =Select(Parent)
+                              Text: =ThisItem.Title
+                              Width: =239
+                              Y: =185
+                        - Button5:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorFade(Self.Fill, -15%)
+                              Color: =RGBA(255, 255, 255, 1)
+                              DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                              Fill: =RGBA(0, 0, 0, 0)
+                              Font: =Font.'Open Sans'
+                              Height: =227
+                              HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                              HoverColor: =RGBA(255, 255, 255, 1)
+                              HoverFill: =RGBA(0, 0, 0, 0)
+                              OnSelect: |-
+                                =Navigate('Book Details', ScreenTransition.Fade, {SelectedItem: ThisItem})
+                              PressedBorderColor: =Self.Fill
+                              PressedColor: =Self.Fill
+                              PressedFill: =RGBA(0, 0, 0, 0)
+                              Text: =
+                              Width: =239
+      - MenuLeftNav_1:
+          Control: CanvasComponent
+          ComponentName: MenuLeftNav
+          Properties:
+            AdminAccess: =varAdminAccess
+            ExpandMenu: =true
+            HamburgerMenuColor: "=If(\r\n    First(Table1S).darkmode = \"ON\",\r\n   varFontColorWhite,\r\n   varBtnColorDark\r\n  \r\n)\r\n"
+            Height: =If(!MenuLeftNav_1.showMenuProp, 50, App.Height)
+            LoggedUser: =varLoggedUser
+            MenuBkgColor: |-
+              =If(
+                  First(Table1S).darkmode = "ON",
+                 varBgDarkMenu,
+                 varBgColorWhite
+              )
+            MenuColor: "=If(\r\n    First(Table1S).darkmode = \"ON\",\r\n   varFontColorWhite,\r\n   varFontColorDark\r\n   \r\n)"
+            MenuColorIcon: "=If(\r\n    First(Table1S).darkmode = \"ON\",\r\n   varFontColorWhite,\r\n   varFontColorDark\r\n   \r\n)"
+            MenuItems: |
+              =Table(
+                  {
+                      MenuLabel: "Dashboard",
+                      MenuIcon: Icon.Home,
+                      MenuScreenNavigate: Dashboard,
+                      MenuID: 1,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Book Catalog",
+                      MenuIcon: Icon.Database,
+                      MenuScreenNavigate: 'Book Catalog',
+                      MenuID: 2,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Book Details",
+                      MenuIcon: Icon.ListScrollWatchlist,
+                      MenuScreenNavigate: 'Book Details',
+                      MenuID: 3,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Your Books",
+                      MenuIcon: Icon.Notebook,
+                      MenuScreenNavigate: 'Your Books',
+                      MenuID: 4,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Wishlist / Favorites",
+                      MenuIcon: Icon.Heart,
+                      MenuScreenNavigate: 'Wishlist / Favorites',
+                      MenuID: 5,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Book Reservations",
+                      MenuIcon: Icon.CalendarBlank,
+                      MenuScreenNavigate: 'Book Reservations',
+                      MenuID: 6,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Borrowing History",
+                      MenuIcon: Icon.History,
+                      MenuScreenNavigate: 'Borrowing History',
+                      MenuID: 7,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Library Ranking",
+                      MenuIcon: Icon.Globe,
+                      MenuScreenNavigate: 'Library Ranking',
+                      MenuID: 8,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "User Profile",
+                      MenuIcon: Icon.Person,
+                      MenuScreenNavigate: 'User Profile',
+                      MenuID: 9,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Admin Panel",
+                      MenuIcon: Icon.Manufacture,
+                      //MenuScreenNavigate: 'Admin Panel',
+                      MenuID: 10,
+                      VisibleSubMenu: true,
+                      SubMenu: Table(
+                          {
+                              MenuLabel: "Add Book",
+                              MenuIcon: Icon.AddDocument,
+                              MenuScreenNavigate: 'Add Book',
+                              MenuID: 1
+                          },
+                          {
+                              MenuLabel: "Edit Book",
+                              MenuIcon: Icon.ColorPicker,
+                              MenuScreenNavigate: 'Edit Book',
+                              MenuID: 2
+                          },
+                          {
+                              MenuLabel: "Delete Book",
+                              MenuIcon: Icon.ClearDrawing,
+                              MenuScreenNavigate: 'Delete Book',
+                              MenuID: 3
+                          },
+                          {
+                              MenuLabel: "Manage Users",
+                              MenuIcon: Icon.People,
+                              MenuScreenNavigate: 'Manage Users',
+                              MenuID: 4
+                          },
+                          {
+                              MenuLabel: "Manage Loans",
+                              MenuIcon: Icon.Currency,
+                              MenuScreenNavigate: 'Manage Loans',
+                              MenuID: 5
+                          },
+                          {
+                              MenuLabel: "Manage Reservations",
+                              MenuIcon: Icon.PhotosPictures,
+                              MenuScreenNavigate: 'Manage Reservations',
+                              MenuID: 6
+                          },
+                          {
+                              MenuLabel: "Library Settings",
+                              MenuIcon: Icon.Settings,
+                              MenuScreenNavigate: 'Library Settings',
+                              MenuID: 7
+                          },
+                          {
+                              MenuLabel: "Check Log",
+                              MenuIcon: Icon.Warning,
+                              MenuScreenNavigate: 'Check Log',
+                              MenuID: 8
+                          }
+                      )
+                  }
+              )
+            SetMenuWidth: =300
+            Width: =MenuLeftNav_1.MenuWidth

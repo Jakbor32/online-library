@@ -1,6 +1,12 @@
 Screens:
   Manage Reservations:
     Properties:
+      Fill: |+
+        =If(
+            First(Table1S).darkmode = "ON",
+           varBgColorDark,
+           varBgColorWhite
+        )
       LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
     Children:
       - Container_Manage_Reservations:
@@ -121,10 +127,16 @@ Screens:
                             Properties:
                               Align: =Align.Center
                               BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: |+
+                                =If(
+                                    First(Table1S).darkmode = "ON",
+                                   varFontColorWhite,
+                                   varFontColorDark
+                                )
                               Font: =Font.'Open Sans'
                               Height: =52
                               OnSelect: =Select(Parent)
-                              Text: =ThisItem.Index
+                              Text: =
                               Width: =48
                               X: =12
                               Y: =7
@@ -134,10 +146,16 @@ Screens:
                             Properties:
                               Align: =Align.Center
                               BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: |+
+                                =If(
+                                    First(Table1S).darkmode = "ON",
+                                   varFontColorWhite,
+                                   varFontColorDark
+                                )
                               Font: =Font.'Open Sans'
                               Height: =65
                               OnSelect: =Select(Parent)
-                              Text: =ThisItem.Username
+                              Text: =
                               Width: =157
                               X: =238
                               Y: =2
@@ -168,9 +186,15 @@ Screens:
                             Properties:
                               Align: =Align.Center
                               BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: |+
+                                =If(
+                                    First(Table1S).darkmode = "ON",
+                                   varFontColorWhite,
+                                   varFontColorDark
+                                )
                               Font: =Font.'Open Sans'
                               OnSelect: =Select(Parent)
-                              Text: =ThisItem.'Status (cre0e_status)'
+                              Text: =
                               X: =729
                               Y: =12
                         - queuePositionValue_1:
@@ -179,10 +203,16 @@ Screens:
                             Properties:
                               Align: =Align.Center
                               BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: |+
+                                =If(
+                                    First(Table1S).darkmode = "ON",
+                                   varFontColorWhite,
+                                   varFontColorDark
+                                )
                               Font: =Font.'Open Sans'
                               Height: =65
                               OnSelect: =Select(Parent)
-                              Text: =ThisItem.Queue_Position
+                              Text: =
                               Width: =196
                               X: =481
                               Y: =2
@@ -192,10 +222,16 @@ Screens:
                             Properties:
                               Align: =Align.Center
                               BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: |+
+                                =If(
+                                    First(Table1S).darkmode = "ON",
+                                   varFontColorWhite,
+                                   varFontColorDark
+                                )
                               Font: =Font.'Open Sans'
                               Height: =52
                               OnSelect: =Select(Parent)
-                              Text: =ThisItem.Book_ID
+                              Text: =
                               Width: =48
                               X: =119
                               Y: =8
@@ -205,11 +241,17 @@ Screens:
           Properties:
             AdminAccess: =varAdminAccess
             ExpandMenu: =
-            HamburgerMenuColor: =Color.Blue
+            HamburgerMenuColor: "=If(\r\n    First(Table1S).darkmode = \"ON\",\r\n   varFontColorWhite,\r\n   varBtnColorDark\r\n  \r\n)\r\n"
             Height: =If(!MenuLeftNav_16.showMenuProp, 50, App.Height)
             LoggedUser: =varLoggedUser
-            MenuBkgColor: =RGBA(220,220,220,1)
-            MenuColor: =Color.Purple
+            MenuBkgColor: |-
+              =If(
+                  First(Table1S).darkmode = "ON",
+                 varBgDarkMenu,
+                 varBgColorWhite
+              )
+            MenuColor: "=If(\r\n    First(Table1S).darkmode = \"ON\",\r\n   varFontColorWhite,\r\n   varFontColorDark\r\n   \r\n)"
+            MenuColorIcon: "=If(\r\n    First(Table1S).darkmode = \"ON\",\r\n   varFontColorWhite,\r\n   varFontColorDark\r\n   \r\n)"
             MenuItems: |
               =Table(
                   {

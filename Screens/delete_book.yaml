@@ -1,344 +1,420 @@
-- Delete Book:
-    Control: Screen
+Screens:
+  Delete Book:
     Properties:
-      Fill: =RGBA(237, 237, 237, 1)
+      Fill: |+
+        =If(
+            First(Table1S).darkmode = "ON",
+           varBgColorDark,
+           varBgColorWhite
+        )
+      LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
     Children:
-    - Popup_1:
-        Control: GroupContainer
-        Variant: manualLayoutContainer
-        Properties:
-          Height: =768
-          Visible: =makePopupVisible
-          Width: =1366
-        Children:
-        - popup_bg_box_2:
-            Control: Rectangle
-            Properties:
-              Fill: =RGBA(0, 0, 0, 0.4)
-              Height: =768
-              Visible: =makePopupVisible
-              Width: =1366
-        - popup_box_2:
-            Control: Rectangle
-            Properties:
-              BorderColor: =RGBA(0, 134, 208, 1)
-              BorderThickness: =5
-              Fill: =RGBA(241, 244, 249, 1)
-              Height: =324
-              Visible: =makePopupVisible
-              Width: =672
-              X: =347
-              Y: =222
-        - btn_no_2:
-            Control: Classic/Button
-            Properties:
-              OnSelect: =Set(makePopupVisible,false);
-              Text: ="No"
-              Visible: =makePopupVisible
-              X: =480
-              Y: =425
-        - btn_yes_2:
-            Control: Classic/Button
-            Properties:
-              OnSelect: |+
-                =RemoveIf(Sheet1s, Index = AllBooks.Selected.Index);
-
-                Notify("Book successfully deleted!", NotificationType.Success);
-
-                Patch(
-                    Library_logs,
-                    Defaults(Library_logs),
-                    {
-                        Event_ID: Text(Max(Library_logs, Event_ID) + 1),
-                        Event_Type: "Book Management",
-                        Description: "Book successfully deleted",
-                        Event_Name: "Delete Book",
-                        Event_Screen: App.ActiveScreen.Name,
-                        Event_Level: "3",
-                        Book_ID: AllBooks.Selected.Index,
-                        Username: loggedInUser.username,
-                        User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
-                        Event_Status: "Successful"
-                    }
-                );
-
-                Set(makePopupVisible, false);
-              Text: ="Yes"
-              Fill: =RGBA(168, 0, 0, 1)
-              HoverFill: =Self.Fill
-              Visible: =makePopupVisible
-              X: =695
-              Y: =425
-        - trash_icon_1:
-            Control: Classic/Icon
-            Variant: Trash
-            Properties:
-              Icon: =Icon.Trash
-              Visible: =makePopupVisible
-              X: =742
-              Y: =307
-        - arrow_right_icon_1:
-            Control: Classic/Icon
-            Variant: ArrowRight
-            Properties:
-              Icon: =Icon.ArrowRight
-              Visible: =makePopupVisible
-              X: =650
-              Y: =307
-        - HtmlText1_1:
-            Control: HtmlViewer
-            Properties:
-              HtmlText: |+
-                ="<div style='text-align:center;'>Are you sure you want to remove this book?</div>"
-              Height: =45
-              Size: =16
-              Width: =672
-              X: =347
-              Y: =240
-        - Icon7:
-            Control: Classic/Icon
-            Variant: Notebook
-            Properties:
-              Icon: =Icon.Notebook
-              Width: =81
-              X: =544
-              Y: =307
-    - MenuLeftNav_13:
-        Control: Component
-        ComponentName: MenuLeftNav
-        Properties:
-          AdminAccess: =varAdminAccess
-          HamburgerMenuColor: =Color.Blue
-          LoggedUser: =varLoggedUser
-          MenuBkgColor: =RGBA(220,220,220,1)
-          MenuColor: =Color.Purple
-          MenuItems: |
-            =Table(
-                {
-                    MenuLabel: "Dashboard",
-                    MenuIcon: Icon.Home,
-                    MenuScreenNavigate: Dashboard,
-                    MenuID: 1,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Book Catalog",
-                    MenuIcon: Icon.Database,
-                    MenuScreenNavigate: 'Book Catalog',
-                    MenuID: 2,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Book Details",
-                    MenuIcon: Icon.ListScrollWatchlist,
-                    MenuScreenNavigate: 'Book Details',
-                    MenuID: 3,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Your Books",
-                    MenuIcon: Icon.Notebook,
-                    MenuScreenNavigate: 'Your Books',
-                    MenuID: 4,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Wishlist / Favorites",
-                    MenuIcon: Icon.Heart,
-                    MenuScreenNavigate: 'Wishlist / Favorites',
-                    MenuID: 5,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Book Reservations",
-                    MenuIcon: Icon.CalendarBlank,
-                    MenuScreenNavigate: 'Book Reservations',
-                    MenuID: 6,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Borrowing History",
-                    MenuIcon: Icon.History,
-                    MenuScreenNavigate: 'Borrowing History',
-                    MenuID: 7,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Library Ranking",
-                    MenuIcon: Icon.Globe,
-                    MenuScreenNavigate: 'Library Ranking',
-                    MenuID: 8,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "User Profile",
-                    MenuIcon: Icon.Person,
-                    MenuScreenNavigate: 'User Profile',
-                    MenuID: 9,
-                    SubMenu: Table()
-                },
-                {
-                    MenuLabel: "Admin Panel",
-                    MenuIcon: Icon.Manufacture,
-                    //MenuScreenNavigate: 'Admin Panel',
-                    MenuID: 10,
-                    VisibleSubMenu: true,
-                    SubMenu: Table(
-                        {
-                            MenuLabel: "Add Book",
-                            MenuIcon: Icon.AddDocument,
-                            MenuScreenNavigate: 'Add Book',
-                            MenuID: 1
-                        },
-                        {
-                            MenuLabel: "Edit Book",
-                            MenuIcon: Icon.ColorPicker,
-                            MenuScreenNavigate: 'Edit Book',
-                            MenuID: 2
-                        },
-                        {
-                            MenuLabel: "Delete Book",
-                            MenuIcon: Icon.ClearDrawing,
-                            MenuScreenNavigate: 'Delete Book',
-                            MenuID: 3
-                        },
-                        {
-                            MenuLabel: "Manage Users",
-                            MenuIcon: Icon.People,
-                            MenuScreenNavigate: 'Manage Users',
-                            MenuID: 4
-                        },
-                        {
-                            MenuLabel: "Manage Loans",
-                            MenuIcon: Icon.Currency,
-                            MenuScreenNavigate: 'Manage Loans',
-                            MenuID: 5
-                        },
-                        {
-                            MenuLabel: "Manage Reservations",
-                            MenuIcon: Icon.PhotosPictures,
-                            MenuScreenNavigate: 'Manage Reservations',
-                            MenuID: 6
-                        },
-                        {
-                            MenuLabel: "Library Settings",
-                            MenuIcon: Icon.Settings,
-                            MenuScreenNavigate: 'Library Settings',
-                            MenuID: 7
-                        },
-                        {
-                            MenuLabel: "Check Log",
-                            MenuIcon: Icon.Warning,
-                            MenuScreenNavigate: 'Check Log',
-                            MenuID: 8
-                        }
+      - PageTitle_4:
+          Control: CanvasComponent
+          ComponentName: PageTitle
+          Properties:
+            Height: =50
+            Width: =200
+            X: =1166
+            screenInfo: =App.ActiveScreen
+      - AllBooks:
+          Control: Gallery@2.15.0
+          Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Height: =685
+            Items: |+
+              =If(
+                  IsBlank(search_book_input.Text), 
+                  Sheet1s, 
+                  Filter(Sheet1s, 
+                      search_book_input.Text in Title || 
+                      search_book_input.Text in Index || 
+                      search_book_input.Text in Author
+                  )
+              )
+            Width: =1366
+            Y: =83
+          Children:
+            - img_book:
+                Control: Image@2.2.3
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Height: =84
+                  Image: =ThisItem.Cover_URL
+                  OnSelect: =Select(Parent)
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                  Width: =93
+                  X: =70
+                  Y: =12
+            - TItle_label_2:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: |+
+                    =If(
+                        First(Table1S).darkmode = "ON",
+                       varFontColorWhite,
+                       varFontColorDark
                     )
-                }
-            )
-          SetMenuWidth: =300
-          Height: =If(!MenuLeftNav_13.showMenuProp, 50, App.Height)
-          Width: =MenuLeftNav_13.MenuWidth
-    - search_book_input:
-        Control: Classic/TextInput
-        Properties:
-          Default: =
-          HintText: ="Search here by ID, Title, Author"
-          X: =452
-          Y: =28
-    - AllBooks:
-        Control: Gallery
-        Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
-        Properties:
-          Items: |+
-            =If(
-                IsBlank(search_book_input.Text), 
-                Sheet1s, 
-                Filter(Sheet1s, 
-                    search_book_input.Text in Title || 
-                    search_book_input.Text in Index || 
-                    search_book_input.Text in Author
-                )
-            )
-          DelayItemLoading: =true
-          Height: =685
-          Layout: =Layout.Vertical
-          LoadingSpinner: =LoadingSpinner.Data
-          TemplatePadding: =0
-          TemplateSize: =104
-          Width: =1366
-          Y: =83
-        Children:
-        - separator_item:
-            Control: Rectangle
-            Properties:
-              OnSelect: =Select(Parent)
-              Height: =3
-              Width: =1366
-              Y: =101
-        - Index_label:
-            Control: Label
-            Properties:
-              OnSelect: =Select(Parent)
-              Text: =ThisItem.Index
-              X: =29
-              Y: =28
-        - delete_book_btn:
-            Control: Classic/Button
-            Properties:
-              OnSelect: =Set(makePopupVisible,true)
-              Text: ="Delete"
-              Fill: =RGBA(168, 0, 0, 1)
-              HoverFill: =Self.Fill
-              X: =1167
-              Y: =28
-        - Author_label_2:
-            Control: Label
-            Properties:
-              OnSelect: =Select(Parent)
-              Text: =ThisItem.Author
-              FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
-              Height: =50
-              PaddingBottom: =0
-              PaddingLeft: =0
-              PaddingRight: =0
-              PaddingTop: =0
-              VerticalAlign: =VerticalAlign.Top
-              Width: =231
-              X: =471
-              Y: =38
-        - TItle_label_2:
-            Control: Label
-            Properties:
-              OnSelect: =Select(Parent)
-              Text: =ThisItem.Title
-              FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
-              Height: =50
-              PaddingBottom: =0
-              PaddingLeft: =0
-              PaddingRight: =0
-              PaddingTop: =0
-              VerticalAlign: =VerticalAlign.Top
-              Width: =251
-              X: =191
-              Y: =38
-        - img_book:
-            Control: Image
-            Properties:
-              OnSelect: =Select(Parent)
-              Image: =ThisItem.Cover_URL
-              Height: =84
-              RadiusBottomLeft: =8
-              RadiusBottomRight: =8
-              RadiusTopLeft: =8
-              RadiusTopRight: =8
-              Width: =93
-              X: =70
-              Y: =12
-    - PageTitle_4:
-        Control: Component
-        ComponentName: PageTitle
-        Properties:
-          screenInfo: =App.ActiveScreen
-          Height: =50
-          Width: =200
-          X: =1166
+                  Font: =Font.'Open Sans'
+                  FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                  Height: =50
+                  OnSelect: =Select(Parent)
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =14
+                  Text: =ThisItem.Title
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =251
+                  X: =191
+                  Y: =38
+            - Author_label_2:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: |+
+                    =If(
+                        First(Table1S).darkmode = "ON",
+                       varFontColorWhite,
+                       varFontColorDark
+                    )
+                  Font: =Font.'Open Sans'
+                  FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                  Height: =50
+                  OnSelect: =Select(Parent)
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =14
+                  Text: =ThisItem.Author
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =231
+                  X: =471
+                  Y: =38
+            - delete_book_btn:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: =ColorFade(Self.Fill, -15%)
+                  Color: =RGBA(255, 255, 255, 1)
+                  DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                  Fill: =RGBA(168, 0, 0, 1)
+                  Font: =Font.'Open Sans'
+                  HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                  HoverColor: =RGBA(255, 255, 255, 1)
+                  HoverFill: =Self.Fill
+                  OnSelect: =Set(makePopupVisible,true)
+                  PressedBorderColor: =Self.Fill
+                  PressedColor: =Self.Fill
+                  PressedFill: =Self.Color
+                  Text: ="Delete"
+                  X: =1167
+                  Y: =28
+            - Index_label:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Color: |+
+                    =If(
+                        First(Table1S).darkmode = "ON",
+                       varFontColorWhite,
+                       varFontColorDark
+                    )
+                  Font: =Font.'Open Sans'
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Index
+                  X: =29
+                  Y: =28
+            - separator_item:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Fill: =RGBA(56, 96, 178, 1)
+                  Height: =3
+                  OnSelect: =Select(Parent)
+                  Width: =1366
+                  Y: =101
+      - search_book_input:
+          Control: Classic/TextInput@2.3.2
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Default: =
+            Font: =Font.'Open Sans'
+            HintText: ="Search here by ID, Title, Author"
+            HoverBorderColor: =RGBA(0, 18, 107, 1)
+            HoverFill: =RGBA(186, 202, 226, 1)
+            X: =452
+            Y: =28
+      - MenuLeftNav_13:
+          Control: CanvasComponent
+          ComponentName: MenuLeftNav
+          Properties:
+            AdminAccess: =varAdminAccess
+            ExpandMenu: =
+            HamburgerMenuColor: "=If(\r\n    First(Table1S).darkmode = \"ON\",\r\n   varFontColorWhite,\r\n   varBtnColorDark\r\n  \r\n)\r\n"
+            Height: =If(!MenuLeftNav_13.showMenuProp, 50, App.Height)
+            LoggedUser: =varLoggedUser
+            MenuBkgColor: |-
+              =If(
+                  First(Table1S).darkmode = "ON",
+                 varBgDarkMenu,
+                 varBgColorWhite
+              )
+            MenuColor: "=If(\r\n    First(Table1S).darkmode = \"ON\",\r\n   varFontColorWhite,\r\n   varFontColorDark\r\n   \r\n)"
+            MenuColorIcon: "=If(\r\n    First(Table1S).darkmode = \"ON\",\r\n   varFontColorWhite,\r\n   varFontColorDark\r\n   \r\n)"
+            MenuItems: |
+              =Table(
+                  {
+                      MenuLabel: "Dashboard",
+                      MenuIcon: Icon.Home,
+                      MenuScreenNavigate: Dashboard,
+                      MenuID: 1,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Book Catalog",
+                      MenuIcon: Icon.Database,
+                      MenuScreenNavigate: 'Book Catalog',
+                      MenuID: 2,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Book Details",
+                      MenuIcon: Icon.ListScrollWatchlist,
+                      MenuScreenNavigate: 'Book Details',
+                      MenuID: 3,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Your Books",
+                      MenuIcon: Icon.Notebook,
+                      MenuScreenNavigate: 'Your Books',
+                      MenuID: 4,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Wishlist / Favorites",
+                      MenuIcon: Icon.Heart,
+                      MenuScreenNavigate: 'Wishlist / Favorites',
+                      MenuID: 5,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Book Reservations",
+                      MenuIcon: Icon.CalendarBlank,
+                      MenuScreenNavigate: 'Book Reservations',
+                      MenuID: 6,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Borrowing History",
+                      MenuIcon: Icon.History,
+                      MenuScreenNavigate: 'Borrowing History',
+                      MenuID: 7,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Library Ranking",
+                      MenuIcon: Icon.Globe,
+                      MenuScreenNavigate: 'Library Ranking',
+                      MenuID: 8,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "User Profile",
+                      MenuIcon: Icon.Person,
+                      MenuScreenNavigate: 'User Profile',
+                      MenuID: 9,
+                      SubMenu: Table()
+                  },
+                  {
+                      MenuLabel: "Admin Panel",
+                      MenuIcon: Icon.Manufacture,
+                      //MenuScreenNavigate: 'Admin Panel',
+                      MenuID: 10,
+                      VisibleSubMenu: true,
+                      SubMenu: Table(
+                          {
+                              MenuLabel: "Add Book",
+                              MenuIcon: Icon.AddDocument,
+                              MenuScreenNavigate: 'Add Book',
+                              MenuID: 1
+                          },
+                          {
+                              MenuLabel: "Edit Book",
+                              MenuIcon: Icon.ColorPicker,
+                              MenuScreenNavigate: 'Edit Book',
+                              MenuID: 2
+                          },
+                          {
+                              MenuLabel: "Delete Book",
+                              MenuIcon: Icon.ClearDrawing,
+                              MenuScreenNavigate: 'Delete Book',
+                              MenuID: 3
+                          },
+                          {
+                              MenuLabel: "Manage Users",
+                              MenuIcon: Icon.People,
+                              MenuScreenNavigate: 'Manage Users',
+                              MenuID: 4
+                          },
+                          {
+                              MenuLabel: "Manage Loans",
+                              MenuIcon: Icon.Currency,
+                              MenuScreenNavigate: 'Manage Loans',
+                              MenuID: 5
+                          },
+                          {
+                              MenuLabel: "Manage Reservations",
+                              MenuIcon: Icon.PhotosPictures,
+                              MenuScreenNavigate: 'Manage Reservations',
+                              MenuID: 6
+                          },
+                          {
+                              MenuLabel: "Library Settings",
+                              MenuIcon: Icon.Settings,
+                              MenuScreenNavigate: 'Library Settings',
+                              MenuID: 7
+                          },
+                          {
+                              MenuLabel: "Check Log",
+                              MenuIcon: Icon.Warning,
+                              MenuScreenNavigate: 'Check Log',
+                              MenuID: 8
+                          }
+                      )
+                  }
+              )
+            SetMenuWidth: =300
+            Width: =MenuLeftNav_13.MenuWidth
+      - Popup_1:
+          Control: GroupContainer@1.3.0
+          Variant: ManualLayout
+          Properties:
+            Height: =768
+            Visible: =makePopupVisible
+            Width: =1366
+          Children:
+            - popup_bg_box_2:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Fill: =RGBA(0, 0, 0, 0.4)
+                  Height: =768
+                  Visible: =makePopupVisible
+                  Width: =1366
+            - popup_box_2:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0, 134, 208, 1)
+                  BorderThickness: =5
+                  Fill: =RGBA(241, 244, 249, 1)
+                  Height: =324
+                  Visible: =makePopupVisible
+                  Width: =672
+                  X: =347
+                  Y: =222
+            - btn_no_2:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: =ColorFade(Self.Fill, -15%)
+                  Color: =RGBA(255, 255, 255, 1)
+                  DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                  Fill: =RGBA(56, 96, 178, 1)
+                  Font: =Font.'Open Sans'
+                  HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                  HoverColor: =RGBA(255, 255, 255, 1)
+                  HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                  OnSelect: =Set(makePopupVisible,false);
+                  PressedBorderColor: =Self.Fill
+                  PressedColor: =Self.Fill
+                  PressedFill: =Self.Color
+                  Text: ="No"
+                  Visible: =makePopupVisible
+                  X: =480
+                  Y: =425
+            - btn_yes_2:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: =ColorFade(Self.Fill, -15%)
+                  Color: =RGBA(255, 255, 255, 1)
+                  DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                  Fill: =RGBA(168, 0, 0, 1)
+                  Font: =Font.'Open Sans'
+                  HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                  HoverColor: =RGBA(255, 255, 255, 1)
+                  HoverFill: =Self.Fill
+                  OnSelect: |+
+                    =RemoveIf(Sheet1s, Index = AllBooks.Selected.Index);
+
+                    Notify("Book successfully deleted!", NotificationType.Success);
+
+                    Patch(
+                        Library_logs,
+                        Defaults(Library_logs),
+                        {
+                            Event_ID: Text(Max(Library_logs, Event_ID) + 1),
+                            Event_Type: "Book Management",
+                            Description: "Book successfully deleted",
+                            Event_Name: "Delete Book",
+                            Event_Screen: App.ActiveScreen.Name,
+                            Event_Level: "3",
+                            Book_ID: AllBooks.Selected.Index,
+                            Username: loggedInUser.username,
+                            User_Role: If(loggedInUser.admin_access = "Yes", "Admin", "User"),
+                            Event_Status: "Successful"
+                        }
+                    );
+
+                    Set(makePopupVisible, false);
+                  PressedBorderColor: =Self.Fill
+                  PressedColor: =Self.Fill
+                  PressedFill: =Self.Color
+                  Text: ="Yes"
+                  Visible: =makePopupVisible
+                  X: =695
+                  Y: =425
+            - trash_icon_1:
+                Control: Classic/Icon@2.5.0
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Color: =RGBA(0, 18, 107, 1)
+                  Icon: =Icon.Trash
+                  Visible: =makePopupVisible
+                  X: =742
+                  Y: =307
+            - arrow_right_icon_1:
+                Control: Classic/Icon@2.5.0
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Color: =RGBA(0, 18, 107, 1)
+                  Icon: =Icon.ArrowRight
+                  Visible: =makePopupVisible
+                  X: =650
+                  Y: =307
+            - HtmlText1_1:
+                Control: HtmlViewer@2.1.0
+                Properties:
+                  Font: =Font.'Open Sans'
+                  Height: =45
+                  HtmlText: |+
+                    ="<div style='text-align:center;'>Are you sure you want to remove this book?</div>"
+                  Size: =16
+                  Width: =672
+                  X: =347
+                  Y: =240
+            - Icon7:
+                Control: Classic/Icon@2.5.0
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Color: =RGBA(0, 18, 107, 1)
+                  Icon: =Icon.Notebook
+                  Width: =81
+                  X: =544
+                  Y: =307
